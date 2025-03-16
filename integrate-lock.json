@@ -1,0 +1,157 @@
+{
+  "lockfileVersion": 1,
+  "packages": {
+    "@babel/core": {
+      "version": "^7.25.2",
+      "integrated": false
+    },
+    "@expo/vector-icons": {
+      "version": "^14.0.2",
+      "integrated": false
+    },
+    "@react-native-community/cli": {
+      "version": "latest",
+      "integrated": false
+    },
+    "@react-native-vector-icons/common": {
+      "version": "^11.0.0",
+      "integrated": false
+    },
+    "@react-native-vector-icons/fontawesome6": {
+      "version": "^6.7.1",
+      "integrated": false
+    },
+    "@react-navigation/bottom-tabs": {
+      "version": "^7.2.0",
+      "integrated": false
+    },
+    "@react-navigation/native": {
+      "version": "^7.0.14",
+      "integrated": false
+    },
+    "@types/jest": {
+      "version": "^29.5.12",
+      "integrated": false
+    },
+    "@types/react": {
+      "version": "~18.3.12",
+      "integrated": false
+    },
+    "@types/react-test-renderer": {
+      "version": "^18.3.0",
+      "integrated": false
+    },
+    "expo": {
+      "version": "~52.0.38",
+      "integrated": false
+    },
+    "expo-blur": {
+      "version": "~14.0.3",
+      "integrated": false
+    },
+    "expo-constants": {
+      "version": "~17.0.8",
+      "integrated": false
+    },
+    "expo-font": {
+      "version": "~13.0.4",
+      "integrated": false
+    },
+    "expo-haptics": {
+      "version": "~14.0.1",
+      "integrated": false
+    },
+    "expo-linking": {
+      "version": "~7.0.5",
+      "integrated": false
+    },
+    "expo-router": {
+      "version": "~4.0.18",
+      "integrated": false
+    },
+    "expo-splash-screen": {
+      "version": "~0.29.22",
+      "integrated": false
+    },
+    "expo-status-bar": {
+      "version": "~2.0.1",
+      "integrated": false
+    },
+    "expo-symbols": {
+      "version": "~0.2.2",
+      "integrated": false
+    },
+    "expo-system-ui": {
+      "version": "~4.0.8",
+      "integrated": false
+    },
+    "expo-web-browser": {
+      "version": "~14.0.2",
+      "integrated": false
+    },
+    "jest": {
+      "version": "^29.2.1",
+      "integrated": false
+    },
+    "jest-expo": {
+      "version": "~52.0.6",
+      "integrated": false
+    },
+    "pod-install": {
+      "version": "^0.3.4",
+      "integrated": false
+    },
+    "react": {
+      "version": "18.3.1",
+      "integrated": false
+    },
+    "react-dom": {
+      "version": "18.3.1",
+      "integrated": false
+    },
+    "react-native": {
+      "version": "0.76.7",
+      "integrated": false
+    },
+    "react-native-asset": {
+      "version": "^2.1.1",
+      "integrated": false
+    },
+    "react-native-gesture-handler": {
+      "version": "~2.20.2",
+      "integrated": false
+    },
+    "react-native-reanimated": {
+      "version": "~3.16.1",
+      "integrated": false
+    },
+    "react-native-safe-area-context": {
+      "version": "4.12.0",
+      "integrated": false
+    },
+    "react-native-screens": {
+      "version": "~4.4.0",
+      "integrated": false
+    },
+    "react-native-vector-icons": {
+      "version": "^10.2.0",
+      "integrated": false
+    },
+    "react-native-web": {
+      "version": "~0.19.13",
+      "integrated": false
+    },
+    "react-native-webview": {
+      "version": "13.12.5",
+      "integrated": false
+    },
+    "react-test-renderer": {
+      "version": "18.3.1",
+      "integrated": false
+    },
+    "typescript": {
+      "version": "^5.3.3",
+      "integrated": false
+    }
+  }
+}
