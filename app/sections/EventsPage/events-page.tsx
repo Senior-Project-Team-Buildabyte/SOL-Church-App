@@ -1,9 +1,23 @@
-import { Component } from "react";
+import { EventData, fetchEventData } from "@/app/services/eventsService";
+import { Component, useEffect, useState } from "react";
 import { Text, View, StyleSheet, ScrollView, ImageBackground } from "react-native";
 
 
 const EventsPage = () => {
+  const [data, setData] = useState<EventData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    const getEventData = async () => {
+      try {
+        const events = await fetchEventData('/data');
+        setData(events); // Set the fetched data
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      } 
+    };
+    getEventData(); 
+    }, []); 
     const styles = StyleSheet.create({
         scrollContainer: {
           flexGrow: 1,
@@ -89,11 +103,11 @@ const EventsPage = () => {
         </View>
       </ImageBackground>
       {/* Generate list with Image Widgets */}
-      {[...Array(20)].map((_, index) => (
+      {data.map((_, index) => (
         <View key={index} style={styles.eventWrapper}>
           <View style={styles.eventContainer}>
             <ImageBackground
-              source={require("../../../assets/images/testbackground.jpg")}
+              source={require('../../../assets/images/testbackground.jpg')} //needs to be replaced with actual images from Blob
               style={styles.image}
               imageStyle={{ borderRadius: 10 }}
             >
@@ -104,9 +118,9 @@ const EventsPage = () => {
             </ImageBackground>
             
             <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionTitle}>Event Title {index + 1}</Text>
-              <Text style={styles.descriptionText}>Guest Speaker</Text>
-              <Text style={styles.descriptionText}>Time: 7:00 PM</Text>
+              <Text style={styles.descriptionTitle}>{_.title}</Text>
+              <Text style={styles.descriptionText}>{_.guestSpeaker}</Text>
+              <Text style={styles.descriptionText}>Time: {_.time}</Text>
             </View>
           </View>
           <View style={styles.separator} />
