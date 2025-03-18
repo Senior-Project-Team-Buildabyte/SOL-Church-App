@@ -1,1 +1,1 @@
-# SOL-Church-App
+SOL CHURCH APP 
