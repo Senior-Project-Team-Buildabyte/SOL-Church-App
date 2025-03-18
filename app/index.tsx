@@ -11,7 +11,7 @@ export default function Index() {
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
-    }
+    },
   });
   return (
     <View style={styles.container}>
