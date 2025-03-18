@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, ScrollView, ImageBackground } from "react-native";
 import ContactsIcons from "./sections/contact-section/contacts-icons";
 import EventsPage from "./sections/EventsPage/events-page";
+import HomeResources from "./sections/HomeResources/home-resources";
 
 
 export default function Index() {
@@ -14,8 +15,12 @@ export default function Index() {
   });
   return (
     <View style={styles.container}>
-      <ContactsIcons></ContactsIcons> 
-      <EventsPage></EventsPage>
+      <ScrollView>
+        
+        <ContactsIcons></ContactsIcons> 
+        <EventsPage></EventsPage>
+        <HomeResources></HomeResources>
+      </ScrollView>
     </View>
   );
 }

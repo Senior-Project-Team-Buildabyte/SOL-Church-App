@@ -45,7 +45,11 @@ const ContactsIcons = () => {
         });
       };
   return (
-    <View style={{ flexDirection: "row", justifyContent: "space-between", width: "80%", padding: 1 }}>
+    <View style={{ 
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center"
+     }}>
       <FontAwesome.Button 
             name="phone" 
             backgroundColor="transparent"
