@@ -10,7 +10,7 @@ export default function TextPage() {
             <View style={styles.header_bar}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back_button}>
                     <Image
-                        source={require('./assets/images/black_arrow.png')} 
+                        source={require('../assets/images/black_arrow.png')} 
                         style={{ width: 30, height: 30 }}
                     />
                 </TouchableOpacity>

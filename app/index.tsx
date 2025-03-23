@@ -22,7 +22,7 @@ export default function Index() {
         {/* Left Side: SOL Church Logo */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
-            source={require('./assets/images/react-logo.png')} // Replace with actual church logo
+            source={require('../assets/images/react-logo.png')} // Replace with actual church logo
             style={{
               width: 30,
               height: 30,
@@ -38,7 +38,7 @@ export default function Index() {
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity onPress={handlePress}>
             <Image
-              source={require('./assets/images/search-button.png')}
+              source={require('../assets/images/search-button.png')}
               style={{
                 width: 30,
                 height: 30,
@@ -48,7 +48,7 @@ export default function Index() {
           </TouchableOpacity>
           <TouchableOpacity onPress={handlePress}>
             <Image
-              source={require('./assets/images/login-button.png')} 
+              source={require('../assets/images/login-button.png')} 
               style={{
                 width: 30,
                 height: 30,
