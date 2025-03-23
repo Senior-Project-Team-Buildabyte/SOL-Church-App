@@ -1,3 +1,1 @@
-# SOL-Church-App
-
-# trying to commit through vscode.
+SOL CHURCH APP 
