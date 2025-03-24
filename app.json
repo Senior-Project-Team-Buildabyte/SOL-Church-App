@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "SolChuchApp",
-    "slug": "SolChuchApp",
+    "name": "StickerSmash",
+    "slug": "StickerSmash",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,15 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.SolChuchApp"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.anonymous.SolChuchApp"
+      }
     },
     "web": {
       "bundler": "metro",
