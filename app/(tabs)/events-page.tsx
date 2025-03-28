@@ -93,7 +93,7 @@ const EventsPage = () => {
 <ScrollView contentContainerStyle={styles.scrollContainer}>
       <Text>DEMO Upcoming Events Page</Text>
       <ImageBackground
-        source={require("../../../assets/images/stockphoto.jpg")}
+        source={require("../../assets/images/stockphoto.jpg")}
         style={styles.frontimage}
         imageStyle={{ borderRadius: 10 }}
       >
@@ -107,7 +107,7 @@ const EventsPage = () => {
         <View key={index} style={styles.eventWrapper}>
           <View style={styles.eventContainer}>
             <ImageBackground
-              source={require('../../../assets/images/testbackground.jpg')} //needs to be replaced with actual images from Blob
+              source={require('../../assets/images/testbackground.jpg')} //needs to be replaced with actual images from Blob
               style={styles.image}
               imageStyle={{ borderRadius: 10 }}
             >

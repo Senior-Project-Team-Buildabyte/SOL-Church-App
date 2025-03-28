@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, ScrollView, ImageBackground } from "react-native";
-import ContactsIcons from "./sections/contact-section/contacts-icons";
-import EventsPage from "./sections/EventsPage/events-page";
-import DynamicEventSection from "./sections/dynamic-events-section/dynamic-event";
+import ContactsIcons from "../sections/contact-section/contacts-icons";
+// import EventsPage from "./events-page";
+import DynamicEventSection from "../sections/dynamic-events-section/dynamic-event";
 
 
 export default function Index() {
