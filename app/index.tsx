@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, ScrollView, ImageBackground } from "react-nativ
 import ContactsIcons from "./sections/contact-section/contacts-icons";
 import EventsPage from "./sections/EventsPage/events-page";
 import DynamicEventSection from "./sections/dynamic-events-section/dynamic-event";
+import HomeResources from "./sections/HomeResources/home-resources";
 
 
 export default function Index() {
@@ -12,17 +13,17 @@ export default function Index() {
     },
     container: {
       alignItems: 'center'
-    }
+    },
   });
   return (
-    <ScrollView style={styles.scrollContainer}>
-      <View style={styles.container}>
-        <View style={{ height: 200 }}></View>
-        <DynamicEventSection></DynamicEventSection>
-        <ContactsIcons></ContactsIcons>
-        {/*  <EventsPage></EventsPage> */}
-        <View style={{ height: 100 }}></View>
-      </View>
+    <ScrollView>
+    <View style={styles.container}>
+    <View style={{ height: 200 }}></View>
+    <DynamicEventSection></DynamicEventSection>
+      <ContactsIcons></ContactsIcons> 
+      {/* <EventsPage></EventsPage> */}
+      <HomeResources></HomeResources>
+    </View>
     </ScrollView>
   );
 }

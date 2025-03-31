@@ -47,7 +47,6 @@ const EventsPage = () => {
           height: 150,
           justifyContent: "center",
           alignItems: "center",
-          marginRight: 15,
           marginBottom: 30,
         },
         overlay: {
