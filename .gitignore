@@ -3,6 +3,8 @@
 __generated__
 web-build
 bare-apps
+ios/
+android/
 
 # macOS
 .DS_Store
@@ -28,7 +30,10 @@ yarn-error.log
 .*.swm
 
 # VS Code
+.vscode
 .vscode/launch.json
+
+
 
 # Sublime Text
 *.sublime-project

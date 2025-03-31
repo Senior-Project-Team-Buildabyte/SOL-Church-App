@@ -22,13 +22,12 @@ const ContactsIcons = () => {
         });
       };
     const handleFacebook = () => {
-        Linking.openURL('fb://profile/churchSOL').catch(err => {
+        Linking.openURL('fb://page/churchSOL').catch(err => { // IRYNA! needs to be updated 
           Linking.openURL('https://www.facebook.com/churchSOL').catch(err => {
               Alert.alert('Error', 'Something went wrong.');
               console.error('An error occurred', err);
             });
-        });
-      
+          });
       };
     const handleYoutube = () => {
         Linking.openURL('youtube://www.youtube.com/SpringofLifeChurchSOL').catch(err => {
