@@ -16,12 +16,14 @@ export default function Index() {
     },
   });
   return (
+    <ScrollView>
     <View style={styles.container}>
     <View style={{ height: 200 }}></View>
     <DynamicEventSection></DynamicEventSection>
       <ContactsIcons></ContactsIcons> 
-      <EventsPage></EventsPage>
+      {/* <EventsPage></EventsPage> */}
       <HomeResources></HomeResources>
     </View>
+    </ScrollView>
   );
 }
