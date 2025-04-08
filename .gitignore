@@ -32,7 +32,9 @@ yarn-error.log
 # VS Code
 .vscode
 .vscode/launch.json
-
+.history/
+/vscode/launch.json
+.vscode/settings.json
 
 
 # Sublime Text
@@ -54,10 +56,6 @@ xcuserdata
 # Eclipse
 .project
 .settings
-
-# VSCode
-.history/
-/vscode/launch.json
 
 # Android
 *.apk
@@ -139,4 +137,3 @@ docs/pages/versions/*/react-native/*.diff
 expo-env.d.ts
 # @end expo-cli
 
-.gitignore
