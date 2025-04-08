@@ -3,6 +3,7 @@ import { EventData, fetchEventData } from "@/app/services/eventsService";
 import { Component, useEffect, useState } from "react";
 import { Text, View, StyleSheet, ScrollView, ImageBackground } from "react-native";
 import DynamicButton from "../generic-buttons/dynamic-button";
+import React from "react";
 
 
 const DynamicEventSection = () => {
@@ -12,7 +13,8 @@ const DynamicEventSection = () => {
   return (  
         <DynamicButton buttons={[
             {
-                type: 0,    
+                type: 0,
+                shape: 0,   
                 buttonConfig: {
                     text: "Update Your Address",
                     link: "https://www.google.com/",
@@ -21,6 +23,7 @@ const DynamicEventSection = () => {
             },
             {
                 type: 1,    
+                shape: 0,
                 buttonConfig: {
                     text: "Update Your Address",
                     internalLink: `../sections/EventsPage/single-event-page`,
@@ -29,6 +32,7 @@ const DynamicEventSection = () => {
             },
             {
                 type: 0,    
+                shape: 0,
                 buttonConfig: {
                     text: "Update Your Address",
                     link: "https://www.google.com/",
@@ -37,6 +41,7 @@ const DynamicEventSection = () => {
             },
             {
                 type: 0,    
+                shape: 0,
                 buttonConfig: {
                     icon: 'map',
                     text: "Update Your Address\nОновіть вашу адресу",

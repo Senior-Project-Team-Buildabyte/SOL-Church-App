@@ -1,32 +1,87 @@
-import { ButtonType, DynamicButtonProps, GenericButtonConfig } from "@/app/models/ButtonConfig";
-import { Component, FC, useEffect, useState } from "react";
-import { Text, View, StyleSheet, ScrollView, ImageBackground, Linking, TouchableOpacity } from "react-native";
-import ExternalLinkButton from "./external-link-button";
-import InternalPageButton from "./interal-page-button";
+import { ButtonShape, GenericButtonConfig } from "@/app/models/ButtonConfig";
+import { FC } from "react";
+import { View, StyleSheet } from "react-native";
+import LinkPageButton from "./link-page-button";
+import React from "react";
 
-const DynamicButton: FC<DynamicButtonProps> = (props) => {
-    const {buttons} = props;
-    const [loading, setLoading] = useState<boolean>(true);
-    //debugger;
+const styles = StyleSheet.create({
+    container: {
+        maxWidth: 650,
+        alignSelf: 'center',
+    },
+    row: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+    },
+    fullWidthItem: {
+        width: '100%',
+    },
+    squareItem: {
+        width: '40%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});
+
+
+const DynamicButton: FC<{ buttons: GenericButtonConfig[] }> = ({ buttons }) => {
     if (!Array.isArray(buttons)) {
-        console.error("Expected 'buttons' to be an array but got:", buttons);
+        console.error("Expected 'buttons' to be an array");
         return null;
     }
+
+    // Group buttons into rows based on shape
+    const rows: GenericButtonConfig[][] = []; // <-- Now using GenericButtonConfig[]
+    let currentRow: GenericButtonConfig[] = [];
+    let currentRowType: 'full' | 'square' | null = null;
+
+    buttons.forEach((button) => {
+        const isSquare = button.shape === ButtonShape.Square;
+
+        // Start new row if shape type changes
+        if (
+        !currentRowType ||
+        (isSquare && currentRowType === 'full') ||
+        (!isSquare && currentRowType === 'square')
+        ) {
+        if (currentRow.length > 0) rows.push(currentRow);
+        currentRow = [button];
+        currentRowType = isSquare ? 'square' : 'full';
+        } else {
+        currentRow.push(button);
+        }
+    });
+
+    // Push the last remaining row
+    if (currentRow.length > 0) rows.push(currentRow);
+
     return (
-        <>
-            {buttons.map((button, index) => {
-                 if (button.type === ButtonType.ExternalLink) {
-                    return <ExternalLinkButton key={index} {...button.buttonConfig} />;
-                } else if (button.type === ButtonType.InternalEventPage) {
-                    return <InternalPageButton key={index} {...button.buttonConfig} />;
-                } else {
-                    console.warn("Unsupported button type:", button.type);
-                    return null;
-                }
-            }
-            )}
-        </>
+        <View style={styles.container}>
+        {rows.map((row, rowIndex) => (
+            // full row
+            <View
+            key={`row-${rowIndex}`}
+            style={[
+                styles.row
+            ]}>
+            {row.map((button, btnIndex) => (
+                <View
+                key={`btn-${rowIndex}-${btnIndex}`}
+                style={ // handle styles for individual square or full buttons
+                    button.shape === ButtonShape.Square
+                    ? styles.squareItem : styles.fullWidthItem
+                }>
+                    <LinkPageButton
+                    type={button.type}
+                    shape={button.shape}
+                    buttonConfig={button.buttonConfig}/>
+                </View>
+            ))}
+            </View>
+        ))}
+        </View>
     );
 };
-    
+
 export default DynamicButton;
