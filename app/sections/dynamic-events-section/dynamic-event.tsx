@@ -13,8 +13,8 @@ const DynamicEventSection = () => {
   return (  
         <DynamicButton buttons={[
             {
-                type: 0,
-                shape: 0,   
+                type: 0, // external
+                shape: 0, // full
                 buttonConfig: {
                     text: "Update Your Address",
                     link: "https://www.google.com/",
@@ -22,8 +22,8 @@ const DynamicEventSection = () => {
                  }
             },
             {
-                type: 1,    
-                shape: 0,
+                type: 1, // external
+                shape: 0, // full
                 buttonConfig: {
                     text: "Update Your Address",
                     internalLink: `../sections/EventsPage/single-event-page`,
@@ -31,8 +31,8 @@ const DynamicEventSection = () => {
                  }
             },
             {
-                type: 0,    
-                shape: 0,
+                type: 0, // external
+                shape: 0, // full
                 buttonConfig: {
                     text: "Update Your Address",
                     link: "https://www.google.com/",
@@ -40,8 +40,8 @@ const DynamicEventSection = () => {
                  }
             },
             {
-                type: 0,    
-                shape: 0,
+                type: 0, // external
+                shape: 0, // full
                 buttonConfig: {
                     icon: 'map',
                     text: "Update Your Address\nОновіть вашу адресу",

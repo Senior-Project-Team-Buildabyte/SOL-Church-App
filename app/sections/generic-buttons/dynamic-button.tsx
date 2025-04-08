@@ -7,6 +7,7 @@ import React from "react";
 const styles = StyleSheet.create({
     container: {
         maxWidth: 650,
+        width: '100%',
         alignSelf: 'center',
     },
     row: {
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
 
 const DynamicButton: FC<{ buttons: GenericButtonConfig[] }> = ({ buttons }) => {
     if (!Array.isArray(buttons)) {
-        console.error("Expected 'buttons' to be an array");
+        console.error("Expected 'buttons' to be an array but got:", buttons);
         return null;
     }
 

@@ -6,7 +6,7 @@ const HomeResources = () => {
   return (
     <DynamicButton buttons={[
       {
-        type: 0,    
+        type: 0, // external
         shape: 1, // square
         buttonConfig: {
             text: "Resource 1",
@@ -15,7 +15,7 @@ const HomeResources = () => {
         }
       },
       {
-        type: 1,    
+        type: 1, // internal
         shape: 1, // square
         buttonConfig: {
             text: "Page 1",
@@ -24,7 +24,7 @@ const HomeResources = () => {
         }
       },
       {
-        type: 0,    
+        type: 0, // external
         shape: 1, // square
         buttonConfig: {
             text: "Google.com",
@@ -33,7 +33,7 @@ const HomeResources = () => {
         }
       },
       {
-        type: 0,    
+        type: 0, // external
         shape: 1, // square
         buttonConfig: {
             icon: 'map',
@@ -43,7 +43,7 @@ const HomeResources = () => {
         }
       },
       {
-        type: 0,    
+        type: 0, // external
         shape: 1, // square
         buttonConfig: {
             text: "Resource 2",
@@ -52,7 +52,7 @@ const HomeResources = () => {
         }
       },
       { // full width button for testing / proof of concept (alternating rows of full & square)
-        type: 0,    
+        type: 0, // external
         shape: 0, // full
         buttonConfig: {
             text: "Resource 3",
@@ -62,7 +62,7 @@ const HomeResources = () => {
         }
       },
       {
-        type: 0,    
+        type: 0, // external
         shape: 1, // square
         buttonConfig: {
             text: "Resource 4",
@@ -71,7 +71,7 @@ const HomeResources = () => {
         }
       },
       {
-        type: 0,    
+        type: 0, // external
         shape: 1, // square
         buttonConfig: {
             text: "Resource 5",
@@ -80,7 +80,7 @@ const HomeResources = () => {
         }
       },
       {
-        type: 0,    
+        type: 0, // external
         shape: 0, // full
         buttonConfig: {
             text: "Resource 6",
