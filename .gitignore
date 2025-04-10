@@ -9,6 +9,9 @@ android/
 # macOS
 .DS_Store
 
+#WSL
+Zone.Identifier
+
 # Node
 node_modules
 npm-debug.log
