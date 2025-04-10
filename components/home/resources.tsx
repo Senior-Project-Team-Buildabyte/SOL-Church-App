@@ -1,6 +1,6 @@
-import DynamicButton from '../generic-buttons/dynamic-button';
+import DynamicButton from '../universal/dynamic-button';
 
-const HomeResources = () => {
+const Resources = () => {
 
   return (
     <DynamicButton buttons={[
@@ -10,7 +10,7 @@ const HomeResources = () => {
         buttonConfig: {
             text: "Resource 1",
             link: "https://example.com",
-            backgroundImage: require('../../../assets/images/testbackground.jpg'),
+            backgroundImage: require('@/assets/images/testbackground.jpg'),
         }
       },
       {
@@ -18,7 +18,7 @@ const HomeResources = () => {
         shape: 1, // square
         buttonConfig: {
             text: "Page 1",
-            internalLink: `../sections/EventsPage/single-event-page`,
+            internalLink: `../(tabs)/events`,
             backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE=",
         }
       },
@@ -28,7 +28,7 @@ const HomeResources = () => {
         buttonConfig: {
             text: "Google.com",
             link: "https://google.com",
-            backgroundImage: require('../../../assets/images/Google-Emblem001.png'),
+            backgroundImage: require('@/assets/images/Google-Emblem001.png'),
         }
       },
       {
@@ -38,7 +38,7 @@ const HomeResources = () => {
             icon: 'map',
             text: "Bing.com",
             link: "https://bing.com",
-            backgroundImage: require('../../../assets/images/microsoft-bing-logo-001.jpg'),
+            backgroundImage: require('@/assets/images/microsoft-bing-logo-001.jpg'),
         }
       },
       {
@@ -47,7 +47,7 @@ const HomeResources = () => {
         buttonConfig: {
             text: "Resource 2",
             link: "https://example.com",
-            backgroundImage: require('../../../assets/images/stockphoto.jpg'),
+            backgroundImage: require('@/assets/images/stockphoto.jpg'),
         }
       },
       { // full width button for testing / proof of concept (alternating rows of full & square)
@@ -56,7 +56,7 @@ const HomeResources = () => {
         buttonConfig: {
             text: "Resource 3",
             link: "https://example.com",
-            backgroundImage: require('../../../assets/images/testbackground.jpg'),
+            backgroundImage: require('@/assets/images/testbackground.jpg'),
             backgroundColor: "#bb1da5"
         }
       },
@@ -91,4 +91,4 @@ const HomeResources = () => {
   );
 };
 
-export default HomeResources;
+export default Resources;

@@ -1,4 +1,4 @@
-import { EventData, fetchEventData } from "@/app/services/eventsService";
+import { EventData, fetchEventData } from "@/services/eventsService";
 import { Component, useEffect, useState } from "react";
 import { Text, View, StyleSheet, ScrollView, ImageBackground } from "react-native";
 

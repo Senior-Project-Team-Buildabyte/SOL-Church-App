@@ -1,9 +1,9 @@
 import { View, StyleSheet, ScrollView } from "react-native";
-import ContactsIcons from "./sections/contact-section/contacts-icons";
-import EventsPage from "./sections/EventsPage/events-page";
-import DynamicEventSection from "./sections/dynamic-events-section/dynamic-event";
-import HomeResources from "./sections/HomeResources/home-resources";
-import HeaderBar from "../components/header-bar";
+import ContactsIcons from "../components/universal/contacts-icons";
+import EventsPage from "./(tabs)/events";
+import DynamicEventSection from "../components/home/dynamic-event";
+import Resources from "../components/home/resources";
+import HeaderBar from "../components/universal/header-bar";
 
 
 export default function Index() {
@@ -25,7 +25,7 @@ export default function Index() {
         <DynamicEventSection></DynamicEventSection>
         <ContactsIcons></ContactsIcons> 
         {/* <EventsPage></EventsPage> */}
-        <HomeResources></HomeResources>
+        <Resources></Resources>
       </View>
     </ScrollView>
   );
