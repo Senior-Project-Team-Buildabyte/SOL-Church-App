@@ -1,5 +1,5 @@
 import { ButtonType, ButtonShape, GenericButtonConfig } from "@/app/models/ButtonConfig";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Text, View, StyleSheet, ImageBackground, Linking, TouchableOpacity, Alert } from "react-native";
 import { Icon } from 'react-native-elements'
 import { Link, useRouter, RelativePathString } from 'expo-router';

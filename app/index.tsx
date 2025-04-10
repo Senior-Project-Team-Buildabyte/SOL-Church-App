@@ -3,8 +3,7 @@ import ContactsIcons from "./sections/contact-section/contacts-icons";
 import EventsPage from "./sections/EventsPage/events-page";
 import DynamicEventSection from "./sections/dynamic-events-section/dynamic-event";
 import HomeResources from "./sections/HomeResources/home-resources";
-import HeaderBar from "./components/HeaderBar";
-import React from "react";
+import HeaderBar from "../components/header-bar";
 
 
 export default function Index() {

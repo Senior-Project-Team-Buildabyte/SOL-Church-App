@@ -1,4 +1,3 @@
-import React from 'react';
 import {Text, View, Alert} from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import * as Linking from 'expo-linking';

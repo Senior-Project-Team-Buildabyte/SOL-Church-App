@@ -1,4 +1,3 @@
-import React from 'react';
 import DynamicButton from '../generic-buttons/dynamic-button';
 
 const HomeResources = () => {
