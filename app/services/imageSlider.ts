@@ -1,39 +1,108 @@
-import { requireNativeComponent } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, Dimensions, NativeSyntheticEvent, NativeScrollEvent } from "react-native";
+import { fetchSliderImages, SliderImage } from '../../services/imageSlider';
 
-export interface SliderImage {
-    id: number;
-    image: any; 
-    title?: string;
-    description?: string;
-}
+const { width } = Dimensions.get("window");
 
-const sliderImage: SliderImage[] = [
-    {
-        id: 1,
-        image: require("../../assets/images/stockphoto.jpg"), 
-        title: "Image 1",
-        description: "This is the first image"
-    },
-    {
-        id: 2,
-        image: require("../../assets/images/testbackground.jpg"), 
-        title: "Image 2",
-        description: "This is the second image"
-    },
-    {
-        id: 3,
-        image: require("../../assets/images/stockphoto.jpg"), 
-        title: "Image 3",
-        description: "This is the third image"
-    },
-    {
-        id: 4,
-        image: require("../../assets/images/testbackground.jpg"), 
-        title: "Image 4",
-        description: "This is the fourth"
-    }
-];
+const ImageSlider: React.FC = () => {
+    const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [images, setImages] = useState<SliderImage[]>([]);
+    const ScrollViewRef = useRef<ScrollView | null>(null);
 
-export const fetchSliderImages = async (p0: string): Promise<SliderImage[]> => {
-    return sliderImage;
+    useEffect(() => {
+        const loadImages = async () => {
+            try {
+                const sliderImages = await fetchSliderImages('/images');
+                setImages(sliderImages); 
+            } catch (error) {
+                console.error('Error fetching image:', error);
+            }
+        };
+        loadImages(); 
+    }, []); 
+
+    const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>): void => {
+        const contentOffsetX = event.nativeEvent.contentOffset.x;
+        const index = Math.round(contentOffsetX / width);
+        setActiveIndex(index);
+    };
+
+    const scrollToImage = (index: number): void => {
+        if (ScrollViewRef.current) {
+            ScrollViewRef.current.scrollTo({ x: index * width, y: 0, animated: true });
+        }
+    };
+
+    return (
+        <View style={styles.container}>
+            <ScrollView
+                ref={ScrollViewRef}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onScroll={handleScroll}
+                scrollEventThrottle={16}
+                style={styles.scrollView}
+            >
+                {images.map((image) => (
+                    <Image
+                        key={image.id}
+                        source={image.image}
+                        style={styles.image}
+                        resizeMode="cover"
+                    />
+                ))}
+            </ScrollView>
+
+            <View style={styles.toggleContainer}>
+                {images.map((_, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        style={[
+                            styles.toggleItem,
+                            index === activeIndex && styles.activeToggleItem
+                        ]}
+                        onPress={() => scrollToImage(index)}
+                    />
+                ))}
+            </View>
+        </View>
+    );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        marginBottom: 20
+    },
+    scrollView: {
+        width: '100%',
+        height: 200
+    },
+    image: {
+        width,
+        height: 200
+    },
+    toggleContainer: {
+        position: 'absolute', 
+        bottom: 10, 
+        left: 0,
+        right: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: "row",
+    },
+    toggleItem: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: "#e0e0e0",
+        marginHorizontal: 5
+    },
+    activeToggleItem: {
+        backgroundColor: "#3498db"
+    }
+});
+
+export default ImageSlider;
+

@@ -22,13 +22,12 @@ const ContactsIcons = () => {
         });
       };
     const handleFacebook = () => {
-        Linking.openURL('fb://profile/churchSOL').catch(err => {
+        Linking.openURL('fb://page/churchSOL').catch(err => { // IRYNA! needs to be updated 
           Linking.openURL('https://www.facebook.com/churchSOL').catch(err => {
               Alert.alert('Error', 'Something went wrong.');
               console.error('An error occurred', err);
             });
-        });
-      
+          });
       };
     const handleYoutube = () => {
         Linking.openURL('youtube://www.youtube.com/SpringofLifeChurchSOL').catch(err => {
@@ -45,7 +44,11 @@ const ContactsIcons = () => {
         });
       };
   return (
-    <View style={{ flexDirection: "row", justifyContent: "space-between", width: "80%", padding: 1 }}>
+    <View style={{ 
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center"
+     }}>
       <FontAwesome.Button 
             name="phone" 
             backgroundColor="transparent"
