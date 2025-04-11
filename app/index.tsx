@@ -5,7 +5,6 @@ import DynamicEventSection from "./sections/dynamic-events-section/dynamic-event
 import HomeResources from "./sections/HomeResources/home-resources";
 import HeaderBar from "./components/HeaderBar";
 import ImageSlider from "./sections/ImageSlider/Image_Slider";
-
 import React from "react";
 
 
@@ -24,9 +23,7 @@ export default function Index() {
       <HeaderBar />
       <ImageSlider></ImageSlider>
       <View style={styles.container}>
-      
         <View style={{ height: 200 }}></View>
-        
         <DynamicEventSection></DynamicEventSection>
         <ContactsIcons></ContactsIcons> 
         {/* <EventsPage></EventsPage> */}
