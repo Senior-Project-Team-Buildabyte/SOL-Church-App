@@ -1,5 +1,5 @@
-import { ButtonType, ButtonShape, GenericButtonConfig } from "@/app/models/ButtonConfig";
-import React, { FC, useState } from "react";
+import { ButtonType, ButtonShape, GenericButtonConfig } from "@/models/ButtonConfig";
+import { FC, useState } from "react";
 import { Text, View, StyleSheet, ImageBackground, Linking, TouchableOpacity, Alert } from "react-native";
 import { Icon } from 'react-native-elements'
 import { Link, useRouter, RelativePathString } from 'expo-router';
@@ -88,7 +88,7 @@ const LinkPageButton: FC<GenericButtonConfig> = ({
     
     const getImageSource = () => {
         if (!backgroundImage) {
-            return require('../../../assets/images/bluredimage.jpg');
+            return require('../../assets/images/bluredimage.jpg');
         }
         if (typeof backgroundImage === 'string') {
             return { uri: backgroundImage };
