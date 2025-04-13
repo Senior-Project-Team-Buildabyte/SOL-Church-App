@@ -1,8 +1,7 @@
-import { ButtonShape, GenericButtonConfig } from "@/app/models/ButtonConfig";
+import { ButtonShape, GenericButtonConfig } from "@/models/ButtonConfig";
 import { FC } from "react";
 import { View, StyleSheet } from "react-native";
-import LinkPageButton from "./link-page-button";
-import React from "react";
+import LinkPageButton from "../restricted/link-page-button";
 
 const styles = StyleSheet.create({
     container: {
