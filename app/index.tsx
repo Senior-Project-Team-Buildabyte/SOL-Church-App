@@ -1,9 +1,9 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import ContactsIcons from "../components/universal/contacts-icons";
-import EventsPage from "./(tabs)/events";
 import DynamicEventSection from "../components/home/dynamic-event";
 import Resources from "../components/home/resources";
 import HeaderBar from "../components/universal/header-bar";
+import ImageSlider from "../components/home/Image_slider";
 import DynamicButton from "@/components/universal/dynamic-button";
 
 
@@ -20,12 +20,10 @@ export default function Index() {
   return (
     <ScrollView style = {styles.scrollContainer}>
       <HeaderBar />
-
+      <ImageSlider></ImageSlider>
       <View style={styles.container}>
-        <View style={{ height: 200 }}></View>
         <DynamicEventSection></DynamicEventSection>
         <ContactsIcons></ContactsIcons> 
-        {/* <EventsPage></EventsPage> */}
         <Resources></Resources>
         <DynamicButton buttons={[
             {
