@@ -21,7 +21,6 @@ export default function Index() {
       <HeaderBar />
       <ImageSlider></ImageSlider>
       <View style={styles.container}>
-        <EventsPage></EventsPage>
         <DynamicEventSection></DynamicEventSection>
         <ContactsIcons></ContactsIcons> 
         <Resources></Resources>
