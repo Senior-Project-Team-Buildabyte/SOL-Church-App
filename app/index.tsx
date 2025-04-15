@@ -21,10 +21,9 @@ export default function Index() {
       <HeaderBar />
       <ImageSlider></ImageSlider>
       <View style={styles.container}>
-        <View style={{ height: 200 }}></View>
+        <EventsPage></EventsPage>
         <DynamicEventSection></DynamicEventSection>
         <ContactsIcons></ContactsIcons> 
-        {/* <EventsPage></EventsPage> */}
         <Resources></Resources>
       </View>
     </ScrollView>
