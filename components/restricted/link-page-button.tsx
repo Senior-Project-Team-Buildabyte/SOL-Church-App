@@ -54,7 +54,9 @@ const LinkPageButton: FC<GenericButtonConfig> = ({
                 height: isSquare ? '100%' : '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderRadius: 20, // Rounded corners
+                borderRadius: 15, // Rounded corners
+                borderColor: 'rgba(225,225,225,1)', //only for white background buttons
+                borderWidth: type == 2 ? 2 : 0,  //only for white background buttons
                 overflow: 'hidden', // Keeps children inside rounded border
                 margin: 0,
                 padding: 0
@@ -65,7 +67,7 @@ const LinkPageButton: FC<GenericButtonConfig> = ({
                 justifyContent: 'center',
             },
             text: {
-                color: 'white',
+                color: type == 2 ? 'rgba(63,103,186,1)' : 'white',  //only for white background buttons
                 fontSize: 18,
                 fontWeight: 'bold',
             },
@@ -77,7 +79,6 @@ const LinkPageButton: FC<GenericButtonConfig> = ({
             },
             icon: {
                 fontSize: 24,
-                color: 'white',
                 padding: 10
             },
 
@@ -103,7 +104,7 @@ const LinkPageButton: FC<GenericButtonConfig> = ({
                     {icon != undefined ?
                         <Icon style={styles.icon} name={icon!}
                             type='font-awesome'
-                            color='white'
+                            color={type == 2 ? 'rgba(63,103,186,1)' : 'white'}  //check for white background buttons
                         /> : null
                     }
                 </>
