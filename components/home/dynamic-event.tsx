@@ -37,25 +37,6 @@ const DynamicEventSection = () => {
                     backgroundImage: require('@/assets/images/bg-school-btn.jpg'),
                  }
             },
-            // {
-            //     type: 0, // external
-            //     shape: 0, // full
-            //     buttonConfig: {
-            //         text: "Update Your Address",
-            //         link: "https://www.google.com/",
-            //         backgroundImage: ""
-            //      }
-            // },
-            // {
-            //     type: 0, // external
-            //     shape: 0, // full
-            //     buttonConfig: {
-            //         icon: 'map',
-            //         text: "Update Your Address\nОновіть вашу адресу",
-            //         link: "https://www.google.com/",
-            //         backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE="
-            //      }
-            // }
         ]}></DynamicButton>
       );
     };
