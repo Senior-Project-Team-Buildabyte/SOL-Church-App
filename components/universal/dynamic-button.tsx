@@ -3,6 +3,12 @@ import { FC } from "react";
 import { View, StyleSheet } from "react-native";
 import LinkPageButton from "../restricted/link-page-button";
 
+// TODO:
+// Add gradient background color
+// Add accessibility features (alt text)
+// Add main text and sub text options + center text
+// Add text and icon color options
+
 const styles = StyleSheet.create({
     container: {
         maxWidth: 650,
@@ -18,7 +24,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     squareItem: {
-        width: '40%',
+        width: '45%',
         justifyContent: 'center',
         alignItems: 'center',
     },

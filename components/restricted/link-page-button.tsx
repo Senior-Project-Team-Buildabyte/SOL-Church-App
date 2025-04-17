@@ -50,7 +50,7 @@ const LinkPageButton: FC<GenericButtonConfig> = ({
                 height: isSquare ? undefined : 150,
             },
             background: {
-                width: isSquare ? '100%' : '90%',
+                width: isSquare ? '100%' : '100%',
                 height: isSquare ? '100%' : '100%',
                 justifyContent: 'center',
                 alignItems: 'center',

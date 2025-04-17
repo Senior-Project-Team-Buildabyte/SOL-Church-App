@@ -15,39 +15,47 @@ const DynamicEventSection = () => {
                 type: 0, // external
                 shape: 0, // full
                 buttonConfig: {
-                    text: "Update Your Address",
-                    link: "https://www.google.com/",
-                    backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE="
-                 }
-            },
-            {
-                type: 1, // external
-                shape: 0, // full
-                buttonConfig: {
-                    text: "Update Your Address",
-                    internalLink: `../(tabs)/events`,
-                    backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE="
+                    link: "https://sol-tesla.com",
+                    backgroundImage: require('@/assets/images/bg-fundraiser-screenshot.jpg'),
                  }
             },
             {
                 type: 0, // external
                 shape: 0, // full
                 buttonConfig: {
-                    text: "Update Your Address",
-                    link: "https://www.google.com/",
-                    backgroundImage: ""
+                    text: "GIVE\nGeneral & New Building",
+                    icon: "dollar",
+                    link: "https://give.solsacramento.com/",
+                    backgroundColor: "rgba(58, 120, 227, 1)"
                  }
             },
             {
                 type: 0, // external
                 shape: 0, // full
                 buttonConfig: {
-                    icon: 'map',
-                    text: "Update Your Address\nОновіть вашу адресу",
-                    link: "https://www.google.com/",
-                    backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE="
+                    link: "https://solsacramento.churchcenter.com/unproxy/registrations/events/2472901",
+                    backgroundImage: require('@/assets/images/bg-school-btn.jpg'),
                  }
-            }
+            },
+            // {
+            //     type: 0, // external
+            //     shape: 0, // full
+            //     buttonConfig: {
+            //         text: "Update Your Address",
+            //         link: "https://www.google.com/",
+            //         backgroundImage: ""
+            //      }
+            // },
+            // {
+            //     type: 0, // external
+            //     shape: 0, // full
+            //     buttonConfig: {
+            //         icon: 'map',
+            //         text: "Update Your Address\nОновіть вашу адресу",
+            //         link: "https://www.google.com/",
+            //         backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE="
+            //      }
+            // }
         ]}></DynamicButton>
       );
     };
