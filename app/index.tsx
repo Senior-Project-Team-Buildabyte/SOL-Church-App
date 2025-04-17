@@ -1,9 +1,11 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import ContactsIcons from "../components/universal/contacts-icons";
-import EventsPage from "./(tabs)/events";
 import DynamicEventSection from "../components/home/dynamic-event";
 import Resources from "../components/home/resources";
 import HeaderBar from "../components/universal/header-bar";
+import ImageSlider from "../components/home/Image_slider";
+import MediaPage from "./(tabs)/media"
+import DynamicButton from "@/components/universal/dynamic-button";
 
 
 export default function Index() {
@@ -19,13 +21,36 @@ export default function Index() {
   return (
     <ScrollView style = {styles.scrollContainer}>
       <HeaderBar />
-
+      <ImageSlider></ImageSlider>
       <View style={styles.container}>
-        <View style={{ height: 200 }}></View>
+        {/*<MediaPage></MediaPage>*/}
+        {/*<EventsPage></EventsPage>*/}
         <DynamicEventSection></DynamicEventSection>
         <ContactsIcons></ContactsIcons> 
-        {/* <EventsPage></EventsPage> */}
         <Resources></Resources>
+        <DynamicButton buttons={[
+            {
+                type: 2, // internal - forms/calendar
+                shape: 0, // full
+                buttonConfig: {
+                    text: "Calendar",
+                    icon: "calendar",
+                    internalLink: `../(tabs)/home/calendar`,
+                    backgroundColor: "rgba(255,255,255,1)"
+                 }
+            },
+            {
+                type: 2, // internal - forms/calendar
+                shape: 0, // full
+                buttonConfig: {
+                    text: "Forms",
+                    icon: "edit",
+                    internalLink: `../(tabs)/home/forms`,
+                    backgroundColor: "rgba(255,255,255,1)"
+                 }
+            }
+          ]
+        }/>
       </View>
     </ScrollView>
   );
