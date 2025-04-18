@@ -8,17 +8,17 @@ const Resources = () => {
         type: 0, // external
         shape: 0, // full
         buttonConfig: {
-            text: "CONNECT\nCARD",
+            text: "CONNECT CARD",
             icon: "angle-double-right",
             link: "https://solsacramento.churchcenter.com/people/forms/718725",
-            backgroundColor: "rgba(58, 120, 227, 1)"
-        }
+            backgroundGradient: ["0", "rgba(0, 0, 0, 0.9)", "rgba(60,129,246,1)"]
+          }
       },
       {
         type: 0, // internal
         shape: 1, // square
         buttonConfig: {
-            text: "SOL\nBible\nAcademy",
+            text: "SOL Bible Academy",
             link: "https://solsacramento.com/sba",
             backgroundImage: require('@/assets/images/bg-sba.jpg'),
         }
@@ -36,7 +36,7 @@ const Resources = () => {
         type: 1, // internal
         shape: 1, // square
         buttonConfig: {
-            text: "SOL\nMISSION",
+            text: "SOL MISSION",
             icon: 'signing',
             internalLink: `./solMission`,
             backgroundImage: require('@/assets/images/bg-mission.jpg'),
@@ -58,7 +58,7 @@ const Resources = () => {
             text: "Calendar",
             icon: "calendar",
             internalLink: `../(tabs)/home/calendar`,
-            backgroundColor: "rgba(255,255,255,1)"
+            backgroundColor: "rgba(255,255,255,1)",
          }
       },
       {
@@ -68,7 +68,7 @@ const Resources = () => {
             text: "Forms",
             icon: "edit",
             internalLink: `../(tabs)/home/forms`,
-            backgroundColor: "rgba(255,255,255,1)"
+            backgroundColor: "rgba(255,255,255,1)",
         }
       }
     ]}/>

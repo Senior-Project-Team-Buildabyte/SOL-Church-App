@@ -23,10 +23,11 @@ const DynamicEventSection = () => {
                 type: 0, // external
                 shape: 0, // full
                 buttonConfig: {
-                    text: "GIVE\nGeneral & New Building",
+                    text: "GIVE",
+                    subText: "General & New Building",
                     icon: "dollar",
                     link: "https://give.solsacramento.com/",
-                    backgroundColor: "rgba(58, 120, 227, 1)"
+                    backgroundGradient: ["0", "rgba(0, 0, 0, 0.9)", "rgba(60,129,246,1)"]
                  }
             },
             {
