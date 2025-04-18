@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     squareItem: {
-        width: '40%',
+        width: '45%',
         justifyContent: 'center',
         alignItems: 'center',
     },

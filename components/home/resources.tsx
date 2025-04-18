@@ -6,88 +6,72 @@ const Resources = () => {
     <DynamicButton buttons={[
       {
         type: 0, // external
+        shape: 0, // full
+        buttonConfig: {
+            text: "CONNECT CARD",
+            icon: "angle-double-right",
+            link: "https://solsacramento.churchcenter.com/people/forms/718725",
+            backgroundGradient: ["0", "rgba(0, 0, 0, 0.9)", "rgba(60,129,246,1)"]
+          }
+      },
+      {
+        type: 0, // internal
         shape: 1, // square
         buttonConfig: {
-            text: "Resource 1",
-            link: "https://example.com",
-            backgroundImage: require('@/assets/images/testbackground.jpg'),
+            text: "SOL Bible Academy",
+            link: "https://solsacramento.com/sba",
+            backgroundImage: require('@/assets/images/bg-sba.jpg'),
+        }
+      },
+      {
+        type: 0, // external
+        shape: 1, // square
+        buttonConfig: {
+            text: "ABOUT SOL",
+            link: "https://www.solsacramento.com/about?embedded=true",
+            backgroundImage: require('@/assets/images/bg-about-sol.jpg'),
         }
       },
       {
         type: 1, // internal
         shape: 1, // square
         buttonConfig: {
-            text: "Page 1",
-            internalLink: `../(tabs)/events`,
-            backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE=",
+            text: "SOL MISSION",
+            icon: 'signing',
+            internalLink: `./solMission`,
+            backgroundImage: require('@/assets/images/bg-mission.jpg'),
         }
       },
       {
-        type: 0, // external
+        type: 1, // internal
         shape: 1, // square
         buttonConfig: {
-            text: "Google.com",
-            link: "https://google.com",
-            backgroundImage: require('@/assets/images/Google-Emblem001.png'),
+            text: "SOLru",
+            internalLink: `./solRu`,
+            backgroundImage: require('@/assets/images/bg-sol-ru.jpg'),
         }
       },
       {
-        type: 0, // external
+        type: 2, // internal - forms/calendar
         shape: 1, // square
         buttonConfig: {
-            icon: 'map',
-            text: "Bing.com",
-            link: "https://bing.com",
-            backgroundImage: require('@/assets/images/microsoft-bing-logo-001.jpg'),
-        }
+            text: "Calendar",
+            icon: "calendar",
+            internalLink: `../(tabs)/home/calendar`,
+            backgroundColor: "rgba(255,255,255,1)",
+         }
       },
       {
-        type: 0, // external
+        type: 2, // internal - forms/calendar
         shape: 1, // square
         buttonConfig: {
-            text: "Resource 2",
-            link: "https://example.com",
-            backgroundImage: require('@/assets/images/stockphoto.jpg'),
+            text: "Forms",
+            icon: "edit",
+            internalLink: `../(tabs)/home/forms`,
+            backgroundColor: "rgba(255,255,255,1)",
         }
-      },
-      { // full width button for testing / proof of concept (alternating rows of full & square)
-        type: 0, // external
-        shape: 0, // full
-        buttonConfig: {
-            text: "Resource 3",
-            link: "https://example.com",
-            backgroundImage: require('@/assets/images/testbackground.jpg'),
-            backgroundColor: "#bb1da5"
-        }
-      },
-      {
-        type: 0, // external
-        shape: 1, // square
-        buttonConfig: {
-            text: "Resource 4",
-            link: "https://example.com",
-            backgroundColor: "#17a5dd"
-        }
-      },
-      {
-        type: 0, // external
-        shape: 1, // square
-        buttonConfig: {
-            text: "Resource 5",
-            link: "https://example.com",
-            backgroundColor: "#nna68"
-        }
-      },
-      {
-        type: 0, // external
-        shape: 0, // full
-        buttonConfig: {
-            text: "Resource 6",
-            link: "https://example.com",
-            backgroundColor: "rgba(240, 70, 255, 0.89)"
-        }
-      },
-    ]}></DynamicButton>
+      }
+    ]}/>
   );
 };
 

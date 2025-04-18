@@ -20,10 +20,14 @@ export interface GenericButtonConfig{
 }
 
 export interface ButtonConfig{
-    text?: string, 
+    text?: string,
+    subText?: string,
+    textColor?: string, // supports #RGB, #RRGGBB, #RRGGBBAA, "rgba(#,#,#,#)"
     backgroundImage?: string,
-    backgroundColor?: string,   // supports #RGB, #RRGGBB, #RRGGBBAA, "rgba(#,#,#,#)"
+    backgroundColor?: string,   // supports same as above
+    backgroundGradient?: Array<string>,  // [gradientDirection (number), color1, color2]
     link?: string | undefined, 
     internalLink?: RelativePathString,
-    icon?: string
+    icon?: string,
+    iconColor?: string,
 }
