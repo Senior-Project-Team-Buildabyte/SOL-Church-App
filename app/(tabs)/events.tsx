@@ -1,11 +1,25 @@
 import { EventData, fetchEventData } from '@/services/eventsService';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 
 const EventsPage = () => {
-const [data, setData] = useState<EventData[]>([]);
+  const [data, setData] = useState<EventData[]>([]);
+
+  const router = useRouter();
+  const handlePress = async (link: string, eventId: number) => {
+    if (link != undefined)
+      try {
+        console.log("click")
+          router.push(`/event/${eventId}`);
+      
+      } catch (error) {
+        console.warn("This error is harmless and can be ignored:", error);
+      }
+  };
+
 
   useEffect(() => {
     const getEventData = async () => {
@@ -35,7 +49,7 @@ const [data, setData] = useState<EventData[]>([]);
 
       <ScrollView style={styles.eventList}>
         {data.map((event) => (
-          <TouchableOpacity key={event.id} style={styles.eventCard}>
+          <TouchableOpacity key={event.id} style={styles.eventCard} onPress={() => handlePress(event.link, event.id)}>
             <View style={styles.imageWrapper}>
               <Image source={event.image} style={styles.eventImage} />
               <View style={styles.dateOverlay}>

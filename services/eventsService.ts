@@ -11,7 +11,8 @@ export interface EventData {
   group: string | null; 
   day: string;
   month: string; 
-
+  description: string | null;
+  location: string | null | undefined;
 }
 
 const dummyData: EventData[] = [
@@ -25,19 +26,28 @@ const dummyData: EventData[] = [
     time: null,
     image: {uri:'https://example.com/image1.jpg'},
     day: '07',
-    month: 'APR'
+    month: 'APR',
+    description: '',
+    location: ''
   },
   {
     id: 2,
     title: 'Good Friday',
     group: null,
     guestSpeaker: 'Guest speaker',
-    link: '',
+    link: '/event/',
     date: 'Fri, Apr 18',
     time: '6 - 8:30 PM',
     image: require('../assets/images/GoodFriday.jpg'),
     day: '18',
-    month: 'APR'
+    month: 'APR',
+    description: `Запрошуємо всіх на служіння в пʼятницю, April 18.
+Служіння відбуватимуться о:
+- 6:00pm - Ukrainian (main hall) / English (Coffee
+Shop)
+- 7:30pm - Ukrainian (main hall) / Russian (Coffee
+Shop)`,
+    location: '5948 Pecan Ave, Orangvale, CA 95662'
   },
   {
     id: 3,
@@ -49,7 +59,9 @@ const dummyData: EventData[] = [
     time: null,
     image: { uri: 'https://example.com/image1.jpg'},
     day: '19',
-    month: 'APR'
+    month: 'APR',
+    description: '',
+    location: ''
   },
   {
     id: 4,
@@ -61,7 +73,9 @@ const dummyData: EventData[] = [
     time: null,
     image: require('../assets/images/Easter.jpg'),
     day: '20',
-    month: 'APR'
+    month: 'APR',
+    description: '',
+    location: ''
   },
   {
     id: 5,
@@ -73,7 +87,9 @@ const dummyData: EventData[] = [
     time: '6 - 7am',
     image: { uri: 'https://example.com/image1.jpg'},
     day: '20',
-    month: 'APR'
+    month: 'APR',
+    description: '',
+    location: ''
   },
   {
     id: 6,
@@ -85,7 +101,9 @@ const dummyData: EventData[] = [
     time: null,
     image: { uri: 'https://example.com/image1.jpg'},
     day: '22',
-    month: 'APR'
+    month: 'APR',
+    description: '',
+    location: ''
   },
   {
     id: 7,
@@ -97,7 +115,9 @@ const dummyData: EventData[] = [
     time: null,
     image: { uri: 'https://example.com/image1.jpg'},
     day: '25',
-    month: 'APR'
+    month: 'APR',
+    description: '',
+    location: ''
   },
   {
     id: 8,
@@ -109,7 +129,9 @@ const dummyData: EventData[] = [
     time: '2 - 9pm',
     image: { uri: 'https://example.com/image1.jpg'},
     day: '26',
-    month: 'APR'
+    month: 'APR',
+    description: '',
+    location: ''
   },
   
 ];
@@ -125,6 +147,19 @@ export const fetchEventData = async (endpoint: string): Promise<EventData[]> => 
 //     return dummyData; // Fallback to dummy data if API call fails
 //   }
 };
+
+// Fetch events data from API or fallback to dummy data
+export const fetchSingleEventData = async (id: number): Promise<EventData> => {
+  return dummyData.filter(x => x.id == id)[0];
+//   try {
+//     const response = await api.get<EventData>('/event/' + id);
+//     return response.data;
+//   } catch (error) {
+//     console.error('API Error:', error);
+//     return dummyData; // Fallback to dummy data if API call fails
+//   }
+};
+
 
 // Generic POST request function
 export const postEventsData = async (endpoint: string, data: object): Promise<any> => {
