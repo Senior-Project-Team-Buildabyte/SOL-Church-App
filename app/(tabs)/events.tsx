@@ -1,18 +1,11 @@
-import { useEffect, useState } from "react";
-import { EventData, fetchEventData } from "@/services/eventsService";
-import { Text, View, StyleSheet, ScrollView, ImageBackground, Dimensions, ImageSourcePropType } from "react-native";
-import Carousel from "react-native-reanimated-carousel";
+import { EventData, fetchEventData } from '@/services/eventsService';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 
-const { width } = Dimensions.get("window");
-
-const images = [
-  require("../../assets/images/testbackground.jpg"),
-  require("../../assets/images/testbackground.jpg"),
-  require("../../assets/images/testbackground.jpg"),
-];
 
 const EventsPage = () => {
-  const [data, setData] = useState<EventData[]>([]);
+const [data, setData] = useState<EventData[]>([]);
 
   useEffect(() => {
     const getEventData = async () => {
@@ -27,107 +20,171 @@ const EventsPage = () => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <Text style={styles.title}>DEMO Upcoming Events Page</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.servicesCard}>
+          <Image source={{ uri: 'https://example.com/background.jpg' }} style={styles.servicesImage} />
+          <View style={styles.servicesOverlay}>
+            <Text style={styles.servicesTitle}>SERVICES</Text>
+            <Text style={styles.serviceTimes}>Saturday: 6:30pm</Text>
+            <Text style={styles.serviceTimes}>Sunday: 8:15am 10:30am 12:45pm</Text>
+            <Text style={styles.serviceTimes}>SOLru: 3:16pm • English: 6pm</Text>
+          </View>
+        </View>
+      </View>
 
-      {/* Sliding Image Carousel */}
-      <Carousel
-        loop
-        width={width}
-        height={160}
-        data={images}
-        scrollAnimationDuration={1000}
-        renderItem={({ item }: { item: ImageSourcePropType }) => (
-          <ImageBackground
-            source={item} 
-            style={styles.frontimage}
-            imageStyle={{ borderRadius: 10 }}
-          >
-            <View style={styles.overlay}>
-              <Text style={styles.dateText}>MAR</Text>
-              <Text style={styles.dateText}>20</Text>
+      <ScrollView style={styles.eventList}>
+        {data.map((event) => (
+          <TouchableOpacity key={event.id} style={styles.eventCard}>
+            <View style={styles.imageWrapper}>
+              <Image source={event.image} style={styles.eventImage} />
+              <View style={styles.dateOverlay}>
+                <Text style={styles.dateMonth}>{event.month}</Text>
+                <Text style={styles.dateDay}>{event.day}</Text>
+              </View>
             </View>
-          </ImageBackground>
-        )}
-      />
-    </ScrollView>
+            <View style={styles.eventInfo}>
+              <Text style={styles.eventTitle}>{event.title}</Text>
+              {event.group ? <Text style={styles.eventGroup}>{event.group}</Text> : null}
+              {event.guestSpeaker ? <Text style={styles.eventGroup}>{event.guestSpeaker}</Text> : null}
+              <Text style={styles.eventDate}>{event.date + (event.time ? ' \u00B7 ' + event.time : '')}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 0,
-    alignItems: "center",
-    backgroundColor: "white",
-    paddingTop: 10,
-    paddingHorizontal: 10,
-    paddingBottom: 0,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  frontimage: {
-    width,
-    height: 160,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  overlay: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  dateText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  eventWrapper: {
-    width: "100%",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  eventContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "90%",
-    marginBottom: 5,
-  },
-  image: {
-    width: 140,
-    height: 70,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 15,
-  },
-  descriptionContainer: {
+  container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    width: "60%",
+    backgroundColor: '#fff',
   },
-  descriptionTitle: {
-    color: "black",
-    fontSize: 18,
-    fontWeight: "bold",
+  header: {
+    backgroundColor: '#2c2c2e',
+    paddingTop: 30,
+    paddingBottom: 20,
+    paddingHorizontal: 16,
   },
-  descriptionText: {
-    color: "black",
+  headerTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    flex: 1,
+    marginLeft: 10,
+  },
+  headerIcons: {
+    flexDirection: 'row',
+  },
+  icon: {
+    marginLeft: 16,
+  },
+  servicesCard: {
+    marginTop: 16,
+    borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  servicesImage: {
+    width: '100%',
+    height: 120,
+    resizeMode: 'cover',
+  },
+  servicesOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 16,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  servicesTitle: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  serviceTimes: {
+    color: 'white',
+    fontSize: 14,
+  },
+  serviceLangs: {
+    color: 'white',
+    fontSize: 14,
+    marginTop: 6,
+  },
+  eventList: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  eventCard: {
+    flexDirection: 'row',
+    paddingVertical: 12,
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
+    alignItems: 'center',
+  },
+  imageWrapper: {
+    position: 'relative',
+  },
+  eventImage: {
+    width: 105,
+    height: 70,
+    borderRadius: 8,
+    marginRight: 12,
+    backgroundColor: '#eee',
+  },
+  dateOverlay: {
+    position: 'absolute',
+    bottom: 1,
+    right: 13,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderTopLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    padding: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+  },
+  dateMonth: {
+    color: 'white',
+    fontSize: 10,
+    textTransform: 'uppercase',
+  },
+  dateDay: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  eventInfo: {
+    flex: 1,
+  },
+  eventTitle: {
     fontSize: 16,
+    fontWeight: '600',
   },
-  separator: {
-    height: 2,
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
-    width: "100%",
-    marginVertical: 0,
+  eventGroup: {
+    fontSize: 14,
+    color: '#555',
+    marginTop: 2,
+  },
+  eventDate: {
+    fontSize: 13,
+    color: '#888',
+    marginTop: 2,
   },
 });
 
