@@ -1,6 +1,13 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 
+export const unstable_settings = {
+  initialRouteName: "index",
+  tabs: {
+    routes: ["SOL", "Connect", "Events", "Borrow", "Media"]
+  }
+};
+
 export default function TabLayout() {
   return (
     <Tabs>
@@ -22,3 +29,4 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
