@@ -1,32 +1,24 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 
-export const unstable_settings = {
-  initialRouteName: "index",
-  tabs: {
-    routes: ["SOL", "Connect", "Events", "Borrow", "Media"]
-  }
-};
-
 export default function TabLayout() {
   return (
-    <Tabs>
-      
+    <Tabs screenOptions={{ tabBarActiveTintColor: 'blue' }}>
       <Tabs.Screen
-        name='index'
+        name="index"
         options={{
           title: 'SOL',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
         }}
       />
       <Tabs.Screen
-        name='events'
+        name="Events"
+        href="./event/[event]"
         options={{
           title: 'Events',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="calendar" color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
         }}
       />
     </Tabs>
   );
 }
-

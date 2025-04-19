@@ -1,11 +1,11 @@
 import { EventData, fetchEventData } from "@/services/eventsService";
-import DynamicButton from "../../components/universal/dynamic-button";
+import DynamicButton from "../../../components/universal/dynamic-button";
 import { useState } from "react";
 
 const images = {
-    evening_service: require("../../assets/images/bg-about-sol.jpg"),
-    sol_tv: require("../../assets/images/bg-mission.jpg"),
-    morning_service: require("../../assets/images/bg-sol-ru.jpg"),
+    evening_service: require("../../../assets/images/bg-about-sol.jpg"),
+    sol_tv: require("../../../assets/images/bg-mission.jpg"),
+    morning_service: require("../../../assets/images/bg-sol-ru.jpg"),
 };
 
 const MediaPage = () => {
