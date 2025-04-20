@@ -36,6 +36,7 @@ export default function TabLayout() {
         
         options={{
           title: 'Give',
+          
           tabBarIcon: ({ color }) => <FontAwesome6 size={16} name="hand-holding-heart" color={color} />,
         }}
       />

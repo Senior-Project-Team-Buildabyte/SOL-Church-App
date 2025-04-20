@@ -38,7 +38,7 @@ const Resources = () => {
         buttonConfig: {
             text: "SOL MISSION",
             icon: 'signing',
-            internalLink: `./solMission`,
+            internalLink: `../home/solMission`,
             backgroundImage: require('@/assets/images/bg-mission.jpg'),
         }
       },
@@ -47,7 +47,7 @@ const Resources = () => {
         shape: 1, // square
         buttonConfig: {
             text: "SOLru",
-            internalLink: `./solRu`,
+            internalLink: `../home/solRu`,
             backgroundImage: require('@/assets/images/bg-sol-ru.jpg'),
         }
       },
@@ -57,7 +57,7 @@ const Resources = () => {
         buttonConfig: {
             text: "Calendar",
             icon: "calendar",
-            internalLink: `../(tabs)/home/calendar`,
+            internalLink: `../home/calendar`,
             backgroundColor: "rgba(255,255,255,1)",
          }
       },
@@ -67,7 +67,7 @@ const Resources = () => {
         buttonConfig: {
             text: "Forms",
             icon: "edit",
-            internalLink: `../(tabs)/home/forms`,
+            internalLink: `../home/forms`,
             backgroundColor: "rgba(255,255,255,1)",
         }
       }
