@@ -46,7 +46,7 @@ const MediaPage = () => {
                 shape: 0, // full
                 buttonConfig: {
                     text: "Lyrics",
-                    internalLink: `./lyrics`,
+                    internalLink: `../media/lyrics`,
                     backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE="
                  }
             }
