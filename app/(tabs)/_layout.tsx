@@ -12,6 +12,7 @@ export default function TabLayout() {
       tabBarItemStyle: {
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: -1,
       },
       tabBarLabelStyle: {
         fontsize: 12,
