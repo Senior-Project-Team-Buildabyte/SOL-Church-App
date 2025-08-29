@@ -34,11 +34,7 @@
       "integrated": false
     },
     "@types/react": {
-      "version": "~18.3.12",
-      "integrated": false
-    },
-    "@types/react-test-renderer": {
-      "version": "^18.3.0",
+      "version": "~19.0.0",
       "integrated": false
     },
     "expo": {
@@ -143,10 +139,6 @@
     },
     "react-native-webview": {
       "version": "13.12.5",
-      "integrated": false
-    },
-    "react-test-renderer": {
-      "version": "18.3.1",
       "integrated": false
     },
     "typescript": {
