@@ -39,10 +39,9 @@
         }
       ],
        [
-        "expo-maps",
+         "react-native-maps",
         {
-          "requestLocationPermission": true,
-          "locationPermission": "Allow $(PRODUCT_NAME) to use your location"
+          "androidGoogleMapsApiKey": "process.env.YOUR_GOOGLE_MAPS_API_KEY"
         }
       ]
     ],
