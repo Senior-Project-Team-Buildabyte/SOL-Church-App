@@ -38,13 +38,12 @@
           "backgroundColor": "#ffffff"
         }
       ],
-       [
-         "react-native-maps",
+      [
+        "react-native-maps",
         {
           "androidGoogleMapsApiKey": "process.env.YOUR_GOOGLE_MAPS_API_KEY"
         }
-      ],
-      "expo-secure-store"
+      ]
     ],
     "experiments": {
       "typedRoutes": true
