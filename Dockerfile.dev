@@ -1,0 +1,29 @@
+# Dev container for Expo (SDK 52) / React Native
+FROM node:20-alpine
+
+# Build tools for native deps during npm install
+RUN apk add --no-cache python3 make g++ libc6-compat
+
+WORKDIR /app
+
+# Install deps first (better layer cache)
+COPY package*.json ./
+RUN npm ci
+
+# Bring in the source
+COPY . .
+
+# Make Expo reachable from host/network
+ENV HOST=0.0.0.0 \
+    EXPO_DEV_SERVER_LISTEN_HOST=0.0.0.0 \
+    EXPO_USE_DEV_SERVER=1 \
+    CHOKIDAR_USEPOLLING=1 \
+    WATCHPACK_POLLING=true \
+    REACT_NATIVE_PACKAGER_HOSTNAME=host.docker.internal
+
+# Common ports:
+# 8081 = Metro, 19000/19001 = Expo native dev, 19006 = Expo web
+EXPOSE 8081 19000 19001 19006
+
+# Start Expo in LAN mode; you can override with --tunnel or --web via compose
+CMD ["npm", "run", "start", "--", "--host", "0.0.0.0"]
