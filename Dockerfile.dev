@@ -26,4 +26,4 @@ ENV HOST=0.0.0.0 \
 EXPOSE 8081 19000 19001 19006
 
 # Start Expo in LAN mode; you can override with --tunnel or --web via compose
-CMD ["npm", "run", "start", "--", "--host", "0.0.0.0"]
+CMD ["npm", "run", "start", "--", "--host", "lan"]
