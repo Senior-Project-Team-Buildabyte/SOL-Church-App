@@ -216,7 +216,7 @@ const LinkPageButton: FC<GenericButtonConfig> = ({
                 <LinearGradient
                     style={[ styles.background ]}
                     colors={[
-                        isValidColor(backgroundGradient[1]) ? backgroundGradient[1] : "rgba(58, 120, 227, 1)",
+                        isValidColor(backgroundGradient[1]) ? backgroundGradient[1] : "rgba(60,129,246,1)",
                         isValidColor(backgroundGradient[2]) ? backgroundGradient[2] : "rgb(0, 0, 0)"
                     ]}
                     {...getDirectionFromAngle(backgroundGradient[0])}
