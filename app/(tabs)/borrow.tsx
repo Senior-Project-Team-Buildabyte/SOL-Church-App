@@ -46,7 +46,7 @@ const BorrowPage = () => {
                     buttonConfig: {
                         text: "Borrow an Item",
                         icon: "shopping-basket",
-                        internalLink: `../borrow`,
+                        internalLink: `../borrow/borrowItems`,
                         backgroundGradient: ["0", "rgba(60,129,246,1)", "rgba(149, 185, 247, 1)"]
                     }
                 },
@@ -59,7 +59,7 @@ const BorrowPage = () => {
                     buttonConfig: {
                         text: "Return Items",
                         icon: "undo",
-                        internalLink: `../borrow`,
+                        internalLink: `../borrow/returnItems`,
                         backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
                     }
                 },
