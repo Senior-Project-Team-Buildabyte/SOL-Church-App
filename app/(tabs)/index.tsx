@@ -19,7 +19,6 @@ export default function Index() {
   });
   return (
     <ScrollView style = {styles.scrollContainer}>
-      <HeaderBar />
       <ImageSlider></ImageSlider>
       <View style={styles.container}>
         <DynamicEventSection></DynamicEventSection>
