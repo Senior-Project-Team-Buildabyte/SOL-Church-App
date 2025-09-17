@@ -171,3 +171,16 @@ export const postEventsData = async (endpoint: string, data: object): Promise<an
 //     throw error;
 //   }
 };
+
+
+export const getGeoLocation = async (location: string): Promise<any> => {
+  var request = 'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=';
+  location.split(/[\s,]+/).forEach(element => {
+    request += element + '+';
+  });
+  request = request.slice(0, request.length - 1) + '&benchmark=4&format=json';
+  const response = await fetch(request);
+    const json = await response.json();
+  //https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Washington%2C+DC+20233&benchmark=4&format=json
+  return json;
+}
