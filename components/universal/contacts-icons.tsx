@@ -21,7 +21,7 @@ const ContactsIcons = () => {
         });
       };
     const handleFacebook = () => {
-        Linking.openURL('fb://page/churchSOL').catch(err => { // IRYNA! needs to be updated 
+        Linking.openURL('fb://profile/100064281505779').catch(err => { 
           Linking.openURL('https://www.facebook.com/churchSOL').catch(err => {
               Alert.alert('Error', 'Something went wrong.');
               console.error('An error occurred', err);
