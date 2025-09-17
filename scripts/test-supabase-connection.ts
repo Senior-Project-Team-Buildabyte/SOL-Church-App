@@ -13,7 +13,7 @@ async function testConnection() {
   try {
     // Test connection by fetching a single item
     const { data, error } = await supabase
-      .from('items')
+      .from('inventory_items')
       .select('*')
       .limit(1);
     
