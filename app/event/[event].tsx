@@ -1,4 +1,4 @@
-import { EventData, fetchSingleEventData } from "@/services/eventsService";
+import { EventData, fetchSingleEventData, getGeoLocation } from "@/services/eventsService";
 import { useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -13,18 +13,49 @@ import {
   Linking,
 } from "react-native";
 import { Icon } from "react-native-elements";
+// TO DO: Uncomment Before Publishing 
+// import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+
+
+type Region = {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+};
 
 const SingleEventPage = () => {
   const { event } = useGlobalSearchParams();
   const [data, setData] = useState<EventData>();
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedEvent, setselectedEvent] = useState<EventData | null>(null);
+  const [region, setRegion] = useState<{ latitude:number; longitude:number } | null>(null);
 
   useEffect(() => {
     const getEventData = async () => {
       try {
         const foundEvent = await fetchSingleEventData(Number(event));
         setselectedEvent(foundEvent || null);
+        if (foundEvent.location) {
+          let alive = true;
+          (async () => {
+            const res = await getGeoLocation(foundEvent.location!);
+            const match = res?.result?.addressMatches?.[0];
+            const coords = match?.coordinates;
+            if (!alive || !coords) return;
+
+            // NOTE: Census geocoder style => x=lng, y=lat
+            const next: Region = {
+              latitude: coords.y,
+              longitude: coords.x,
+              latitudeDelta: 0.02,
+              longitudeDelta: 0.02,
+            };
+            setRegion(next);
+
+          })();
+          return () => { alive = false; };
+        }
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
@@ -33,6 +64,7 @@ const SingleEventPage = () => {
     };
     getEventData();
   }, [event]);
+
 
   const handleShare = async () => {
     if (selectedEvent) {
@@ -87,19 +119,29 @@ const SingleEventPage = () => {
             <Text style={styles.sectionLabel}>Location</Text>
             <Text style={styles.locationText}>{selectedEvent.location}</Text>
             <TouchableOpacity onPress={openInMaps}>
-              {/* <Image
-                source={{
-                  uri: `https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(
-                    selectedEvent.location
-                  )}&zoom=15&size=600x300&key=primal-index-457201-r3`,
-                }}
-                style={styles.mapImage}
-              /> */} 
-              {/* TODO: Update Map Showcase */}
-              <Image
-  source={{ uri: 'https://images.macrumors.com/t/sSDgMK1wW3ezBrut4FHr1Yo5vI4=/1600x1200/smart/article-new/2019/12/newmapsappsoutheast.jpg' }}
-  style={styles.mapImage}
-/>
+      
+              <View style={{ flex: 1, backgroundColor: 'rgba(255,255,0,0.2)' }}>
+
+                  {/* // TO DO: Uncomment Before Publishing  */}
+                  {/* <MapView style={styles.map} 
+                  provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
+                  mapType="standard"
+                  initialRegion={
+                    {
+                      latitude: region?.latitude ?? 38.674048048803,
+                      longitude: region?.longitude ?? -121.220940919702,
+                      latitudeDelta:0.05,
+                      longitudeDelta: 0.05,
+                    }}
+                  >
+                      
+                      <Marker coordinate={{ latitude: region?.latitude ?? 38.674048048803,
+                      longitude: region?.longitude ?? -121.220940919702}}/>
+                    </MapView> */}
+                  
+              
+              </View>
+
             </TouchableOpacity>
           </View>
         )}
@@ -172,7 +214,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 150,
     borderRadius: 10,
-  }
+  },
+    map: { 
+    width: "100%", height: 300
+    },  
 });
 
 export default SingleEventPage;

@@ -1,9 +1,14 @@
+import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function HeaderBar() {
   const handlePress = () => {
     console.log('Image clicked!');
+  };
+  const handleLoginPress = () => {
+    console.log('Login Image clicked!');
+    router.push("../../[auth]/account")
   };
 
   return (
@@ -25,7 +30,8 @@ export default function HeaderBar() {
             style={styles.icon}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handlePress}>
+        
+        <TouchableOpacity onPress={handleLoginPress}>
           <Image
             source={require('../../assets/images/login-button.png')}
             style={[styles.icon, { marginRight: 0 }]}
