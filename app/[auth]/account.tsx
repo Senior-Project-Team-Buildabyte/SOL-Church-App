@@ -414,6 +414,8 @@ export default function SettingsScreen() {
   );
 }
 
+
+
 const styles = StyleSheet.create({
   wrapper: { flex: 1, backgroundColor: "#fff" },
   container: { maxWidth: 650, width: "100%", alignSelf: "center" },
