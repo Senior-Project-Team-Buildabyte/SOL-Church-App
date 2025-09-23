@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import type { Database } from '../types/database.types';
+import type { Database } from '../src/types/database.types';
 
 // Create a typed Supabase client
 const supabase = createClient<Database>(
@@ -7,9 +7,9 @@ const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || ''
 );
 
-type Item = Database['public']['Tables']['items']['Row'];
-type ItemInsert = Database['public']['Tables']['items']['Insert'];
-type ItemUpdate = Database['public']['Tables']['items']['Update'];
+type Item = Database['public']['Tables']['inventory_items']['Row'];
+type ItemInsert = Database['public']['Tables']['inventory_items']['Insert'];
+type ItemUpdate = Database['public']['Tables']['inventory_items']['Update'];
 
 // Helper type for item quantity updates
 type ItemQuantityUpdate = {
@@ -39,21 +39,21 @@ export const inventoryService = {
     searchTerm?: string;
     categoryId?: number;
   } = {}): Promise<Item[]> => {
-    let query = supabase.from('items').select('*');
+    let query = supabase.from('inventory_items').select('*');
 
     if (filters.availableOnly) {
       query = query.gt('quantity_available', 0);
     }
 
     if (filters.searchTerm) {
-      query = query.ilike('name', `%${filters.searchTerm}%`);
+      query = query.ilike('item_name', `%${filters.searchTerm}%`);
     }
 
     if (filters.categoryId) {
       query = query.eq('category_id', filters.categoryId);
     }
 
-    const { data, error } = await query.order('name', { ascending: true });
+    const { data, error } = await query.order('item_name', { ascending: true });
     
     if (error) throw error;
     return data || [];
@@ -62,7 +62,7 @@ export const inventoryService = {
   // Get item by ID
   getItem: async (id: number): Promise<Item> => {
     const { data, error } = await supabase
-      .from('items')
+      .from('inventory_items')
       .select('*')
       .eq('id', id)
       .single();
@@ -74,7 +74,7 @@ export const inventoryService = {
   // Create new item
   createItem: async (item: ItemInsert): Promise<Item> => {
     const { data, error } = await supabase
-      .from('items')
+      .from('inventory_items')
       .insert(item as any) // Type assertion to bypass type checking
       .select()
       .single();
@@ -93,7 +93,7 @@ export const inventoryService = {
     };
     
     const { data, error } = await (supabase as any)
-      .from('items')
+      .from('inventory_items')
       .update(updateData)
       .eq('id', id)
       .select()
@@ -108,7 +108,7 @@ export const inventoryService = {
   // Delete item
   deleteItem: async (id: number): Promise<void> => {
     const { error } = await supabase
-      .from('items')
+      .from('inventory_items')
       .delete()
       .eq('id', id);
     
@@ -150,9 +150,9 @@ export const inventoryService = {
   // Get all categories
   getCategories: async () => {
     const { data, error } = await supabase
-      .from('categories')
+      .from('item_category')
       .select('*')
-      .order('name', { ascending: true });
+      .order('item_category_name', { ascending: true });
     
     if (error) throw error;
     return data || [];
