@@ -2,16 +2,10 @@ import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Alert, ActivityIndicator, Platform, ViewStyle, TextStyle } from 'react-native';
 import { Link } from 'expo-router';
 import { inventoryService } from '../../services/inventory.service';
+import { Database } from '@/src/types/database.types';
 
-type Item = {
-  id: number;
-  name: string;
-  description: string | null;
-  quantity_available: number;
-  quantity_total: number;
-  location: string | null;
-  barcode: string | null;
-};
+
+type Item = Database['public']['Tables']['inventory_items']['Row'];
 
 export default function ReturnItems() {
   const [items, setItems] = useState<Item[]>([]);
@@ -28,7 +22,7 @@ export default function ReturnItems() {
       setLoading(true);
       const allItems = await inventoryService.getItems();
       // Filter items that have been borrowed (quantity_available < quantity_total)
-      const borrowedItems = allItems.filter(item => item.quantity_available < item.quantity_total);
+      const borrowedItems = allItems.filter(item => item.quanityAvailable! < item.quanityTotal!);
       setItems(borrowedItems);
     } catch (error) {
       Alert.alert('Error', 'Failed to load items. Please try again.');
@@ -71,12 +65,12 @@ export default function ReturnItems() {
   };
 
   const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    item.item_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.item_description && item.item_description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const getMaxReturnable = (item: Item) => {
-    return item.quantity_total - item.quantity_available;
+    return (item.quanityTotal || 0) - (item.quanityAvailable || 0);
   };
 
   if (loading) {
@@ -106,35 +100,35 @@ export default function ReturnItems() {
 
       <FlatList
         data={filteredItems}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.inventory_item_id.toString()}
         renderItem={({ item }) => {
           const maxReturnable = getMaxReturnable(item);
           return (
             <View style={styles.itemCard}>
               <View style={styles.itemInfo}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                {item.description && <Text style={styles.itemDescription}>{item.description}</Text>}
+                <Text style={styles.itemName}>{item.item_name}</Text>
+                {item.item_description && <Text style={styles.itemDescription}>{item.item_description}</Text>}
                 <Text style={styles.itemAvailable}>
-                  Available: {item.quantity_available} of {item.quantity_total}
+                  Available: {item.quanityAvailable} of {item.quanityTotal}
                 </Text>
                 <Text style={styles.itemBorrowed}>
                   Borrowed: {maxReturnable}
                 </Text>
-                {item.location && <Text style={styles.itemLocation}>Location: {item.location}</Text>}
+                {item.item_location && <Text style={styles.itemLocation}>Location: {item.item_location}</Text>}
               </View>
               <View style={styles.quantityContainer}>
                 <Text>Qty:</Text>
                 <TextInput
                   style={styles.quantityInput}
                   keyboardType="numeric"
-                  value={selectedItems[item.id]?.toString() || ''}
-                  onChangeText={(text) => handleQuantityChange(item.id, text)}
+                  value={selectedItems[item.inventory_item_id]?.toString() || ''}
+                  onChangeText={(text) => handleQuantityChange(item.inventory_item_id, text)}
                   placeholder="0"
                   maxLength={3}
                 />
                 <Text 
                   style={styles.maxText} 
-                  onPress={() => handleQuantityChange(item.id, maxReturnable.toString())}
+                  onPress={() => handleQuantityChange(item.inventory_item_id, maxReturnable.toString())}
                 >
                   MAX
                 </Text>

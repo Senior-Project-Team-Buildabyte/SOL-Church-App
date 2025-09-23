@@ -1,4 +1,4 @@
-import { EventData, fetchSingleEventData, getGeoLocation } from "@/services/eventsService";
+import { EventData, fetchSingleEventData, getGeo } from "@/services/eventsService";
 import { useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -39,7 +39,7 @@ const SingleEventPage = () => {
         if (foundEvent.location) {
           let alive = true;
           (async () => {
-            const res = await getGeoLocation(foundEvent.location!);
+            const res = await getGeo(foundEvent.location!);
             const match = res?.result?.addressMatches?.[0];
             const coords = match?.coordinates;
             if (!alive || !coords) return;
