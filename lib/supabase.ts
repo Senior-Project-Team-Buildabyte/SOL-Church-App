@@ -2,7 +2,7 @@
 import 'react-native-url-polyfill/auto';
 // @ts-ignore - This is a workaround for AsyncStorage types
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Database } from '../types/supabase';
+import { Database } from '../src/types/database.types';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';

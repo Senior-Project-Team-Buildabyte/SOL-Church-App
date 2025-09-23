@@ -1,11 +1,19 @@
 //import api from './api.service'; 
 
+import { supabase } from "@/lib/supabase";
+import { toEvent } from "./api.service";
+import { createClient } from '@supabase/supabase-js'
+
+
+const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+
 export interface EventData {
   id: number;
   image: number | {uri: string};
   title: string;
   guestSpeaker: string | null;
-  date: string;
+  date: string | null;
   time: string | null;
   link: string;
   group: string | null; 
@@ -16,6 +24,20 @@ export interface EventData {
 }
 
 const dummyData: EventData[] = [
+  {
+    id: 0,
+    title: 'NULL',
+    group: 'NULL',
+    guestSpeaker: null,
+    link: '',
+    date: '',
+    time: null,
+    image: {uri:'https://example.com/image1.jpg'},
+    day: '01',
+    month: 'JAN',
+    description: '',
+    location: ''
+  },
   {
     id: 1,
     title: 'Rise & Shine',
@@ -136,28 +158,28 @@ Shop)`,
   
 ];
 
+
+
 // Fetch events data from API or fallback to dummy data
 export const fetchEventData = async (endpoint: string): Promise<EventData[]> => {
-    return dummyData;
-//   try {
-//     const response = await api.get<EventData[]>(endpoint);
-//     return response.data;
-//   } catch (error) {
-//     console.error('API Error:', error);
-//     return dummyData; // Fallback to dummy data if API call fails
-//   }
+  try {
+    const response = await supabase.from('event').select();
+    return response.data?.map(toEvent) || [];
+  } catch (error) {
+    console.error('API Error:', error);
+    return dummyData; // Fallback to dummy data if API call fails
+  }
 };
 
 // Fetch events data from API or fallback to dummy data
 export const fetchSingleEventData = async (id: number): Promise<EventData> => {
-  return dummyData.filter(x => x.id == id)[0];
-//   try {
-//     const response = await api.get<EventData>('/event/' + id);
-//     return response.data;
-//   } catch (error) {
-//     console.error('API Error:', error);
-//     return dummyData; // Fallback to dummy data if API call fails
-//   }
+ try {
+    const response = await supabase.from('event').select().eq('event_id', id);
+    return response.data?.map(toEvent)[0] || dummyData.find(x => x.id == 0)!;
+  } catch (error) {
+    console.error('API Error:', error);
+    return dummyData.filter(x => x.id == 0)[0]; // Fallback to dummy data if API call fails
+  }
 };
 
 
@@ -172,15 +194,23 @@ export const postEventsData = async (endpoint: string, data: object): Promise<an
 //   }
 };
 
-
-export const getGeoLocation = async (location: string): Promise<any> => {
-  var request = 'https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=';
+export const getGeo = async (location: string): Promise<any> => {
+  var request = '';
   location.split(/[\s,]+/).forEach(element => {
     request += element + '+';
   });
-  request = request.slice(0, request.length - 1) + '&benchmark=4&format=json';
-  const response = await fetch(request);
-    const json = await response.json();
-  //https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=4600+Silver+Hill+Rd%2C+Washington%2C+DC+20233&benchmark=4&format=json
+  request = request.slice(0, request.length - 1);
+  const url =
+    `${SUPABASE_URL}/functions/v1/get_geolocation?address=${encodeURIComponent(request)}`;
+
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`, // or user's access token
+    },
+  });
+  const json = await res.json();
   return json;
 }
+
