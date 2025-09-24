@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "SolChuchApp",
-    "slug": "SolChuchApp",
+    "name": "SolChurchApp",
+    "slug": "SolChurchApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.SolChuchApp",
+      "bundleIdentifier": "com.anonymous.SolChurchApp",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.SolChuchApp"
+      "package": "com.anonymous.SolChurchApp"
     },
     "web": {
       "bundler": "metro",
