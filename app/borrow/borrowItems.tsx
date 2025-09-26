@@ -230,7 +230,7 @@ const BorrowTakeItems = () => {
   if (loading) {
     return (
       <View style={[styles.container, styles.centerContent]}>
-        <ActivityIndicator size="large" color="#3b82f6" />
+        <ActivityIndicator testID="loading" size="large" color="#3b82f6" />
       </View>
     );
   }
