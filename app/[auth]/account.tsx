@@ -209,12 +209,14 @@ export default function SettingsScreen() {
             onChangeText={onChangeTextEmail}
             value={textEmail}
             placeholder="Email"
+            placeholderTextColor={'#888'}
           />
           <TextInput
             style={styles.input}
             onChangeText={onChangeTextPW}
             value={textPassword}
             placeholder="Password"
+            placeholderTextColor={'#888'}
           />
 
           <View style={styles.inlineButtons}>
@@ -295,18 +297,21 @@ export default function SettingsScreen() {
             onChangeText={onChangeTextEmail}
             value={textEmail}
             placeholder="Email"
+            placeholderTextColor={'#888'}
           />
           <TextInput
             style={styles.input}
             onChangeText={onChangeTextPW}
             value={textPassword}
             placeholder="Password"
+            placeholderTextColor={'#888'}
           />
           <TextInput
             style={styles.input}
             onChangeText={onChangeTextPWConfirm}
             value={textPWConfirm}
             placeholder="Confirm Password"
+            placeholderTextColor={'#888'}
           />
 
           <View style={styles.buttonRow}>
@@ -354,6 +359,7 @@ export default function SettingsScreen() {
             onChangeText={onChangeTextEmail}
             value={textEmail}
             placeholder="Email"
+            placeholderTextColor={'#888'}
           />
           <View style={styles.buttonRow}>
             <Pressable
