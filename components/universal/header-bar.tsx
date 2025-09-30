@@ -8,7 +8,7 @@ export default function HeaderBar() {
   };
   const handleLoginPress = () => {
     console.log('Login Image clicked!');
-    router.push("../../[auth]/account")
+    router.navigate("../../[auth]/account")
   };
 
   return (
@@ -30,12 +30,12 @@ export default function HeaderBar() {
             style={styles.icon}
           />
         </TouchableOpacity>
-        
+          
         <TouchableOpacity onPress={handleLoginPress}>
           <Image
             source={require('../../assets/images/login-button.png')}
             style={[styles.icon, { marginRight: 0 }]}
-          />
+            />
         </TouchableOpacity>
       </View>
     </View>

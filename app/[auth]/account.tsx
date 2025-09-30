@@ -347,7 +347,7 @@ export default function SettingsScreen() {
           }}
         >
           <Text style={[styles.modalTitle, { fontSize: 15 }]}>
-            Enter your email, and we'll send you a link to reset your password
+            Enter your email to get a password reset link
           </Text>
           <TextInput
             style={styles.input}
@@ -376,7 +376,7 @@ export default function SettingsScreen() {
               ]}
               onPress={handleForgotPWPress}
             >
-              <Text style={styles.actionBtnTxt}>Confirm</Text>
+              <Text style={styles.actionBtnTxt}>Send Email</Text>
             </Pressable>
           </View>
         </AuthModal>
@@ -509,7 +509,7 @@ const styles = StyleSheet.create({
   actionBtn: {
     height: 40,
     backgroundColor: "#bbb",
-    borderRadius: 150,
+    borderRadius: 7,
     width: "40%",
     maxWidth: 150,
     justifyContent: "center",
