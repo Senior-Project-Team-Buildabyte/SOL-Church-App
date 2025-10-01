@@ -7,7 +7,7 @@ export function useAuth() {
 
     useEffect(() => {
         authService.getCurrentUser().then(user => {
-            setIsLoggedIn(!!user);
+            setIsLoggedIn(!user);
         })
     }, []);
 
