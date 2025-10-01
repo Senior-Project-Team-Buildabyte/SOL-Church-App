@@ -44,7 +44,7 @@ export default function HeaderBar() {
 
 const styles = StyleSheet.create({
   header: {
-    height: 60,
+    height: 50,
     backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -56,9 +56,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 30,
-    height: 30,
-    marginRight: 5,
+    width: 37,
+    height: 37,
+    marginRight: 10,
   },
   logoText: {
     color: 'black',
