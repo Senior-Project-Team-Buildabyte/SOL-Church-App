@@ -155,7 +155,6 @@ Shop)`,
     description: '',
     location: ''
   },
-  
 ];
 
 
@@ -163,8 +162,17 @@ Shop)`,
 // Fetch events data from API or fallback to dummy data
 export const fetchEventData = async (endpoint: string): Promise<EventData[]> => {
   try {
-    const response = await supabase.from('event').select();
-    return response.data?.map(toEvent) || [];
+    const response = await supabase
+      .from('event')
+      .select(`*, images:image_id (image_link)`);
+
+    return response.data?.map((row: any) => {
+      const event = toEvent(row);
+      if (row.images?.image_link) {
+        event.image = { uri: row.images.image_link };
+      }
+      return event;
+    }) || [];
   } catch (error) {
     console.error('API Error:', error);
     return dummyData; // Fallback to dummy data if API call fails
@@ -174,8 +182,19 @@ export const fetchEventData = async (endpoint: string): Promise<EventData[]> => 
 // Fetch events data from API or fallback to dummy data
 export const fetchSingleEventData = async (id: number): Promise<EventData> => {
  try {
-    const response = await supabase.from('event').select().eq('event_id', id);
-    return response.data?.map(toEvent)[0] || dummyData.find(x => x.id == 0)!;
+    const response = await supabase
+      .from('event')
+      .select(`*, images:image_id (image_link)`)
+      .eq('event_id', id);
+
+    const row = response.data?.[0];
+    if (!row) return dummyData.find(x => x.id == 0)!;
+
+    const event = toEvent(row);
+    if (row.images?.image_link) {
+      event.image = { uri: row.images.image_link };
+    }
+    return event;
   } catch (error) {
     console.error('API Error:', error);
     return dummyData.filter(x => x.id == 0)[0]; // Fallback to dummy data if API call fails
@@ -213,4 +232,3 @@ export const getGeo = async (location: string): Promise<any> => {
   const json = await res.json();
   return json;
 }
-
