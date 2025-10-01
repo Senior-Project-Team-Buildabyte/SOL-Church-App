@@ -3,22 +3,16 @@ import { authService } from "@/services/auth.service";
 import { User } from "@supabase/supabase-js";
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  useEffect(() => {
-    let isMounted = true;
-    async function fetchUser() {
-      setLoading(true);
-      const { data, error } = await authService.getCurrentUser();
-      if (isMounted) {
-        setUser(data?.session?.user ?? null);
-        setLoading(false);
-      }
-    }
-    fetchUser();
-    return () => { isMounted = false; };
-  }, []);
+    useEffect(() => {
+        authService.getCurrentUser().then(user => {
+            setIsLoggedIn(!!user);
+        })
+    }, []);
 
-  return { user, loading };
+    return {
+        userstate: isLoggedIn,
+        loading: false, // You can implement a loading state if needed
+    };
 }
