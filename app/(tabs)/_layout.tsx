@@ -3,6 +3,9 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Tabs } from 'expo-router';
+import { authService } from '@/services/auth.service';
+
+
 
 export default function TabLayout() {
   return (
@@ -15,7 +18,7 @@ export default function TabLayout() {
         marginBottom: -1,
       },
       tabBarLabelStyle: {
-        fontsize: 12,
+        fontSize: 12,
       },
     }}>
       <Tabs.Screen
