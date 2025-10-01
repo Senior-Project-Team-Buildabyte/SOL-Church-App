@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "solchurchapp",
+    "scheme": "com.solchurchapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -47,9 +47,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "aa1d81b3-c02b-4468-a5f2-e69991df4c73"
+        "projectId": ""
       }
     },
-    "owner": "dylank202"
+    "owner": ""
   }
 }

@@ -7,10 +7,16 @@ import {
   ImageBackground,
   Share,
   SafeAreaView,
+  Modal,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useState } from "react";
+import { useAuth } from "@/components/universal/useAuth";
+import { authService } from "@/services/auth.service";
 
 type SettingItem = {
   id: string;
@@ -153,11 +159,81 @@ const SettingRow = ({ label, desc, icon, onPress }: SettingItem) => (
 );
 
 
+
+
+
 export default function SettingsScreen() {
+  const { session, userstate, loading } = useAuth();
+  const [confirmSignOutVisible, setConfirmSignOutVisible] = useState(false);
+  const [signOutVisible, setSignOutVisible] = useState(false);
+  const [loginVisible, setLoginVisible] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+
+  const handleSignOut = async () => {
+    setLoading(true);
+    try {
+      await authService.signOut();
+      Alert.alert('Success', 'Signed out successfully.');
+    } catch (err) {
+      if (err instanceof Error) {
+        Alert.alert('Error', err.message);
+      } else {
+        Alert.alert('Error', 'An unknown error occurred during sign up.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.wrapper}>
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={confirmSignOutVisible}
+          onRequestClose={() => {
+            setConfirmSignOutVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalBox}>
+              <Text style={styles.modalTitle}>Are you sure you want to sign out?</Text>
+
+              <View style={styles.buttonRow}>
+
+
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.button,,
+                    pressed && styles.buttonPressed,
+                  ]}
+                  onPress={() => setConfirmSignOutVisible(false)}
+                >
+                  <Text style={styles.actionBtnTxt}>Cancel</Text>
+                </Pressable>
+
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.button,
+                    {backgroundColor: '#111',},
+                    pressed && ([styles.buttonPressed, {backgroundColor: '#888'}]),
+                  ]}
+                  onPress={handleSignOut}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text style={[styles.actionBtnTxt,  {color: '#eee'}]}>Sign Out</Text>
+                  )}
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
 
         {/* Settings List */}
         <SectionList
@@ -175,16 +251,34 @@ export default function SettingsScreen() {
                 style={[styles.headerImage, ]}
               />
               <Text style={styles.headingText}>SOL Church</Text>
-              <Pressable
-                // onPress={() => setLoginVisible(true)}
-                onPress={() => router.push("../auth/login")}
-                style={({ pressed }) => [
-                  styles.loginButton,
-                  pressed && styles.loginButtonPressed,
-                ]}
-              >
-                <Text style={styles.loginBtnTxt}>Log in or sign up</Text>
-              </Pressable>
+
+              {loading ? (
+                <View style={styles.loginButton}>
+                  <ActivityIndicator color="#fff" />
+                </View>
+              ) : session && session.user ? (
+                <Pressable
+                  onPress={() => setConfirmSignOutVisible(true)}
+                  // onPress={() => router.push("../auth/login")}
+                  style={({ pressed }) => [
+                    styles.loginButton,
+                    pressed && styles.loginButtonPressed,
+                  ]}
+                  >
+                  <Text style={styles.loginBtnTxt}>Sign Out</Text>
+                </Pressable>
+              ) : (
+                <Pressable
+                  // onPress={() => setLoginVisible(true)}
+                  onPress={() => router.push("../auth/login")}
+                  style={({ pressed }) => [
+                    styles.loginButton,
+                    pressed && styles.loginButtonPressed,
+                  ]}
+                  >
+                  <Text style={styles.loginBtnTxt}>Log in or sign up</Text>
+                </Pressable>
+              )}
             </View>
           }
         />
@@ -213,7 +307,12 @@ const styles = StyleSheet.create({
     marginTop: 36,
     marginLeft: 14,
   },
-
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+    padding: 5,
+  },
   // Row
   row: {
     flexDirection: "row",
@@ -237,6 +336,29 @@ const styles = StyleSheet.create({
   label: { fontSize: 18, color: "#555" },
   description: { fontSize: 14, color: "#aaa" },
 
+  // Modal
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  modalBox: {
+    margin: 20,
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+    width: "90%",
+    maxWidth: 500,
+    maxHeight: 500,
+  },
+  modalTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+
   // Login button
   loginButton: {
     height: 45,
@@ -250,4 +372,16 @@ const styles = StyleSheet.create({
   },
   loginButtonPressed: { backgroundColor: "rgba(30,30,30,0.6)" },
   loginBtnTxt: { fontSize: 18, color: "#fff" },
+  // Cancel button
+  button: {
+    height: 40,
+    backgroundColor: "#bbb",
+    borderRadius: 7,
+    width: "40%",
+    maxWidth: 150,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonPressed: { backgroundColor: "#999" },
+  actionBtnTxt: { color: "#333", fontSize: 18 },
 });

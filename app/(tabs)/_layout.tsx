@@ -8,7 +8,7 @@ import { use } from 'react';
 import { useAuth } from '@/components/universal/useAuth';
 
 export default function TabLayout() {
-  const { userstate, loading } = useAuth();
+  const { session, userstate, loading } = useAuth();
 
   return (
     <Tabs screenOptions={{
@@ -68,7 +68,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <MaterialCommunityIcons size={16} name="television-play" color={color} />,
         }}
       />
-      <Tabs.Protected guard = {userstate}>
+      <Tabs.Protected guard = {(session && session.user) ? true : false}>
       <Tabs.Screen
         name="borrow"
         
