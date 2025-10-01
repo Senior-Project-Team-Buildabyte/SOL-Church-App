@@ -3,8 +3,13 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Tabs } from 'expo-router';
+import { authService } from '@/services/auth.service';
+import { use } from 'react';
+import { useAuth } from '@/components/universal/useAuth';
 
 export default function TabLayout() {
+  const { userstate, loading } = useAuth();
+
   return (
     <Tabs screenOptions={{
       tabBarActiveTintColor: 'black',
@@ -15,7 +20,7 @@ export default function TabLayout() {
         marginBottom: -1,
       },
       tabBarLabelStyle: {
-        fontsize: 12,
+        fontSize: 12,
       },
     }}>
       <Tabs.Screen
@@ -63,6 +68,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <MaterialCommunityIcons size={16} name="television-play" color={color} />,
         }}
       />
+      <Tabs.Protected guard = {userstate}>
       <Tabs.Screen
         name="borrow"
         
@@ -72,6 +78,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <SimpleLineIcons size={16} name="drawer" color={color} />,
         }}
       />
+      </Tabs.Protected>
     </Tabs>
   );
 }
