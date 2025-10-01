@@ -5,36 +5,38 @@ import { View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Session } from '@supabase/supabase-js'
+import { useAuth } from "@/components/universal/useAuth";
 
 
 
 // Create an auth context so child screens/components can read the session
 const AuthContext = createContext<{ session: Session | null }>({ session: null });
-export function useAuth() {
+export function useAuthContext() {
   return useContext(AuthContext);
 }
 
 export default function RootLayout() {
-  const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+    const { session } = useAuth();
+  // const [session, setSession] = useState<Session | null>(null);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // On mount: fetch existing session (if user is already logged in)
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setIsLoading(false);
-    });
+  // useEffect(() => {
+  //   // On mount: fetch existing session (if user is already logged in)
+  //   supabase.auth.getSession().then(({ data }) => {
+  //     setSession(data.session);
+  //     setIsLoading(false);
+  //   });
 
-    // Subscribe to auth state changes (login, logout, token refresh)
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
+  //   // Subscribe to auth state changes (login, logout, token refresh)
+  //   const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+  //     setSession(newSession);
+  //   });
 
-    // Clean up subscription on unmount
-    return () => {
-      sub.subscription.unsubscribe();
-    };
-  }, []);
+  //   // Clean up subscription on unmount
+  //   return () => {
+  //     sub.subscription.unsubscribe();
+  //   };
+  // }, []);
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
