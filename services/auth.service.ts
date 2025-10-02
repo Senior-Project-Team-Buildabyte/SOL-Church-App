@@ -53,7 +53,8 @@ export const authService = {
   // Reset password
   resetPassword: async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'exp+solchurchapp://',
+      redirectTo: 'exp+solchurchapp://expo-development-client/?url=http%3A%2F%2F100.64.10.238%3A8081/&path=%5Bauth%5D%2Fupdate-password',
+      // redirectTo: 'exp+solchurchapp://',
     });
     if (error) throw error;
   },

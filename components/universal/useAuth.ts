@@ -16,10 +16,10 @@ export function useAuth() {
 
         // Subscribe to auth state changes (login, logout, token refresh)
         const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
-
             if (_event === 'SIGNED_OUT') {
                 setSession(null)
             } else if (newSession) {
+            // } else { 
                 setSession(newSession)
             }
             console.log(_event, newSession)
@@ -46,6 +46,7 @@ export function useAuth() {
         // Clean up subscription on unmount
         return () => {
             sub.subscription.unsubscribe();
+            console.log('unsubscribed from auth changes')
         };
     }, []);
 
