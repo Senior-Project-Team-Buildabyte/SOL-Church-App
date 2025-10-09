@@ -189,6 +189,26 @@ export default function SettingsScreen() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.wrapper}>
 
+
+        {/* TODO: remove these when done; Navigation Links for testing*/} 
+        <View style={styles.navLinks}>
+            
+          <Pressable onPress={() => router.push('../[auth]/login')}>
+            <Text style={styles.linkText}>Log in</Text>
+          </Pressable>
+          <Pressable onPress={() => router.push('../[auth]/sign-up')}>
+            <Text style={styles.linkText}>Sign up</Text>
+          </Pressable>
+          <Pressable onPress={() => router.push('../[auth]/forgot-password')}>
+            <Text style={styles.linkText}>Forgot password</Text>
+          </Pressable>
+          <Pressable onPress={() => router.push('../[auth]/update-password')}>
+            <Text style={styles.linkText}>Update password</Text>
+          </Pressable>
+
+        </View>
+
+
         <Modal
           animationType="fade"
           transparent={true}
@@ -384,4 +404,12 @@ const styles = StyleSheet.create({
   },
   buttonPressed: { backgroundColor: "#999" },
   actionBtnTxt: { color: "#333", fontSize: 18 },
+  // Testing nav links
+  linkText: { fontSize: 15, color: "rgba(183, 113, 240, 1)", },
+  navLinks: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginLeft: 10,
+    marginRight: 10,
+  },
 });
