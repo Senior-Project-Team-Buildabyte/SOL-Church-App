@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   AppState,
 } from 'react-native';
+import { authService } from '@/services/auth.service';
 
 
 AppState.addEventListener('change', (state) => {
@@ -30,90 +31,99 @@ const ForgotPassword = () => {
   const router = useRouter();
   const canSubmit = email.length > 0;
 
-
-  async function sendResetLink() {
+  const handleSendLink = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: '/[auth]/update-password', // The user will be redirected to this page after clicking the link.
-    });
-
-    if (error) {
-      Alert.alert('Error', error.message);
-    } else {
+    try {
+      await authService.resetPassword(email);
       Alert.alert('Success', 'Please check your inbox for a password reset link!');
+    } catch (err) {
+      if (err instanceof Error) {
+        Alert.alert('Error', err.message);
+      } else {
+        Alert.alert('Error', 'An unknown error occurred during sign up.');
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }
-
-
+  };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.background}>
+      <View style={styles.container}>
 
-      <Image
-        source={require("@/assets/images/favicon-drop.png")}
-        style={styles.logo}
-      />
+        <Image
+          source={require("@/assets/images/favicon-drop.png")}
+          style={styles.logo}
+        />
 
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>Reset Password</Text>
-        <Pressable onPress={() => router.back()}>
-          {({ pressed }) => (
-            <Text
-              style={[styles.linkText, pressed && styles.linkTextPressed]}
-            >
-              Sign in
-            </Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>Reset Password</Text>
+          <Pressable onPress={() => router.back()}>
+            {({ pressed }) => (
+              <Text
+                style={[styles.linkText, pressed && styles.linkTextPressed]}
+              >
+                Sign in
+              </Text>
+            )}
+          </Pressable>
+        </View>
+
+        <Text style={styles.instructions}>
+          Enter your email address and we'll send you a link to reset your password.
+        </Text>
+
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="email@address.com"
+          placeholderTextColor={'#aaa'}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          style={[styles.input, emailSelected && styles.inputSelected]}
+          autoFocus={true}
+          textContentType="emailAddress"
+          onFocus={() => setEmailSelected(true)}
+          onBlur={() => setEmailSelected(false)}
+        />
+
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            !canSubmit && { backgroundColor: '#999' },        // gray when disabled
+            canSubmit && pressed && styles.loginButtonPressed,  // pressed style when enabled
+          ]}
+          onPress={handleSendLink}
+          disabled={!canSubmit || loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Send Reset Link</Text>
           )}
         </Pressable>
+
+          
       </View>
-
-      <Text style={styles.instructions}>
-        Enter your email address and we'll send you a link to reset your password.
-      </Text>
-
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="email@address.com"
-        placeholderTextColor={'#aaa'}
-        autoCapitalize="none"
-        keyboardType="email-address"
-        style={[styles.input, emailSelected && styles.inputSelected]}
-        autoFocus={true}
-        textContentType="emailAddress"
-        onFocus={() => setEmailSelected(true)}
-        onBlur={() => setEmailSelected(false)}
-      />
-
-      <Pressable
-        style={({ pressed }) => [
-          styles.button,
-          !canSubmit && { backgroundColor: '#999' },        // gray when disabled
-          canSubmit && pressed && styles.loginButtonPressed,  // pressed style when enabled
-        ]}
-        onPress={sendResetLink}
-        disabled={!canSubmit || loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Send Reset Link</Text>
-        )}
-      </Pressable>
-
-         
     </View>
 
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     padding: 24,
     backgroundColor: '#fff',
+    width: '100%',
+    maxWidth: 450,
   },
   logo: {
     width: 104,
