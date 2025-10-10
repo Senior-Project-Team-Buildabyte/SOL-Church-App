@@ -47,7 +47,7 @@ export const authService = {
 
   // Get current user
   getCurrentUser: () => {
-    return supabase.auth.getSession();
+    return supabase.auth.getUser();
   },
 
   // Reset password
