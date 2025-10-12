@@ -92,7 +92,7 @@ const BorrowPage = () => {
             { session && /*userstate?.role === "admin" &&*/
             (session.user.id === "7e34e997-8e76-46e4-8078-f0c362cccd15"
             // add more test admin ids here if needed - get from local session logs
-            || session.user.id === ""
+            || session.user.id === "876d5722-72f2-4dfd-ac0a-35115cb36989"
             )
             ? (
               
@@ -101,9 +101,9 @@ const BorrowPage = () => {
                   type: 1, // internal
                   shape: 0, // full
                   buttonConfig: {
-                    text: "Manage Inventory",
-                    icon: "wrench",
-                    internalLink: `../borrow/admin-borrow`,
+                    text: "Inventory Requests",
+                    icon: "bell",
+                    internalLink: `../admin/inventory_requests`,
                     backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
                   }
                 },
