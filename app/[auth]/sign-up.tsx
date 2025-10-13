@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
-
+import ConfirmHcaptcha from '@hcaptcha/react-native-hcaptcha';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import {
   Alert,
   StyleSheet,
@@ -12,8 +13,12 @@ import {
   Image,
   ActivityIndicator,
   AppState,
+  Platform,
 } from 'react-native';
 
+const SITE_KEY = process.env.EXPO_PUBLIC_HCAPTCHA_SITEKEY ?? '27947306-3afa-4d68-a44c-af0847b4db7c';
+const BASE_URL = process.env.EXPO_PUBLIC_HCAPTCHA_BASEURL ?? 'https://example.com';
+const isWeb = Platform.OS === 'web';
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
@@ -33,9 +38,31 @@ const SignUp = () => {
   const [passwordSelected, setPasswordSelected] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const passwordsMatch = password && confirmPassword && password === confirmPassword;
-  const canSignUp = passwordsMatch;
 
+  const passwordsMatch = password && confirmPassword && password === confirmPassword;
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaRef = useRef<any>(null);
+
+  const canSignUp = passwordsMatch && !!captchaToken;
+
+  const openCaptcha = () => {
+    setCaptchaToken(null);
+    captchaRef.current?.show();
+  };
+
+  const onCaptchaMessage = (e: any) => {
+    const msg = e?.nativeEvent?.data;
+    if (typeof msg === 'string' && msg.length > 20) {
+      setCaptchaToken(msg);
+      captchaRef.current?.hide?.();
+      return;
+    }
+    if (msg === 'challenge-closed' || msg === 'cancel' || msg === 'error' || msg === 'expired') {
+      setCaptchaToken(null);
+      captchaRef.current?.hide?.();
+    }
+  };
 
   async function signUpWithEmail() {
     setLoading(true);
@@ -43,19 +70,21 @@ const SignUp = () => {
       data: { session },
       error,
     } = await supabase.auth.signUp({
-      email: email,
+      email: email.trim(),
       password: password,
+      options: { captchaToken: captchaToken ?? undefined },
     });
 
     if (error) {
       Alert.alert('Error', error.message);
-    } else if (!session) {
-      Alert.alert('Success', 'Please check your inbox for email verification!');
+      setLoading(false);
+      return;
     }
+
     setLoading(false);
+    setCaptchaToken(null);
+    router.replace('../[auth]/login');
   }
-
-
 
   return (
     <View style={styles.container}>
@@ -105,6 +134,10 @@ const SignUp = () => {
         onBlur={() => setPasswordSelected(false)}
       />
 
+      <Text style={styles.hintText}>
+        Password must be at least 8 characters and include one uppercase, one lowercase, one number, and one special symbol.
+      </Text>
+
       <TextInput
         value={confirmPassword}
         onChangeText={setConfirmPassword}
@@ -120,14 +153,49 @@ const SignUp = () => {
 
       {password !== confirmPassword && confirmPassword.length > 0 && (
         <Text style={styles.errorText}>Passwords do not match.</Text>
-      )
-      }
+      )}
+
+      {isWeb ? (
+        <View style={{ marginTop: 6, marginBottom: 8 }}>
+          <HCaptcha
+            sitekey={SITE_KEY}
+            onVerify={(token) => setCaptchaToken(token)}
+            onExpire={() => setCaptchaToken(null)}
+            onError={() => setCaptchaToken(null)}
+          />
+        </View>
+      ) : (
+        <>
+          <Pressable
+            onPress={openCaptcha}
+            disabled={!!captchaToken}
+            style={[
+              styles.button,
+              {
+                backgroundColor: captchaToken ? '#4CAF50' : '#efefef',
+                marginTop: 6,
+              }
+            ]}
+          >
+            <Text style={[styles.buttonText, { color: captchaToken ? '#fff' : '#333' }]}>
+              {captchaToken ? 'Verified ✓' : 'Verify I’m human'}
+            </Text>
+          </Pressable>
+
+          <ConfirmHcaptcha
+            ref={captchaRef}
+            siteKey={SITE_KEY}
+            baseUrl={BASE_URL}
+            onMessage={onCaptchaMessage}
+          />
+        </>
+      )}
 
       <Pressable
         style={({ pressed }) => [
           styles.button,
-          !canSignUp && { backgroundColor: '#999' },        // gray when disabled
-          canSignUp && pressed && styles.loginButtonPressed,  // pressed style when enabled
+          !canSignUp && { backgroundColor: '#999' },
+          canSignUp && pressed && styles.loginButtonPressed,
         ]}
         onPress={signUpWithEmail}
         disabled={!canSignUp || loading}
@@ -139,9 +207,7 @@ const SignUp = () => {
         )}
       </Pressable>
 
-         
     </View>
-
   );
 };
 
@@ -197,7 +263,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   link: {
-    color: '#007AFF', // Standard iOS link color
+    color: '#007AFF',
     fontSize: 14,
   },
   linkText: { fontSize: 15, color: "rgba(183, 113, 240, 1)" },
@@ -211,6 +277,13 @@ const styles = StyleSheet.create({
   },
   loginButtonPressed: { backgroundColor: "#777" },
   errorText: { color: 'red', marginBottom: 10, textAlign: 'center' },
+  hintText: {
+    color: '#666',
+    fontSize: 12,
+    marginTop: -8,
+    marginBottom: 12,
+    textAlign: 'left',
+  },
 });
 
 export default SignUp;
