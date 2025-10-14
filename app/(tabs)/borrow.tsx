@@ -4,27 +4,10 @@ import { authService } from "@/services/auth.service";
 import { LinearGradient } from "expo-linear-gradient";
 import { Alert, ImageBackground, StyleSheet, Text, View } from "react-native";
 
-
-  // TODO: remove sign out before merge to main, after merge with newest auth changes
-  const handleSignOut = async () => {
-    try {
-      await authService.signOut();
-      Alert.alert('Success', 'Signed out successfully.');
-    } catch (err) {
-      if (err instanceof Error) {
-        Alert.alert('Error', err.message);
-      } else {
-        Alert.alert('Error', 'An unknown error occurred during sign up.');
-      }
-    }
-  };
-
 const BorrowPage = () => {
     const { session, userstate, loading } = useAuth();
     {console.log("session: ", session)}
     {console.log("session.user: ", session?.user)}
-    // TODO: remove sign out before merge to main, after merge with newest auth changes
-    // handleSignOut();
     return (
     
     <View style={styles.container}>

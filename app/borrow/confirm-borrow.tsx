@@ -1,10 +1,10 @@
 import { Text } from "react-native";
 
 
-const AdminInventory = () => {
+const ConfirmBorrow = () => {
     return (
         <Text>Confirmation Page</Text>
     );
 };
 
-export default AdminInventory;
+export default ConfirmBorrow;
