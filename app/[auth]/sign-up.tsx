@@ -15,6 +15,7 @@ import {
   AppState,
   Platform,
 } from 'react-native';
+import { authService } from '@/services/auth.service';
 
 const SITE_KEY = process.env.EXPO_PUBLIC_HCAPTCHA_SITEKEY ?? '27947306-3afa-4d68-a44c-af0847b4db7c';
 const BASE_URL = process.env.EXPO_PUBLIC_HCAPTCHA_BASEURL ?? 'https://example.com';
@@ -65,25 +66,20 @@ const SignUp = () => {
   };
 
   const handleSignUp = async () => {
-    setLoading(true);
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
-      email: email.trim(),
-      password: password,
-      options: { captchaToken: captchaToken ?? undefined },
-    });
-
-    if (error) {
-      Alert.alert('Error', error.message);
+    try {
+      await authService.signUpWithEmail(email.trim(), password, captchaToken ?? undefined);
+      Alert.alert('Success', 'Please check your inbox for email verification!');
+    } catch (err) {
+      if (err instanceof Error) {
+        Alert.alert('Error', err.message);
+      } else {
+        Alert.alert('Error', 'An unknown error occurred during sign up.');
+      }
+    } finally {
       setLoading(false);
-      return;
+      setCaptchaToken(null);
+      router.replace('../[auth]/login');
     }
-
-    setLoading(false);
-    setCaptchaToken(null);
-    router.replace('../[auth]/login');
   }
 
   return (
@@ -168,9 +164,8 @@ const SignUp = () => {
             <Text style={styles.buttonText}>Sign up</Text>
           )}
         </Pressable>
-      </View>
 
-      <TextInput
+      {/* <TextInput
         value={email}
         onChangeText={setEmail}
         placeholder="email@address.com"
@@ -195,13 +190,11 @@ const SignUp = () => {
         textContentType="password"
         onFocus={() => setPasswordSelected(true)}
         onBlur={() => setPasswordSelected(false)}
-      />
+      /> */}
 
-      <Text style={styles.hintText}>
-        Password must be at least 8 characters and include one uppercase, one lowercase, one number, and one special symbol.
-      </Text>
 
-      <TextInput
+
+      {/* <TextInput
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         placeholder="Confirm Password"
@@ -212,11 +205,11 @@ const SignUp = () => {
         textContentType="password"
         onFocus={() => setConfirmPasswordSelected(true)}
         onBlur={() => setConfirmPasswordSelected(false)}
-      />
+      /> */}
 
-      {password !== confirmPassword && confirmPassword.length > 0 && (
+      {/* {password !== confirmPassword && confirmPassword.length > 0 && (
         <Text style={styles.errorText}>Passwords do not match.</Text>
-      )}
+      )} */}
 
       {isWeb ? (
         <View style={{ marginTop: 6, marginBottom: 8 }}>
@@ -236,7 +229,7 @@ const SignUp = () => {
               styles.button,
               {
                 backgroundColor: captchaToken ? '#4CAF50' : '#efefef',
-                marginTop: 6,
+                marginTop: 12,
               }
             ]}
           >
@@ -250,11 +243,15 @@ const SignUp = () => {
             siteKey={SITE_KEY}
             baseUrl={BASE_URL}
             onMessage={onCaptchaMessage}
+            size={'normal'}
           />
         </>
       )}
 
-      <Pressable
+      <Text style={styles.hintText}>
+        Password must be at least 8 characters and include one uppercase, one lowercase, one number, and one special symbol.
+      </Text>
+      {/* <Pressable
         style={({ pressed }) => [
           styles.button,
           !canSignUp && { backgroundColor: '#999' },
@@ -268,7 +265,8 @@ const SignUp = () => {
         ) : (
           <Text style={styles.buttonText}>Sign up</Text>
         )}
-      </Pressable>
+      </Pressable> */}
+      </View>
 
     </View>
   );
@@ -351,7 +349,7 @@ const styles = StyleSheet.create({
   hintText: {
     color: '#666',
     fontSize: 12,
-    marginTop: -8,
+    marginTop: 10,
     marginBottom: 12,
     textAlign: 'left',
   },
