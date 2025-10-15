@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Href, router, Stack } from "expo-router";
 import * as Application from "expo-application";
 import HeaderBar from '../components/universal/header-bar';
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
@@ -9,6 +9,7 @@ import { Session, User } from '@supabase/supabase-js'
 import { useAuth } from "@/components/universal/useAuth";
 import { getRouteFromNotificationData, registerForPushAsync, savePushTokenToDB, subscribeNotifications } from "@/services/notifications";
 import * as Notifications from 'expo-notifications';
+import { navigate } from "expo-router/build/global-state/routing";
 
 
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -77,8 +78,19 @@ export default function RootLayout() {
         // User tapped notif from bg/quit: route based on data
         const data = resp.notification.request.content.data;
         const { screen, params } = getRouteFromNotificationData(data);
+
         if (screen) {
-          // navigate(screen, params);
+          const path = screen.startsWith("/") ? screen : `/${screen}`;
+          const stringParams = params
+            ? Object.fromEntries(
+              Object.entries(params).map(([k, v]) => [k, String(v)])
+            )
+            : undefined;
+
+          router.push({
+            pathname: path,
+            params: stringParams
+          } as any);
           console.log("Navigate to:", screen, params);
         }
       }
