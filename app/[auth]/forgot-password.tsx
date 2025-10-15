@@ -16,6 +16,7 @@ import {
   AppState,
   Platform,
 } from 'react-native';
+import { authService } from '@/services/auth.service';
 
 const SITE_KEY = process.env.EXPO_PUBLIC_HCAPTCHA_SITEKEY ?? '27947306-3afa-4d68-a44c-af0847b4db7c';
 const BASE_URL = process.env.EXPO_PUBLIC_HCAPTCHA_BASEURL ?? 'https://example.com';
@@ -75,29 +76,60 @@ const ForgotPassword = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.background}>
+      <View style={styles.container}>
 
-      <Image
-        source={require("@/assets/images/favicon-drop.png")}
-        style={styles.logo}
-      />
+        <Image
+          source={require("@/assets/images/favicon-drop.png")}
+          style={styles.logo}
+        />
 
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>Reset Password</Text>
-        <Pressable onPress={() => router.back()}>
-          {({ pressed }) => (
-            <Text
-              style={[styles.linkText, pressed && styles.linkTextPressed]}
-            >
-              Sign in
-            </Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>Reset Password</Text>
+          <Pressable onPress={() => router.back()}>
+            {({ pressed }) => (
+              <Text
+                style={[styles.linkText, pressed && styles.linkTextPressed]}
+              >
+                Sign in
+              </Text>
+            )}
+          </Pressable>
+        </View>
+
+        <Text style={styles.instructions}>
+          Enter your email address and we'll send you a link to reset your password.
+        </Text>
+
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="email@address.com"
+          placeholderTextColor={'#aaa'}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          style={[styles.input, emailSelected && styles.inputSelected]}
+          autoFocus={true}
+          textContentType="emailAddress"
+          onFocus={() => setEmailSelected(true)}
+          onBlur={() => setEmailSelected(false)}
+        />
+
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            !canSubmit && { backgroundColor: '#999' },        // gray when disabled
+            canSubmit && pressed && styles.loginButtonPressed,  // pressed style when enabled
+          ]}
+          onPress={handleSendLink}
+          disabled={!canSubmit || loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Send Reset Link</Text>
           )}
         </Pressable>
-      </View>
-
-      <Text style={styles.instructions}>
-        Enter your email address and we'll send you a link to reset your password.
-      </Text>
 
       <TextInput
         value={email}
@@ -169,11 +201,19 @@ const ForgotPassword = () => {
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     padding: 24,
     backgroundColor: '#fff',
+    width: '100%',
+    maxWidth: 450,
   },
   logo: {
     width: 104,

@@ -4,19 +4,27 @@ import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-c
 import { View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Session } from '@supabase/supabase-js'
+import { Session, User } from '@supabase/supabase-js'
 import { useAuth } from "@/components/universal/useAuth";
 
 
 
 // Create an auth context so child screens/components can read the session
-const AuthContext = createContext<{ session: Session | null }>({ session: null });
+const AuthContext = createContext<{
+  session: Session | null,
+  userstate: User | undefined,
+  loading: boolean }>
+  ({
+    session: null,
+    userstate: undefined,
+    loading: false
+  });
 export function useAuthContext() {
   return useContext(AuthContext);
 }
 
 export default function RootLayout() {
-    const { session } = useAuth();
+    const { session, userstate, loading } = useAuth();
   // const [session, setSession] = useState<Session | null>(null);
   // const [isLoading, setIsLoading] = useState(true);
 
@@ -40,7 +48,7 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <AuthContext.Provider value={{ session }}>
+      <AuthContext.Provider value={{ session, userstate, loading }}>
         <View style={{ flex: 1 }}>
           {/* {session && session.user ? <Stack key={session.user.id} session={session} /> : <Stack />} */}
 

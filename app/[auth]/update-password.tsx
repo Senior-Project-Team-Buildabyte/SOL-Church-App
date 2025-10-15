@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   AppState,
 } from 'react-native';
+import { authService } from '@/services/auth.service';
 
 
 AppState.addEventListener('change', (state) => {
@@ -34,110 +35,118 @@ const UpdatePassword = () => {
   const passwordsMatch = password && confirmPassword && password === confirmPassword;
   const canUpdate = passwordsMatch;
 
-
-  async function updatePassword() {
+  
+  const handleUpdatePassword = async () => {
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match.');
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.updateUser({
-      password: password,
-    });
-
-    if (error) {
-      Alert.alert('Error', error.message);
-    } else {
+    try {
+      await authService.updatePassword(password);
       Alert.alert('Success', 'Your password has been updated successfully!');
-      setPassword('');
-      setConfirmPassword('');
-      router.back();
+    } catch (err) {
+      if (err instanceof Error) {
+        Alert.alert('Error', err.message);
+      } else {
+        Alert.alert('Error', 'An unknown error occurred during password update.');
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }
-
+  };
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.background}>
+      <View style={styles.container}>
 
-      <Image
-        source={require("@/assets/images/favicon-drop.png")}
-        style={styles.logo}
-      />
+        <Image
+          source={require("@/assets/images/favicon-drop.png")}
+          style={styles.logo}
+        />
 
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>Update Password</Text>
-        <Pressable onPress={() => router.back()}>
-          {({ pressed }) => (
-            <Text
-              style={[styles.linkText, pressed && styles.linkTextPressed]}
-            >
-              Back
-            </Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>Update Password</Text>
+          <Pressable onPress={() => router.back()}>
+            {({ pressed }) => (
+              <Text
+                style={[styles.linkText, pressed && styles.linkTextPressed]}
+              >
+                Back
+              </Text>
+            )}
+          </Pressable>
+        </View>
+
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="New Password"
+          placeholderTextColor={'#aaa'}
+          secureTextEntry={!showPassword}
+          style={[styles.input, passwordSelected && styles.inputSelected]}
+          autoFocus={true}
+          textContentType="newPassword"
+          onFocus={() => setPasswordSelected(true)}
+          onBlur={() => setPasswordSelected(false)}
+        />
+
+        <TextInput
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          placeholder="Confirm New Password"
+          placeholderTextColor={'#aaa'}
+          secureTextEntry={!showPassword}
+          style={[styles.input, confirmPasswordSelected && styles.inputSelected]}
+          autoFocus={false}
+          textContentType="newPassword"
+          onFocus={() => setConfirmPasswordSelected(true)}
+          onBlur={() => setConfirmPasswordSelected(false)}
+        />
+
+        {password !== confirmPassword && confirmPassword.length > 0 && (
+          <Text style={styles.errorText}>Passwords do not match.</Text>
+        )
+        }
+
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            !canUpdate && { backgroundColor: '#999' },        // gray when disabled
+            canUpdate && pressed && styles.loginButtonPressed,  // pressed style when enabled
+          ]}
+          onPress={handleUpdatePassword}
+          disabled={!canUpdate || loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Update Password</Text>
           )}
         </Pressable>
+
+          
       </View>
-
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="New Password"
-        placeholderTextColor={'#aaa'}
-        secureTextEntry={!showPassword}
-        style={[styles.input, passwordSelected && styles.inputSelected]}
-        autoFocus={true}
-        textContentType="newPassword"
-        onFocus={() => setPasswordSelected(true)}
-        onBlur={() => setPasswordSelected(false)}
-      />
-
-      <TextInput
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        placeholder="Confirm New Password"
-        placeholderTextColor={'#aaa'}
-        secureTextEntry={!showPassword}
-        style={[styles.input, confirmPasswordSelected && styles.inputSelected]}
-        autoFocus={false}
-        textContentType="newPassword"
-        onFocus={() => setConfirmPasswordSelected(true)}
-        onBlur={() => setConfirmPasswordSelected(false)}
-      />
-
-      {password !== confirmPassword && confirmPassword.length > 0 && (
-        <Text style={styles.errorText}>Passwords do not match.</Text>
-      )
-      }
-
-      <Pressable
-        style={({ pressed }) => [
-          styles.button,
-          !canUpdate && { backgroundColor: '#999' },        // gray when disabled
-          canUpdate && pressed && styles.loginButtonPressed,  // pressed style when enabled
-        ]}
-        onPress={updatePassword}
-        disabled={!canUpdate || loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Update Password</Text>
-        )}
-      </Pressable>
-
-         
     </View>
 
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     padding: 24,
     backgroundColor: '#fff',
+    width: '100%',
+    maxWidth: 450,
   },
   logo: {
     width: 104,
