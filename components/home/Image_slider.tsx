@@ -12,7 +12,7 @@ const ImageSlider: React.FC = () => {
     useEffect(() => {
         const loadImages = async () => {
             try {
-                const sliderImages = await fetchSliderImages('/images');
+                const sliderImages = await fetchSliderImages();
                 setImages(sliderImages); 
             } catch (error) {
                 console.error('Error fetching image:', error);
