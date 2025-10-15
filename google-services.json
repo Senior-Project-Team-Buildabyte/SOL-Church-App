@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "267910766277",
+    "project_id": "sol-church-app-demo",
+    "storage_bucket": "sol-church-app-demo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267910766277:android:2738e102b86fbd28dc5aac",
+        "android_client_info": {
+          "package_name": "com.anonymous.SolChurchApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSjrPipQ0WarYgNjTj1skcMMDE4eBydNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
