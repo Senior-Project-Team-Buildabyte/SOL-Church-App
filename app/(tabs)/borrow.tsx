@@ -1,30 +1,83 @@
 import DynamicButton from "@/components/universal/dynamic-button";
 import { useAuth } from "@/components/universal/useAuth";
+import { supabase } from "@/lib/supabase";
 import { authService } from "@/services/auth.service";
 import { LinearGradient } from "expo-linear-gradient";
+import { useEffect, useState } from "react";
 import { Alert, ImageBackground, StyleSheet, Text, View } from "react-native";
 
 
-  // TODO: remove sign out before merge to main, after merge with newest auth changes
-  const handleSignOut = async () => {
-    try {
-      await authService.signOut();
-      Alert.alert('Success', 'Signed out successfully.');
-    } catch (err) {
-      if (err instanceof Error) {
-        Alert.alert('Error', err.message);
-      } else {
-        Alert.alert('Error', 'An unknown error occurred during sign up.');
-      }
+// TODO: remove sign out before merge to main, after merge with newest auth changes
+const handleSignOut = async () => {
+  try {
+    await authService.signOut();
+    Alert.alert('Success', 'Signed out successfully.');
+  } catch (err) {
+    if (err instanceof Error) {
+      Alert.alert('Error', err.message);
+    } else {
+      Alert.alert('Error', 'An unknown error occurred during sign up.');
     }
-  };
+  }
+};
+
+const getUserRole = async() => {
+  try {
+    const { data, error } = await supabase
+      .from('user_role')
+      .select('role_id')
+      .eq('user_id', "d08051a4-b9b0-4cc6-aa6b-be254c267e3f" )//userData.user.id)
+      .single();
+    if (error) {
+      throw error;
+    } 
+    return data?.role_id;
+  } catch (error) {
+    console.error('Unexpected error fetching user role:', error);
+    return null;
+  }
+};
+
+// const getUserRole = async (): Promise<number | null> => {
+//   try {
+//     // Get the current user
+//     // const { data: userData, error: userError } = await authService.getCurrentUser();
+//     // if (userError || !userData?.user?.id) {
+//     //   console.error('Error getting current user:', userError);
+//     //   return null;
+//     // }
+
+//     // Query the user_role table for that user's role
+//     const { data, error } = await supabase
+//       .from('user_role')
+//       .select('role_id')
+//       .eq('user_id', "d08051a4-b9b0-4cc6-aa6b-be254c267e3f" )//userData.user.id)
+//       .single();
+
+//     if (error) {
+//       console.error('Error fetching user role:', error);
+//       return null;
+//     }
+
+//     return data?.role_id ?? null;
+//   } catch (error) {
+//     console.error('Unexpected error fetching user role:', error);
+//     return null;
+//   }
+// };
+
 
 const BorrowPage = () => {
-    const { session, userstate, loading } = useAuth();
-    {console.log("session: ", session)}
-    {console.log("session.user: ", session?.user)}
+    {console.log("session: ", authService.getSession())}
+    {console.log("session.user: ", authService.getCurrentUser())}
     // TODO: remove sign out before merge to main, after merge with newest auth changes
     // handleSignOut();
+
+    useEffect(() => {
+      // Fetch user role on component mount
+      
+    }, []);
+
     return (
     
     <View style={styles.container}>
@@ -89,11 +142,9 @@ const BorrowPage = () => {
 
             {/* TODO: Add actual admin verification here - right now only handles manual IDs */}
             {/* Also, make sure this is the actual secure way to hide admin controls. For now it works */}
-            { session && /*userstate?.role === "admin" &&*/
-            (session.user.id === "7e34e997-8e76-46e4-8078-f0c362cccd15"
-            // add more test admin ids here if needed - get from local session logs
-            || session.user.id === ""
-            )
+            { authService.getSession() != null && /*userstate?.role === "admin" &&*/
+            // ( userRole?.find(role => role.role_id === 2) !== undefined )
+            ( 1 === 1)
             ? (
               
               <DynamicButton buttons={[

@@ -12,6 +12,12 @@ export const authService = {
   //   return data;
   // },
 
+  getSession: async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) throw error;
+    return data;
+  },
+
   signUpWithEmail: async (email: string, password: string) => {
     const {
       data,
