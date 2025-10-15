@@ -1,9 +1,13 @@
 import DynamicButton from "@/components/universal/dynamic-button";
+import { useAuth } from "@/components/universal/useAuth";
+import { authService } from "@/services/auth.service";
 import { LinearGradient } from "expo-linear-gradient";
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
-
+import { Alert, ImageBackground, StyleSheet, Text, View } from "react-native";
 
 const BorrowPage = () => {
+    const { session, userstate, loading } = useAuth();
+    {console.log("session: ", session)}
+    {console.log("session.user: ", session?.user)}
     return (
     
     <View style={styles.container}>
@@ -64,6 +68,31 @@ const BorrowPage = () => {
                     }
                 },
             ]}/>
+
+
+            {/* TODO: Add actual admin verification here - right now only handles manual IDs */}
+            {/* Also, make sure this is the actual secure way to hide admin controls. For now it works */}
+            { session && /*userstate?.role === "admin" &&*/
+            (session.user.id === "7e34e997-8e76-46e4-8078-f0c362cccd15"
+            // add more test admin ids here if needed - get from local session logs
+            || session.user.id === "876d5722-72f2-4dfd-ac0a-35115cb36989"
+            )
+            ? (
+              
+              <DynamicButton buttons={[
+                {
+                  type: 1, // internal
+                  shape: 0, // full
+                  buttonConfig: {
+                    text: "Inventory Requests",
+                    icon: "bell",
+                    internalLink: `../admin/inventory_requests`,
+                    backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
+                  }
+                },
+              ]}/>
+            ) : null
+            }
 
         </View>
     </View>
