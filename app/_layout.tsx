@@ -5,7 +5,7 @@ import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-c
 import { Alert, Platform, View } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { Session } from '@supabase/supabase-js'
+import { Session, User } from '@supabase/supabase-js'
 import { useAuth } from "@/components/universal/useAuth";
 import { getRouteFromNotificationData, registerForPushAsync, savePushTokenToDB, subscribeNotifications } from "@/services/notifications";
 import * as Notifications from 'expo-notifications';
@@ -13,13 +13,21 @@ import * as Notifications from 'expo-notifications';
 
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 // Create an auth context so child screens/components can read the session
-const AuthContext = createContext<{ session: Session | null }>({ session: null });
+const AuthContext = createContext<{
+  session: Session | null,
+  userstate: User | undefined,
+  loading: boolean }>
+  ({
+    session: null,
+    userstate: undefined,
+    loading: false
+  });
 export function useAuthContext() {
   return useContext(AuthContext);
 }
 
 export default function RootLayout() {
-    const { session } = useAuth();
+    const { session, userstate, loading } = useAuth();
     const responseListener = useRef<Notifications.Subscription | null>(null);
   const receiveListener = useRef<Notifications.Subscription | null>(null);
 
@@ -84,7 +92,7 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <AuthContext.Provider value={{ session }}>
+      <AuthContext.Provider value={{ session, userstate, loading }}>
         <View style={{ flex: 1 }}>
           {/* {session && session.user ? <Stack key={session.user.id} session={session} /> : <Stack />} */}
 
