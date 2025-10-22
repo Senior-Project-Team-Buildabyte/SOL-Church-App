@@ -93,13 +93,7 @@ if (Platform.OS === "android") {
   return token;
 }
 
-export async function savePushTokenToDB(token: string, platform: "ios" | "android" | "web", deviceId: string, supabaseAccessToken: string) {
-  // get current session access token
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  //console.log(session)
-  //if (!session?.access_token) throw new Error("Not signed in");
+export async function savePushTokenToDB(token: string, platform: "ios" | "android" | "web", deviceId: string, supabaseAccessToken: string, userID: string | null) {
 
   const resp = await fetch("https://ppmszdaibfhfkpbsgfxe.supabase.co/functions/v1/save_token", {
     method: "POST",
@@ -107,7 +101,7 @@ export async function savePushTokenToDB(token: string, platform: "ios" | "androi
       "Content-Type": "application/json",
       Authorization: `Bearer ${supabaseAccessToken}`,
     },
-    body: JSON.stringify({ token, platform, deviceId }),
+    body: JSON.stringify({ token, platform, deviceId, userID }),
   });
 
   if (!resp.ok) {
