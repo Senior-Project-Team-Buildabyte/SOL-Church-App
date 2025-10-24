@@ -152,9 +152,9 @@ const BorrowPage = () => {
                   type: 1, // internal
                   shape: 0, // full
                   buttonConfig: {
-                    text: "Manage Inventory",
-                    icon: "wrench",
-                    internalLink: `../borrow/admin-borrow`,
+                    text: "Inventory Requests",
+                    icon: "bell",
+                    internalLink: `../admin/inventory_requests`,
                     backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
                   }
                 },

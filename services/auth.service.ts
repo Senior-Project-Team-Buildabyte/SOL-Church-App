@@ -18,13 +18,14 @@ export const authService = {
     return data;
   },
 
-  signUpWithEmail: async (email: string, password: string) => {
+  signUpWithEmail: async (email: string, password: string, captchaToken: string | undefined) => {
     const {
       data,
       error,
     } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: { captchaToken: captchaToken ?? undefined }
     });
 
     if (error) {
@@ -57,10 +58,11 @@ export const authService = {
   },
 
   // Reset password
-  resetPassword: async (email: string) => {
+  resetPassword: async (email: string, captchaToken: string | undefined, ) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: 'exp+solchurchapp://expo-development-client/?url=http%3A%2F%2F100.64.10.238%3A8081/&path=%5Bauth%5D%2Fupdate-password',
       // redirectTo: 'exp+solchurchapp://',
+      captchaToken: captchaToken ?? undefined,
     });
     if (error) throw error;
   },
