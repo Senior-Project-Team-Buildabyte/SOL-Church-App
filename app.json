@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.SolChurchApp"
+      "package": "com.anonymous.SolChurchApp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",

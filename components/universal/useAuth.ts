@@ -11,7 +11,7 @@ export function useAuth() {
         // On mount: fetch existing session (if user is already logged in)
         supabase.auth.getSession().then(({ data }) => {
             setSession(data.session);
-            setIsLoading(false);
+            //setIsLoading(false);
         });
 
         // Subscribe to auth state changes (login, logout, token refresh)
@@ -26,6 +26,7 @@ export function useAuth() {
 
             if (_event === 'INITIAL_SESSION') {
                 // handle initial session
+                setIsLoading(false);
             } else if (_event === 'SIGNED_IN') {
                 // if (newSession?.user.)
                 // handle sign in event

@@ -54,8 +54,8 @@ export default function RootLayout() {
   // }, []);
    useEffect(() => {
     (async () => {
-
       const token = await registerForPushAsync();
+      const userID = userstate?.identities![0].user_id ?? null;
       if (!token) return;
       // Example deviceId (Android: ANDROID_ID; iOS: vendorId fallback; else random)
       const deviceId =
@@ -64,8 +64,8 @@ export default function RootLayout() {
           : Application.getIosIdForVendorAsync
           ? (await Application.getIosIdForVendorAsync()) ?? "unknown-ios"
           : "unknown";
-      console.log("Layout deviceID: ", deviceId)
-      await savePushTokenToDB(token, Platform.OS === "ios" ? "ios" : "android", deviceId, supabaseAnonKey);
+      //console.log("Layout deviceID: ", deviceId)
+      await savePushTokenToDB(token, Platform.OS === "ios" ? "ios" : "android", deviceId, supabaseAnonKey, userID);
     })();
     const unsubscribe = subscribeNotifications({
       onReceive: (n) => {
@@ -100,7 +100,7 @@ export default function RootLayout() {
       // cleanup listeners
       unsubscribe();
     };
-  }, []);
+  }, [loading]);
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
