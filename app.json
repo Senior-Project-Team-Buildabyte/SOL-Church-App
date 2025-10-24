@@ -47,9 +47,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": ""
+        "projectId": "e28765fb-9481-4636-8705-1fdf82a28428"
       }
     },
-    "owner": ""
+    "owner": "buildabyte"
   }
 }
