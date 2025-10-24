@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
-import { authService } from '@/services/auth.service';
-
+import ConfirmHcaptcha from '@hcaptcha/react-native-hcaptcha';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import {
   Alert,
   StyleSheet,
@@ -13,8 +13,13 @@ import {
   Image,
   ActivityIndicator,
   AppState,
+  Platform,
 } from 'react-native';
+import { authService } from '@/services/auth.service';
 
+const SITE_KEY = process.env.EXPO_PUBLIC_HCAPTCHA_SITEKEY ?? '27947306-3afa-4d68-a44c-af0847b4db7c';
+const BASE_URL = process.env.EXPO_PUBLIC_HCAPTCHA_BASEURL ?? 'https://example.com';
+const isWeb = Platform.OS === 'web';
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
@@ -34,14 +39,35 @@ const SignUp = () => {
   const [passwordSelected, setPasswordSelected] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const passwordsMatch = password && confirmPassword && password === confirmPassword;
-  const canSignUp = passwordsMatch;
 
+  const passwordsMatch = password && confirmPassword && password === confirmPassword;
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaRef = useRef<any>(null);
+
+  const canSignUp = passwordsMatch && !!captchaToken;
+
+  const openCaptcha = () => {
+    setCaptchaToken(null);
+    captchaRef.current?.show();
+  };
+
+  const onCaptchaMessage = (e: any) => {
+    const msg = e?.nativeEvent?.data;
+    if (typeof msg === 'string' && msg.length > 20) {
+      setCaptchaToken(msg);
+      captchaRef.current?.hide?.();
+      return;
+    }
+    if (msg === 'challenge-closed' || msg === 'cancel' || msg === 'error' || msg === 'expired') {
+      setCaptchaToken(null);
+      captchaRef.current?.hide?.();
+    }
+  };
 
   const handleSignUp = async () => {
-    setLoading(true);
     try {
-      await authService.signUpWithEmail(email, password);
+      await authService.signUpWithEmail(email.trim(), password, captchaToken ?? undefined);
       Alert.alert('Success', 'Please check your inbox for email verification!');
     } catch (err) {
       if (err instanceof Error) {
@@ -51,9 +77,10 @@ const SignUp = () => {
       }
     } finally {
       setLoading(false);
+      setCaptchaToken(null);
+      router.replace('../[auth]/login');
     }
-  };
-
+  }
 
   return (
     <View style={styles.background}>
@@ -138,10 +165,110 @@ const SignUp = () => {
           )}
         </Pressable>
 
-          
-      </View>
-    </View>
+      {/* <TextInput
+        value={email}
+        onChangeText={setEmail}
+        placeholder="email@address.com"
+        placeholderTextColor={'#aaa'}
+        autoCapitalize="none"
+        keyboardType="email-address"
+        style={[styles.input, emailSelected && styles.inputSelected]}
+        autoFocus={true}
+        textContentType="emailAddress"
+        onFocus={() => setEmailSelected(true)}
+        onBlur={() => setEmailSelected(false)}
+      />
 
+      <TextInput
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+        placeholderTextColor={'#aaa'}
+        secureTextEntry={!showPassword}
+        style={[styles.input, passwordSelected && styles.inputSelected]}
+        autoFocus={false}
+        textContentType="password"
+        onFocus={() => setPasswordSelected(true)}
+        onBlur={() => setPasswordSelected(false)}
+      /> */}
+
+
+
+      {/* <TextInput
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        placeholder="Confirm Password"
+        placeholderTextColor={'#aaa'}
+        secureTextEntry={!showPassword}
+        style={[styles.input, confirmPasswordSelected && styles.inputSelected]}
+        autoFocus={false}
+        textContentType="password"
+        onFocus={() => setConfirmPasswordSelected(true)}
+        onBlur={() => setConfirmPasswordSelected(false)}
+      /> */}
+
+      {/* {password !== confirmPassword && confirmPassword.length > 0 && (
+        <Text style={styles.errorText}>Passwords do not match.</Text>
+      )} */}
+
+      {isWeb ? (
+        <View style={{ marginTop: 6, marginBottom: 8 }}>
+          <HCaptcha
+            sitekey={SITE_KEY}
+            onVerify={(token) => setCaptchaToken(token)}
+            onExpire={() => setCaptchaToken(null)}
+            onError={() => setCaptchaToken(null)}
+          />
+        </View>
+      ) : (
+        <>
+          <Pressable
+            onPress={openCaptcha}
+            disabled={!!captchaToken}
+            style={[
+              styles.button,
+              {
+                backgroundColor: captchaToken ? '#4CAF50' : '#efefef',
+                marginTop: 12,
+              }
+            ]}
+          >
+            <Text style={[styles.buttonText, { color: captchaToken ? '#fff' : '#333' }]}>
+              {captchaToken ? 'Verified ✓' : 'Verify I’m human'}
+            </Text>
+          </Pressable>
+
+          <ConfirmHcaptcha
+            ref={captchaRef}
+            siteKey={SITE_KEY}
+            baseUrl={BASE_URL}
+            onMessage={onCaptchaMessage}
+            size={'normal'}
+          />
+        </>
+      )}
+
+      <Text style={styles.hintText}>
+        Password must be at least 8 characters and include one uppercase, one lowercase, one number, and one special symbol.
+      </Text>
+      {/* <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          !canSignUp && { backgroundColor: '#999' },
+          canSignUp && pressed && styles.loginButtonPressed,
+        ]}
+        onPress={signUpWithEmail}
+        disabled={!canSignUp || loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Sign up</Text>
+        )}
+      </Pressable> */}
+      </View>
+
+    </View>
   );
 };
 
@@ -205,7 +332,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   link: {
-    color: '#007AFF', // Standard iOS link color
+    color: '#007AFF',
     fontSize: 14,
   },
   linkText: { fontSize: 15, color: "rgba(183, 113, 240, 1)" },
@@ -219,6 +346,13 @@ const styles = StyleSheet.create({
   },
   loginButtonPressed: { backgroundColor: "#777" },
   errorText: { color: 'red', marginBottom: 10, textAlign: 'center' },
+  hintText: {
+    color: '#666',
+    fontSize: 12,
+    marginTop: 10,
+    marginBottom: 12,
+    textAlign: 'left',
+  },
 });
 
 export default SignUp;
