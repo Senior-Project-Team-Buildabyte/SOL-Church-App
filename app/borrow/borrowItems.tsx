@@ -219,7 +219,7 @@ const BorrowTakeItems = () => {
     if (selectedIds.size > 0) {
       // Navigate to borrow confirmation screen with selected items
       router.push({
-        pathname: "/borrow/confirm" as const,
+        pathname: "/borrow/confirm-borrow" as const,
         params: { selectedIds: Array.from(selectedIds).join(",") },
       } as any);
     }
