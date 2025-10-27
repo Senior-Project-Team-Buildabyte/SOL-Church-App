@@ -75,4 +75,17 @@ export const authService = {
     if (error) throw error;
   },
 
+  getRoleForUser: async(userId : string | null) => {
+    var role = null;
+
+    if(userId){
+      const { data } = await supabase
+      .from("user_role")
+      .select(`role_id`)
+      .eq('user_id', userId);
+      role = data![0].role_id;
+    }
+    return role ?? 3;
+  }
+
 };

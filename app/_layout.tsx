@@ -17,18 +17,20 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 const AuthContext = createContext<{
   session: Session | null,
   userstate: User | undefined,
-  loading: boolean }>
+  loading: boolean,
+  role: number }>
   ({
     session: null,
     userstate: undefined,
-    loading: false
+    loading: false,
+    role: 3
   });
 export function useAuthContext() {
   return useContext(AuthContext);
 }
 
 export default function RootLayout() {
-    const { session, userstate, loading } = useAuth();
+    const { session, userstate, loading, role } = useAuth();
     const responseListener = useRef<Notifications.Subscription | null>(null);
   const receiveListener = useRef<Notifications.Subscription | null>(null);
 
@@ -54,8 +56,9 @@ export default function RootLayout() {
   // }, []);
    useEffect(() => {
     (async () => {
-
       const token = await registerForPushAsync();
+      const userID = userstate?.identities![0].user_id ?? null;
+      //console.log("Role: ", role);
       if (!token) return;
       // Example deviceId (Android: ANDROID_ID; iOS: vendorId fallback; else random)
       const deviceId =
@@ -64,8 +67,8 @@ export default function RootLayout() {
           : Application.getIosIdForVendorAsync
           ? (await Application.getIosIdForVendorAsync()) ?? "unknown-ios"
           : "unknown";
-      console.log("Layout deviceID: ", deviceId)
-      await savePushTokenToDB(token, Platform.OS === "ios" ? "ios" : "android", deviceId, supabaseAnonKey);
+      //console.log("Layout deviceID: ", deviceId)
+      await savePushTokenToDB(token, Platform.OS === "ios" ? "ios" : "android", deviceId, supabaseAnonKey, userID);
     })();
     const unsubscribe = subscribeNotifications({
       onReceive: (n) => {
@@ -100,11 +103,11 @@ export default function RootLayout() {
       // cleanup listeners
       unsubscribe();
     };
-  }, []);
+  }, [loading]);
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <AuthContext.Provider value={{ session, userstate, loading }}>
+      <AuthContext.Provider value={{ session, userstate, loading, role }}>
         <View style={{ flex: 1 }}>
           {/* {session && session.user ? <Stack key={session.user.id} session={session} /> : <Stack />} */}
 
