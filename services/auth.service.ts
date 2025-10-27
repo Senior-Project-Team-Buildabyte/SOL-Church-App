@@ -79,11 +79,22 @@ export const authService = {
     var role = null;
 
     if(userId){
-      const { data } = await supabase
+      const { data, error } = await supabase
       .from("user_role")
       .select(`role_id`)
-      .eq('user_id', userId);
-      role = data![0].role_id;
+      .eq('user_id', userId)
+      .single();
+
+      if (error) {
+        console.error("Error fetching user role:", error);
+        return 3;
+      }
+
+      if (!data) {
+        return 3;
+      }
+      
+      role = data.role_id;
     }
     return role ?? 3;
   }

@@ -20,6 +20,7 @@ const DynamicEventSection = () => {
               sub_text,
               icon,
               link,
+              internal_link,
               background_color,
               background_gradient,
               background_image_id,
@@ -40,6 +41,7 @@ const DynamicEventSection = () => {
             subText: btn.button_config?.sub_text,
             icon: btn.button_config?.icon,
             link: btn.button_config?.link,
+            internalLink: btn.button_config?.internal_link,
             backgroundColor: btn.button_config?.background_color,
             backgroundGradient: btn.button_config?.background_gradient
               ? JSON.parse(btn.button_config.background_gradient)

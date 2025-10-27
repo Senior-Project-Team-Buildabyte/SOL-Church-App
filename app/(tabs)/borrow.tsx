@@ -4,6 +4,7 @@ import { authService } from "@/services/auth.service";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from "react-native";
+import { useAuthContext } from '@/context/authContext';
 
 
 const getUserRole = async() => {
@@ -18,31 +19,7 @@ const getUserRole = async() => {
 }
 
 const BorrowPage = () => {
-  const [loading, setLoading] = useState(true);
-  const [sessionIsNull, setSessionIsNull] = useState<boolean | null>(null);
-  async function checkSession() {
-    const session = authService.getSession();
-    setSessionIsNull(session === null);
-  }
-  const [userRole, setUserRole] = useState<number | null>(null);
-
-  async function fetchUserRole() {
-    const roleId = await getUserRole();
-    setUserRole(roleId);
-  }
-
-  useEffect(() => {
-    setLoading(true);
-    (async () => {
-      try {
-        await Promise.all([checkSession(), fetchUserRole()]);
-      } catch (error) {
-        console.error("Error in useEffect:", error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+  const { session, userstate, loading, role } = useAuthContext();
 
   return (
   
@@ -107,7 +84,7 @@ const BorrowPage = () => {
 
 
         {/* TODO: Verify this is the actual secure way to hide admin controls */}
-        { ( userRole === 2 ) ? (
+        { ( role === 2 ) ? (
           <DynamicButton buttons={[
             {
               type: 1, // internal
