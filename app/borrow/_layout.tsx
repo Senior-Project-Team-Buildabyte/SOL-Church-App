@@ -11,8 +11,13 @@ export default function RootLayout() {
           headerShown: true,
         }}
       >
+        {/* Main borrow tab */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
+        {/* Explicitly add qr-scanner page */}
+        <Stack.Screen name="qr-scanner" options={{ headerShown: true }} />
       </Stack>
     </SafeAreaProvider>
   );
 }
+

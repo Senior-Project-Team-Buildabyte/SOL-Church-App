@@ -69,6 +69,19 @@ const BorrowPage = () => {
                 },
             ]}/>
 
+            <DynamicButton buttons={[
+                {
+                    type: 1, // internal
+                    shape: 0, // full
+                    buttonConfig: {
+                        text: "QR Code Scanner",
+                        icon: "camera",
+                        internalLink: `../borrow/qr-scanner`,
+                        backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
+                    }
+                },
+            ]}/>
+
 
             {/* TODO: Add actual admin verification here - right now only handles manual IDs */}
             {/* Also, make sure this is the actual secure way to hide admin controls. For now it works */}
