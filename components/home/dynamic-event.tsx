@@ -1,45 +1,68 @@
-import { DynamicButtonProps, GenericButtonConfig } from "@/models/ButtonConfig";
-import { EventData, fetchEventData } from "@/services/eventsService";
-import { Component, useEffect, useState } from "react";
-import { Text, View, StyleSheet, ScrollView, ImageBackground } from "react-native";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import DynamicButton from "../universal/dynamic-button";
 
-
 const DynamicEventSection = () => {
-  const [data, setData] = useState<EventData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [buttons, setButtons] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  return (  
-        <DynamicButton buttons={[
-            {
-                type: 0, // external
-                shape: 0, // full
-                buttonConfig: {
-                    link: "https://sol-tesla.com",
-                    backgroundImage: require('@/assets/images/bg-fundraiser-screenshot.jpg'),
-                 }
-            },
-            {
-                type: 0, // external
-                shape: 0, // full
-                buttonConfig: {
-                    text: "GIVE",
-                    subText: "General & New Building",
-                    icon: "dollar",
-                    link: "https://give.solsacramento.com/",
-                    backgroundGradient: ["0", "rgba(0, 0, 0, 0.9)", "rgba(60,129,246,1)"]
-                 }
-            },
-            {
-                type: 0, // external
-                shape: 0, // full
-                buttonConfig: {
-                    link: "https://solsacramento.churchcenter.com/unproxy/registrations/events/2472901",
-                    backgroundImage: require('@/assets/images/bg-school-btn.jpg'),
-                 }
-            },
-        ]}></DynamicButton>
-      );
+  useEffect(() => {
+    const fetchButtons = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("button_setup")
+          .select(`
+            button_id,
+            type_id,
+            shape_id,
+            button_config:button_config_id(
+              text,
+              sub_text,
+              icon,
+              link,
+              background_color,
+              background_gradient,
+              background_image_id,
+              background_image:background_image_id(image_link)
+            ),
+            page:page_id(page_name)
+          `)
+          .eq("page.page_name", "home");
+
+        if (error) throw error;
+
+        // this transform Supabase response into DynamicButton format
+        const formatted = (data ?? []).map((btn) => ({
+          type: btn.type_id ?? 0,
+          shape: btn.shape_id ?? 0,
+          buttonConfig: {
+            text: btn.button_config?.text,
+            subText: btn.button_config?.sub_text,
+            icon: btn.button_config?.icon,
+            link: btn.button_config?.link,
+            backgroundColor: btn.button_config?.background_color,
+            backgroundGradient: btn.button_config?.background_gradient
+              ? JSON.parse(btn.button_config.background_gradient)
+              : undefined,
+            backgroundImage:
+              btn.button_config?.background_image?.image_link ?? null,
+          },
+        }));
+
+        setButtons(formatted);
+      } catch (err) {
+        console.error("Error loading buttons:", err);
+      } finally {
+        setLoading(false);
+      }
     };
-    
+
+    fetchButtons();
+  }, []);
+
+  if (loading) return null;
+
+  return <DynamicButton buttons={buttons} />;
+};
+
 export default DynamicEventSection;
