@@ -95,10 +95,7 @@ const BorrowPage = () => {
           ]}/>
         ) : null
         }
-        </>
-      )}
-    </View>
-  </View>
+      </View>
   )
 };
 
