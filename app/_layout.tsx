@@ -1,38 +1,21 @@
-import { Href, router, Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import * as Application from "expo-application";
 import HeaderBar from '../components/universal/header-bar';
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
 import { Alert, Platform, View } from "react-native";
-import { supabase } from "@/lib/supabase";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { Session, User } from '@supabase/supabase-js'
+import { useEffect, useRef } from "react";
 import { useAuth } from "@/components/universal/useAuth";
 import { getRouteFromNotificationData, registerForPushAsync, savePushTokenToDB, subscribeNotifications } from "@/services/notifications";
 import * as Notifications from 'expo-notifications';
-import { navigate } from "expo-router/build/global-state/routing";
+import { AuthContext } from '@/context/authContext';
 
 
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
-// Create an auth context so child screens/components can read the session
-const AuthContext = createContext<{
-  session: Session | null,
-  userstate: User | undefined,
-  loading: boolean,
-  role: number }>
-  ({
-    session: null,
-    userstate: undefined,
-    loading: false,
-    role: 3
-  });
-export function useAuthContext() {
-  return useContext(AuthContext);
-}
 
 export default function RootLayout() {
     const { session, userstate, loading, role } = useAuth();
     const responseListener = useRef<Notifications.Subscription | null>(null);
-  const receiveListener = useRef<Notifications.Subscription | null>(null);
+    const receiveListener = useRef<Notifications.Subscription | null>(null);
 
   // const [session, setSession] = useState<Session | null>(null);
   // const [isLoading, setIsLoading] = useState(true);
@@ -109,8 +92,6 @@ export default function RootLayout() {
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <AuthContext.Provider value={{ session, userstate, loading, role }}>
         <View style={{ flex: 1 }}>
-          {/* {session && session.user ? <Stack key={session.user.id} session={session} /> : <Stack />} */}
-
           <Stack screenOptions={{ 
             header: () => <HeaderBar/>,
             headerShown: true }} />
