@@ -6,12 +6,6 @@ import DynamicButton from '@/components/universal/dynamic-button';
 export default function InventoryRequests() {
   return (
     <View style={styles.container}>
-      <Stack.Screen 
-        options={{
-          title: 'Inventory Requests',
-          headerShown: false 
-        }}
-      />
       
       <ImageBackground
         source={require('@/assets/images/bg-mission.jpg')}
