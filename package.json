@@ -51,7 +51,7 @@
     "pod-install": "^0.3.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-native": "0.79.5",
+    "react-native": "0.79.6",
     "react-native-asset": "^2.1.1",
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.24.0",
