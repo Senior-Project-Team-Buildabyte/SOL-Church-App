@@ -39,20 +39,7 @@ const LinkPageButton: FC<GenericButtonConfig> = ({
             }
     };
 
-    const handlePress = () => {
-    if (link) {
-        const fullLink = link.startsWith("http") ? link : `https://${link}`;
-        Linking.canOpenURL(fullLink).then(supported => {
-            if (supported) Linking.openURL(fullLink);
-            else Alert.alert("Error", `Cannot open link: ${fullLink}`);
-        }).catch(err => console.error("Failed to open link:", err));
-    } else if (internalLink) {
-        router.push(internalLink);
-    } else {
-        console.warn("Button has no link or internalLink.");
-    }
-};
-
+    const handlePress = (type === ButtonType.ExternalLink) ? externalPress : internalPress;
 
     const getButtonStyles = () => {
         const isSquare = shape === ButtonShape.Square;
