@@ -1,0 +1,206 @@
+0 verbose cli /usr/bin/node /usr/bin/npm
+1 info using npm@11.6.2
+2 info using node@v24.9.0
+3 silly config load:file:/usr/lib/node_modules/npm/npmrc
+4 silly config load:file:/home/tinker/SOL-Church-App/.npmrc
+5 silly config load:file:/home/tinker/.npmrc
+6 silly config load:file:/etc/npmrc
+7 verbose title npm install
+8 verbose argv "install"
+9 verbose logfile logs-max:10 dir:/home/tinker/.npm/_logs/2025-10-29T05_23_45_700Z-
+10 verbose logfile /home/tinker/.npm/_logs/2025-10-29T05_23_45_700Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly logfile done cleaning log files
+14 silly idealTree buildDeps
+15 silly fetch manifest expo-camera@~16.1.11
+16 silly packumentCache full:https://registry.npmjs.org/expo-camera cache-miss
+17 http cache https://registry.npmjs.org/expo-camera 19ms (cache hit)
+18 silly packumentCache full:https://registry.npmjs.org/expo-camera set size:884859 disposed:false
+19 silly fetch manifest expo@^53.0.23
+20 silly packumentCache full:https://registry.npmjs.org/expo cache-miss
+21 http cache https://registry.npmjs.org/expo 9ms (cache hit)
+22 silly packumentCache full:https://registry.npmjs.org/expo set size:3315920 disposed:false
+23 silly fetch manifest @expo/dom-webview@*
+24 silly packumentCache full:https://registry.npmjs.org/@expo%2fdom-webview cache-miss
+25 http cache https://registry.npmjs.org/@expo%2fdom-webview 3ms (cache hit)
+26 silly packumentCache full:https://registry.npmjs.org/@expo%2fdom-webview set size:236709 disposed:false
+27 silly fetch manifest react@19.0.0
+28 silly packumentCache full:https://registry.npmjs.org/react cache-miss
+29 http cache https://registry.npmjs.org/react 13ms (cache hit)
+30 silly packumentCache full:https://registry.npmjs.org/react set size:6204863 disposed:false
+31 silly fetch manifest react-native@0.79.6
+32 silly packumentCache full:https://registry.npmjs.org/react-native cache-miss
+33 http cache https://registry.npmjs.org/react-native 24ms (cache hit)
+34 silly packumentCache full:https://registry.npmjs.org/react-native set size:14293681 disposed:false
+35 silly fetch manifest @types/react@~19.0.10
+36 silly packumentCache full:https://registry.npmjs.org/@types%2freact cache-miss
+37 http cache https://registry.npmjs.org/@types%2freact 7ms (cache hit)
+38 silly packumentCache full:https://registry.npmjs.org/@types%2freact set size:2504314 disposed:false
+39 silly fetch manifest @expo/metro-runtime@*
+40 silly packumentCache full:https://registry.npmjs.org/@expo%2fmetro-runtime cache-miss
+41 http cache https://registry.npmjs.org/@expo%2fmetro-runtime 5ms (cache hit)
+42 silly packumentCache full:https://registry.npmjs.org/@expo%2fmetro-runtime set size:493879 disposed:false
+43 silly fetch manifest react-dom@19.0.0
+44 silly packumentCache full:https://registry.npmjs.org/react-dom cache-miss
+45 http cache https://registry.npmjs.org/react-dom 22ms (cache hit)
+46 silly packumentCache full:https://registry.npmjs.org/react-dom set size:8104668 disposed:false
+47 silly fetch manifest react-native-webview@13.13.5
+48 silly packumentCache full:https://registry.npmjs.org/react-native-webview cache-miss
+49 http cache https://registry.npmjs.org/react-native-webview 4ms (cache hit)
+50 silly packumentCache full:https://registry.npmjs.org/react-native-webview set size:1350913 disposed:false
+51 silly fetch manifest react-native-web@^0.20.0
+52 silly packumentCache full:https://registry.npmjs.org/react-native-web cache-miss
+53 http cache https://registry.npmjs.org/react-native-web 4ms (cache hit)
+54 silly packumentCache full:https://registry.npmjs.org/react-native-web set size:1090363 disposed:false
+55 silly placeDep ROOT expo-camera@16.1.11 OK for: SolChurchApp@1.0.0 want: ~16.1.11
+56 silly placeDep ROOT react-native@0.79.6 REPLACE for: SolChurchApp@1.0.0 want: 0.79.6
+57 silly fetch manifest glob@^7.1.1
+58 silly packumentCache full:https://registry.npmjs.org/glob cache-miss
+59 silly fetch manifest metro-runtime@^0.82.0
+60 silly packumentCache full:https://registry.npmjs.org/metro-runtime cache-miss
+61 silly fetch manifest metro-source-map@^0.82.0
+62 silly packumentCache full:https://registry.npmjs.org/metro-source-map cache-miss
+63 silly fetch manifest flow-enums-runtime@^0.0.6
+64 silly packumentCache full:https://registry.npmjs.org/flow-enums-runtime cache-miss
+65 silly fetch manifest @react-native/js-polyfills@0.79.6
+66 silly packumentCache full:https://registry.npmjs.org/@react-native%2fjs-polyfills cache-miss
+67 silly fetch manifest @react-native/gradle-plugin@0.79.6
+68 silly packumentCache full:https://registry.npmjs.org/@react-native%2fgradle-plugin cache-miss
+69 silly fetch manifest @react-native/assets-registry@0.79.6
+70 silly packumentCache full:https://registry.npmjs.org/@react-native%2fassets-registry cache-miss
+71 silly fetch manifest @react-native/virtualized-lists@0.79.6
+72 silly packumentCache full:https://registry.npmjs.org/@react-native%2fvirtualized-lists cache-miss
+73 silly fetch manifest @react-native/community-cli-plugin@0.79.6
+74 silly packumentCache full:https://registry.npmjs.org/@react-native%2fcommunity-cli-plugin cache-miss
+75 http cache https://registry.npmjs.org/metro-runtime 10ms (cache hit)
+76 silly packumentCache full:https://registry.npmjs.org/metro-runtime set size:195378 disposed:false
+77 http cache https://registry.npmjs.org/glob 14ms (cache hit)
+78 silly packumentCache full:https://registry.npmjs.org/glob set size:408718 disposed:false
+79 http cache https://registry.npmjs.org/flow-enums-runtime 17ms (cache hit)
+80 silly packumentCache full:https://registry.npmjs.org/flow-enums-runtime set size:20749 disposed:false
+81 http cache https://registry.npmjs.org/metro-source-map 18ms (cache hit)
+82 silly packumentCache full:https://registry.npmjs.org/metro-source-map set size:404028 disposed:false
+83 http cache https://registry.npmjs.org/@react-native%2fcommunity-cli-plugin 24ms (cache hit)
+84 silly packumentCache full:https://registry.npmjs.org/@react-native%2fcommunity-cli-plugin set size:1994779 disposed:false
+85 http cache https://registry.npmjs.org/@react-native%2fgradle-plugin 36ms (cache hit)
+86 silly packumentCache full:https://registry.npmjs.org/@react-native%2fgradle-plugin set size:1632024 disposed:false
+87 http cache https://registry.npmjs.org/@react-native%2fjs-polyfills 51ms (cache hit)
+88 silly packumentCache full:https://registry.npmjs.org/@react-native%2fjs-polyfills set size:1498223 disposed:false
+89 http cache https://registry.npmjs.org/@react-native%2fassets-registry 60ms (cache hit)
+90 silly packumentCache full:https://registry.npmjs.org/@react-native%2fassets-registry set size:1502214 disposed:false
+91 http cache https://registry.npmjs.org/@react-native%2fvirtualized-lists 69ms (cache hit)
+92 silly packumentCache full:https://registry.npmjs.org/@react-native%2fvirtualized-lists set size:1835745 disposed:false
+93 silly fetch manifest @expo/ngrok-bin-darwin-arm64@2.3.41
+94 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-darwin-arm64 cache-miss
+95 http cache https://registry.npmjs.org/@expo%2fngrok-bin-darwin-arm64 2ms (cache hit)
+96 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-darwin-arm64 set size:10476 disposed:false
+97 silly fetch manifest @expo/ngrok-bin-darwin-x64@2.3.41
+98 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-darwin-x64 cache-miss
+99 http cache https://registry.npmjs.org/@expo%2fngrok-bin-darwin-x64 1ms (cache hit)
+100 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-darwin-x64 set size:14046 disposed:false
+101 silly fetch manifest @expo/ngrok-bin-freebsd-ia32@2.3.41
+102 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-freebsd-ia32 cache-miss
+103 http cache https://registry.npmjs.org/@expo%2fngrok-bin-freebsd-ia32 2ms (cache hit)
+104 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-freebsd-ia32 set size:14131 disposed:false
+105 silly fetch manifest @expo/ngrok-bin-freebsd-x64@2.3.41
+106 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-freebsd-x64 cache-miss
+107 http cache https://registry.npmjs.org/@expo%2fngrok-bin-freebsd-x64 2ms (cache hit)
+108 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-freebsd-x64 set size:14088 disposed:false
+109 silly fetch manifest @expo/ngrok-bin-linux-arm@2.3.41
+110 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-linux-arm cache-miss
+111 http cache https://registry.npmjs.org/@expo%2fngrok-bin-linux-arm 1ms (cache hit)
+112 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-linux-arm set size:14003 disposed:false
+113 silly fetch manifest @expo/ngrok-bin-linux-arm64@2.3.41
+114 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-linux-arm64 cache-miss
+115 http cache https://registry.npmjs.org/@expo%2fngrok-bin-linux-arm64 1ms (cache hit)
+116 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-linux-arm64 set size:14089 disposed:false
+117 silly fetch manifest @expo/ngrok-bin-linux-ia32@2.3.41
+118 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-linux-ia32 cache-miss
+119 http cache https://registry.npmjs.org/@expo%2fngrok-bin-linux-ia32 6ms (cache hit)
+120 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-linux-ia32 set size:14048 disposed:false
+121 silly fetch manifest @expo/ngrok-bin-sunos-x64@2.3.41
+122 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-sunos-x64 cache-miss
+123 http cache https://registry.npmjs.org/@expo%2fngrok-bin-sunos-x64 1ms (cache hit)
+124 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-sunos-x64 set size:14003 disposed:false
+125 silly fetch manifest @expo/ngrok-bin-win32-ia32@2.3.41
+126 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-win32-ia32 cache-miss
+127 http cache https://registry.npmjs.org/@expo%2fngrok-bin-win32-ia32 1ms (cache hit)
+128 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-win32-ia32 set size:15862 disposed:false
+129 silly fetch manifest @expo/ngrok-bin-win32-x64@2.3.41
+130 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-win32-x64 cache-miss
+131 http cache https://registry.npmjs.org/@expo%2fngrok-bin-win32-x64 1ms (cache hit)
+132 silly packumentCache full:https://registry.npmjs.org/@expo%2fngrok-bin-win32-x64 set size:15814 disposed:false
+133 silly placeDep ROOT @expo/ngrok-bin-darwin-arm64@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+134 silly placeDep ROOT @expo/ngrok-bin-darwin-x64@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+135 silly placeDep ROOT @expo/ngrok-bin-freebsd-ia32@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+136 silly placeDep ROOT @expo/ngrok-bin-freebsd-x64@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+137 silly placeDep ROOT @expo/ngrok-bin-linux-arm@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+138 silly placeDep ROOT @expo/ngrok-bin-linux-arm64@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+139 silly placeDep ROOT @expo/ngrok-bin-linux-ia32@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+140 silly placeDep ROOT @expo/ngrok-bin-sunos-x64@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+141 silly placeDep ROOT @expo/ngrok-bin-win32-ia32@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+142 silly placeDep ROOT @expo/ngrok-bin-win32-x64@2.3.41 OK for: @expo/ngrok-bin@2.3.42 want: 2.3.41
+143 silly fetch manifest react-native-modal@>=11.5.4
+144 silly packumentCache full:https://registry.npmjs.org/react-native-modal cache-miss
+145 http cache https://registry.npmjs.org/react-native-modal 2ms (cache hit)
+146 silly packumentCache full:https://registry.npmjs.org/react-native-modal set size:317184 disposed:false
+147 silly fetch manifest react@*
+148 silly packumentCache full:https://registry.npmjs.org/react cache-miss
+149 http cache https://registry.npmjs.org/react 13ms (cache hit)
+150 silly packumentCache full:https://registry.npmjs.org/react set size:6204863 disposed:false
+151 silly fetch manifest react-native@*
+152 silly packumentCache full:https://registry.npmjs.org/react-native cache-miss
+153 http cache https://registry.npmjs.org/react-native 34ms (cache hit)
+154 silly packumentCache full:https://registry.npmjs.org/react-native set size:14293681 disposed:false
+155 silly fetch manifest @types/react@^19.1.1
+156 silly packumentCache full:https://registry.npmjs.org/@types%2freact cache-miss
+157 http cache https://registry.npmjs.org/@types%2freact 6ms (cache hit)
+158 silly packumentCache full:https://registry.npmjs.org/@types%2freact set size:2504314 disposed:false
+159 verbose stack Error: could not resolve
+159 verbose stack     at PlaceDep.failPeerConflict (/usr/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:503:25)
+159 verbose stack     at new PlaceDep (/usr/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/place-dep.js:157:21)
+159 verbose stack     at #buildDepStep (/usr/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:945:18)
+159 verbose stack     at async Arborist.buildIdealTree (/usr/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:182:7)
+159 verbose stack     at async Promise.all (index 1)
+159 verbose stack     at async Arborist.reify (/usr/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/reify.js:114:5)
+159 verbose stack     at async Install.exec (/usr/lib/node_modules/npm/lib/commands/install.js:150:5)
+159 verbose stack     at async Npm.exec (/usr/lib/node_modules/npm/lib/npm.js:208:9)
+159 verbose stack     at async module.exports (/usr/lib/node_modules/npm/lib/cli/entry.js:67:5)
+160 error code ERESOLVE
+161 error ERESOLVE could not resolve
+162 error
+163 error While resolving: @hcaptcha/react-native-hcaptcha@2.0.5
+163 error Found: react-native-modal@14.0.0-rc.1[2m[22m
+163 error [2mnode_modules/react-native-modal[22m
+163 error   react-native-modal@"^14.0.0-rc.1" from the root project
+163 error
+163 error Could not resolve dependency:
+163 error [95mpeer[39m react-native-modal@">=11.5.4" from @hcaptcha/react-native-hcaptcha@2.0.5[2m[22m
+163 error [2mnode_modules/@hcaptcha/react-native-hcaptcha[22m
+163 error   @hcaptcha/react-native-hcaptcha@"^2.0.5" from the root project
+163 error
+163 error Conflicting peer dependency: react-native-modal@13.0.1[2m[22m
+163 error [2mnode_modules/react-native-modal[22m
+163 error   [95mpeer[39m react-native-modal@">=11.5.4" from @hcaptcha/react-native-hcaptcha@2.0.5[2m[22m
+163 error   [2mnode_modules/@hcaptcha/react-native-hcaptcha[22m
+163 error     @hcaptcha/react-native-hcaptcha@"^2.0.5" from the root project
+163 error
+163 error Fix the upstream dependency conflict, or retry
+163 error this command with --force or --legacy-peer-deps
+163 error to accept an incorrect (and potentially broken) dependency resolution.
+164 error
+164 error
+164 error For a full report see:
+164 error /home/tinker/.npm/_logs/2025-10-29T05_23_45_700Z-eresolve-report.txt
+165 silly unfinished npm timer reify 1761715425840
+166 silly unfinished npm timer reify:loadTrees 1761715425841
+167 silly unfinished npm timer idealTree:buildDeps 1761715426693
+168 silly unfinished npm timer idealTree:node_modules/@hcaptcha/react-native-hcaptcha 1761715427165
+169 verbose cwd /home/tinker/SOL-Church-App
+170 verbose os Linux 6.17.5-2-cachyos
+171 verbose node v24.9.0
+172 verbose npm  v11.6.2
+173 verbose exit 1
+174 verbose code 1
+175 error A complete log of this run can be found in: /home/tinker/.npm/_logs/2025-10-29T05_23_45_700Z-debug-0.log
