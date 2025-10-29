@@ -51,23 +51,19 @@ const BorrowPage = () => {
 
     </ImageBackground>
 
-    <View style={styles.buttons}>
-      {loading ? (
-        <ActivityIndicator color="#bbb" />
-      ) : (
-        <>
-        <DynamicButton buttons={[
-          {
-            type: 1, // internal
-            shape: 0, // full
-            buttonConfig: {
-                text: "Borrow an Item",
-                icon: "shopping-basket",
-                internalLink: `../borrow/borrowItems`,
-                backgroundGradient: ["0", "rgba(60,129,246,1)", "rgba(149, 185, 247, 1)"]
-            }
-          },
-        ]}/>
+            <DynamicButton buttons={[
+                {
+                    type: 1, // internal
+                    shape: 0, // full
+                    buttonConfig: {
+                        text: "QR Code Scanner",
+                        icon: "camera",
+                        internalLink: `../borrow/qr-scanner`,
+                        backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
+                    }
+                },
+            ]}/>
+
 
         <DynamicButton buttons={[
           {
