@@ -27,11 +27,11 @@ const DynamicEventSection = () => {
             ),
             page:page_id(page_name)
           `)
-          .eq("page.page_name", "home");
+          .eq("page.page_name", "home")
+          .eq("type_id", 0); // only type 0 for events
 
         if (error) throw error;
 
-        // this transform Supabase response into DynamicButton format
         const formatted = (data ?? []).map((btn) => ({
           type: btn.type_id ?? 0,
           shape: btn.shape_id ?? 0,
@@ -51,7 +51,7 @@ const DynamicEventSection = () => {
 
         setButtons(formatted);
       } catch (err) {
-        console.error("Error loading buttons:", err);
+        console.error("Error loading event buttons:", err);
       } finally {
         setLoading(false);
       }

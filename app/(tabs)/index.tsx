@@ -22,7 +22,7 @@ export default function Index() {
       <ImageSlider></ImageSlider>
       <View style={styles.container}>
         <DynamicEventSection></DynamicEventSection>
-        <ContactsIcons></ContactsIcons> 
+	<ContactsIcons></ContactsIcons> 
         <Resources></Resources>
       </View>
     </ScrollView>
