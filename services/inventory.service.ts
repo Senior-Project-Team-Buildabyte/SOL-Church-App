@@ -1,52 +1,72 @@
+// inventory.service.ts
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../src/types/database.types';
 
-// Create a typed Supabase client
-const supabase = createClient<Database>(
-  process.env.EXPO_PUBLIC_SUPABASE_URL || '',
-  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || ''
-);
+// --- Env + client ------------------------------------------------------------
+const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
+const anon = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!url) {
+  throw new Error(
+    'Missing EXPO_PUBLIC_SUPABASE_URL. Set it in .env.development (or .env) before running the app.'
+  );
+}
+if (!anon) {
+  throw new Error(
+    'Missing EXPO_PUBLIC_SUPABASE_ANON_KEY. Set it in .env.development (or .env) before running the app.'
+  );
+}
+
+const supabase = createClient<Database>(url, anon);
+
+// --- Types -------------------------------------------------------------------
+const INVENTORY_TABLE = 'inventory_items' as const;
 
 type Item = Database['public']['Tables']['inventory_items']['Row'];
 type ItemInsert = Database['public']['Tables']['inventory_items']['Insert'];
 type ItemUpdate = Database['public']['Tables']['inventory_items']['Update'];
 
-// Helper type for item quantity updates
 type ItemQuantityUpdate = {
   id: number;
   quantity: number;
 };
 
+// --- Service -----------------------------------------------------------------
 export const inventoryService = {
-  // Get a single item by ID
+  /** Get a single item by ID */
   getItemById: async (id: number): Promise<Item> => {
-    const { data, error } = await (supabase as any)
-      .from('items')
+    const { data, error } = await supabase
+      .from(INVENTORY_TABLE)
       .select('*')
       .eq('id', id)
       .single();
-    
+
     if (error || !data) {
       throw new Error(error?.message || `Item with ID ${id} not found`);
     }
-    
     return data as Item;
   },
 
-  // Get all items with optional filters
+  /**
+   * Get items with optional filters
+   * - availableOnly: requires is_available = true AND quantity_available > 0
+   * - searchTerm: case-insensitive match on item_name
+   * - categoryId: exact match on category_id
+   */
   getItems: async (filters: {
     availableOnly?: boolean;
     searchTerm?: string;
     categoryId?: number;
   } = {}): Promise<Item[]> => {
-    let query = supabase.from('inventory_items').select('*');
+    let query = supabase.from(INVENTORY_TABLE).select('*');
 
     if (filters.availableOnly) {
-      query = query.gt('quantity_available', 0);
+      // treat "available" as both flag + stock
+      query = query.eq('is_available', true).gt('quantity_available', 0);
     }
 
-    if (filters.searchTerm) {
-      query = query.ilike('item_name', `%${filters.searchTerm}%`);
+    if (filters.searchTerm?.trim()) {
+      query = query.ilike('item_name', `%${filters.searchTerm.trim()}%`);
     }
 
     if (filters.categoryId) {
@@ -54,107 +74,157 @@ export const inventoryService = {
     }
 
     const { data, error } = await query.order('item_name', { ascending: true });
-    
     if (error) throw error;
-    return data || [];
+    return (data ?? []) as Item[];
   },
 
-  // Get item by ID
+  /** Shortcut: list only available items */
+  listAvailableItems: async (): Promise<Item[]> => {
+    const { data, error } = await supabase
+      .from(INVENTORY_TABLE)
+      .select('*')
+      .eq('is_available', true)
+      .gt('quantity_available', 0)
+      .order('item_name', { ascending: true });
+
+    if (error) throw error;
+    return (data ?? []) as Item[];
+  },
+
+  /** Get item by ID (alias kept for backwards compatibility) */
   getItem: async (id: number): Promise<Item> => {
     const { data, error } = await supabase
-      .from('inventory_items')
+      .from(INVENTORY_TABLE)
       .select('*')
       .eq('id', id)
       .single();
-    
+
     if (error) throw error;
-    return data;
+    return data as Item;
   },
 
-  // Create new item
+  /** Create an item */
   createItem: async (item: ItemInsert): Promise<Item> => {
     const { data, error } = await supabase
-      .from('inventory_items')
-      .insert(item as any) // Type assertion to bypass type checking
+      .from(INVENTORY_TABLE)
+      .insert(item as any)
       .select()
       .single();
-    
+
     if (error || !data) {
       throw new Error(error?.message || 'Failed to create item');
     }
     return data as Item;
   },
 
-  // Update item
+  /** Update an item (auto-stamps updated_at) */
   updateItem: async (id: number, updates: Partial<Item>): Promise<Item> => {
-    const updateData = {
-      ...updates,
-      updated_at: new Date().toISOString()
+    const updateData: ItemUpdate = {
+      ...(updates as ItemUpdate),
+      updated_at: new Date().toISOString(),
     };
-    
-    const { data, error } = await (supabase as any)
-      .from('inventory_items')
+
+    const { data, error } = await supabase
+      .from(INVENTORY_TABLE)
       .update(updateData)
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error || !data) {
       throw new Error(error?.message || 'Failed to update item');
     }
     return data as Item;
   },
 
-  // Delete item
+  /** Delete an item */
   deleteItem: async (id: number): Promise<void> => {
-    const { error } = await supabase
-      .from('inventory_items')
-      .delete()
-      .eq('id', id);
-    
+    const { error } = await supabase.from(INVENTORY_TABLE).delete().eq('id', id);
     if (error) throw error;
   },
 
-  // Checkout items (decrease quantity)
+  // --- Availability controls -------------------------------------------------
+
+  /** Set item availability flag explicitly */
+  setItemAvailability: async (id: number, is_available: boolean): Promise<Item> => {
+    const { data, error } = await supabase
+      .from(INVENTORY_TABLE)
+      .update({ is_available, updated_at: new Date().toISOString() } as ItemUpdate)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error || !data) {
+      throw new Error(error?.message || 'Failed to update availability');
+    }
+    return data as Item;
+  },
+
+  /** Toggle availability and return the updated row */
+  toggleItemAvailability: async (id: number): Promise<Item> => {
+    const current = await inventoryService.getItemById(id);
+    return inventoryService.setItemAvailability(id, !current.is_available);
+  },
+
+  // --- Quantity mutations (via RPC) -----------------------------------------
+
+  /** Checkout items: decreases quantity atomically via RPC */
   checkoutItems: async (items: ItemQuantityUpdate[]): Promise<Item[]> => {
-    return await Promise.all(
+    return Promise.all(
       items.map(async ({ id, quantity }) => {
-        // Use a stored procedure for atomic updates
-        const { data: updatedItem, error } = await (supabase.rpc as any)('decrease_item_quantity', {
-          item_id: id,
-          amount: quantity
-        });
-        
+        const { data: updatedItem, error } = await (supabase.rpc as any)(
+          'decrease_item_quantity',
+          { item_id: id, amount: quantity }
+        );
         if (error) throw error;
+
+        // Optional: if an item is now 0, mark unavailable
+        if (updatedItem?.quantity_available === 0 && updatedItem?.id) {
+          try {
+            await inventoryService.setItemAvailability(updatedItem.id, false);
+          } catch {
+            // ignore availability flip failures; quantity already updated
+          }
+        }
+
         return updatedItem as Item;
       })
     );
   },
 
-  // Return items (increase quantity)
+  /** Return items: increases quantity atomically via RPC */
   returnItems: async (items: ItemQuantityUpdate[]): Promise<Item[]> => {
-    return await Promise.all(
+    return Promise.all(
       items.map(async ({ id, quantity }) => {
-        // Use a stored procedure for atomic updates
-        const { data: updatedItem, error } = await (supabase.rpc as any)('increase_item_quantity', {
-          item_id: id,
-          amount: quantity
-        });
-        
+        const { data: updatedItem, error } = await (supabase.rpc as any)(
+          'increase_item_quantity',
+          { item_id: id, amount: quantity }
+        );
         if (error) throw error;
+
+        // Optional: if an item was out and is now > 0, mark available
+        if (updatedItem?.quantity_available > 0 && updatedItem?.id) {
+          try {
+            await inventoryService.setItemAvailability(updatedItem.id, true);
+          } catch {
+            // ignore availability flip failures
+          }
+        }
+
         return updatedItem as Item;
       })
     );
   },
 
-  // Get all categories
+  // --- Categories ------------------------------------------------------------
+
   getCategories: async () => {
     const { data, error } = await supabase
       .from('item_category')
       .select('*')
       .order('item_category_name', { ascending: true });
-    
+
     if (error) throw error;
     return data || [];
-  }
+  },
 };

@@ -256,14 +256,16 @@ export type Database = {
           deleted_by_id: string | null
           deleted_date: string | null
           inventory_item_id: number
+          is_available: boolean
           item_barcode: string | null
           item_category_id: number | null
           item_description: string | null
           item_image_id: number | null
           item_location: string | null
           item_name: string
-          quanityAvailable: number | null
-          quanityTotal: number | null
+          quantity_available: number | null
+          quantity_total: number | null
+          updated_at: string | null
         }
         Insert: {
           created_by_id?: string | null
@@ -271,14 +273,16 @@ export type Database = {
           deleted_by_id?: string | null
           deleted_date?: string | null
           inventory_item_id?: number
+          is_available?: boolean
           item_barcode?: string | null
           item_category_id?: number | null
           item_description?: string | null
           item_image_id?: number | null
           item_location?: string | null
           item_name: string
-          quanityAvailable?: number | null
-          quanityTotal?: number | null
+          quantity_available?: number | null
+          quantity_total?: number | null
+          updated_at?: string | null
         }
         Update: {
           created_by_id?: string | null
@@ -286,14 +290,16 @@ export type Database = {
           deleted_by_id?: string | null
           deleted_date?: string | null
           inventory_item_id?: number
+          is_available?: boolean
           item_barcode?: string | null
           item_category_id?: number | null
           item_description?: string | null
           item_image_id?: number | null
           item_location?: string | null
           item_name?: string
-          quanityAvailable?: number | null
-          quanityTotal?: number | null
+          quantity_available?: number | null
+          quantity_total?: number | null
+          updated_at?: string | null
         }
         Relationships: [
           {
