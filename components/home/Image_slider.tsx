@@ -12,7 +12,7 @@ const ImageSlider: React.FC = () => {
     useEffect(() => {
         const loadImages = async () => {
             try {
-                const sliderImages = await fetchSliderImages('/images');
+                const sliderImages = await fetchSliderImages();
                 setImages(sliderImages); 
             } catch (error) {
                 console.error('Error fetching image:', error);
@@ -44,9 +44,9 @@ const ImageSlider: React.FC = () => {
                 scrollEventThrottle={16}
                 style={styles.scrollView}
             >
-                {images.map((image) => (
+                {images.map((image, index) => (
                     <Image
-                        key={image.id}
+                        key={`slider-${image.id}-${index}`}
                         source={image.image}
                         style={styles.image}
                         resizeMode="cover"
@@ -57,7 +57,7 @@ const ImageSlider: React.FC = () => {
             <View style={styles.toggleContainer}>
                 {images.map((_, index) => (
                     <TouchableOpacity
-                        key={index}
+                        key={`dot-${index}`}
                         style={[
                             styles.toggleItem,
                             index === activeIndex && styles.activeToggleItem

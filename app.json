@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.SolChurchApp"
+      "package": "com.anonymous.SolChurchApp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -47,9 +48,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "c718e33c-a471-43c9-8d85-91ddf33879d4"
+        "projectId": "e28765fb-9481-4636-8705-1fdf82a28428"
       }
     },
-    "owner": ""
+    "owner": "buildabyte"
   }
 }
