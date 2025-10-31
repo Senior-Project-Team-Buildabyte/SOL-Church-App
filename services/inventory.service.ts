@@ -38,7 +38,7 @@ export const inventoryService = {
     const { data, error } = await supabase
       .from(INVENTORY_TABLE)
       .select('*')
-      .eq('id', id)
+      .eq('inventory_item_id', id)
       .single();
 
     if (error || !data) {
@@ -70,7 +70,7 @@ export const inventoryService = {
     }
 
     if (filters.categoryId) {
-      query = query.eq('category_id', filters.categoryId);
+      query = query.eq('item_category_id', filters.categoryId);
     }
 
     const { data, error } = await query.order('item_name', { ascending: true });
@@ -96,7 +96,7 @@ export const inventoryService = {
     const { data, error } = await supabase
       .from(INVENTORY_TABLE)
       .select('*')
-      .eq('id', id)
+      .eq('inventory_item_id', id)
       .single();
 
     if (error) throw error;
@@ -127,7 +127,7 @@ export const inventoryService = {
     const { data, error } = await supabase
       .from(INVENTORY_TABLE)
       .update(updateData)
-      .eq('id', id)
+      .eq('inventory_item_id', id)
       .select()
       .single();
 
@@ -139,7 +139,7 @@ export const inventoryService = {
 
   /** Delete an item */
   deleteItem: async (id: number): Promise<void> => {
-    const { error } = await supabase.from(INVENTORY_TABLE).delete().eq('id', id);
+    const { error } = await supabase.from(INVENTORY_TABLE).delete().eq('inventory_item_id', id);
     if (error) throw error;
   },
 
@@ -150,7 +150,7 @@ export const inventoryService = {
     const { data, error } = await supabase
       .from(INVENTORY_TABLE)
       .update({ is_available, updated_at: new Date().toISOString() } as ItemUpdate)
-      .eq('id', id)
+      .eq('inventory_item_id', id)
       .select()
       .single();
 
