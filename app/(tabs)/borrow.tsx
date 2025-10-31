@@ -22,80 +22,85 @@ const BorrowPage = () => {
   const { session, userstate, loading, role } = useAuthContext();
 
   return (
-  
-  <View style={styles.container}>
-    <ImageBackground
-    source={require('@/assets/images/bg-mission.jpg')}
-    style={styles.frontimage}
-    resizeMode="cover">
+    <View style={styles.container}>
+      <ImageBackground
+      source={require('@/assets/images/bg-mission.jpg')}
+      style={styles.frontimage}
+      resizeMode="cover">
 
-      <View style={styles.headingWrapper}>
-        <LinearGradient
-          style={[ styles.pageHeading ]}
-          colors={["rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]}
-          {...{
-          start: { x: 0, y: 0.5 },
-          end: { x: 1, y: 0.5 },    
-          }}
-        >
-          <ImageBackground
-          source={require('@/assets/images/favicon-drop.png')}
-          style={ [{height: '100%'}, {aspectRatio: 1},] }
-          resizeMode="cover">
-          </ImageBackground>
+        <View style={styles.headingWrapper}>
+          <LinearGradient
+            style={[ styles.pageHeading ]}
+            colors={["rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]}
+            {...{
+            start: { x: 0, y: 0.5 },
+            end: { x: 1, y: 0.5 },    
+            }}
+          >
+            <ImageBackground
+            source={require('@/assets/images/favicon-drop.png')}
+            style={ [{height: '100%'}, {aspectRatio: 1},] }
+            resizeMode="cover">
+            </ImageBackground>
 
-          <Text style={styles.headingText}>SOL Inventory</Text>
+            <Text style={styles.headingText}>SOL Inventory</Text>
 
-        </LinearGradient>
-      </View>
+          </LinearGradient>
+        </View>
 
-    </ImageBackground>
+      </ImageBackground>
 
-            <DynamicButton buttons={[
-                {
-                    type: 1, // internal
-                    shape: 0, // full
-                    buttonConfig: {
-                        text: "QR Code Scanner",
-                        icon: "camera",
-                        internalLink: `../borrow/qr-scanner`,
-                        backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
-                    }
-                },
-            ]}/>
-
-
-        <DynamicButton buttons={[
-          {
-            type: 1, // internal
-            shape: 0, // full
-            buttonConfig: {
-              text: "Return Items",
-              icon: "undo",
-              internalLink: `../borrow/returnItems`,
-              backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
-            }
-          },
-        ]}/>
-
-
-        {/* TODO: Verify this is the actual secure way to hide admin controls */}
-        { ( role === 2 ) ? (
+      <View style={styles.buttons}>
+        {loading ? (
+          <ActivityIndicator color="#bbb" />
+        ) : (
+          <>
           <DynamicButton buttons={[
             {
               type: 1, // internal
               shape: 0, // full
               buttonConfig: {
-                text: "Inventory Requests",
-                icon: "bell",
-                internalLink: `../admin/inventory_requests`,
+                text: "QR Code Scanner",
+                icon: "camera",
+                internalLink: `../borrow/qr-scanner`,
                 backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
               }
             },
           ]}/>
-        ) : null
-        }
+
+          <DynamicButton buttons={[
+            {
+              type: 1, // internal
+              shape: 0, // full
+              buttonConfig: {
+                text: "Return Items",
+                icon: "undo",
+                internalLink: `../borrow/returnItems`,
+                backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
+              }
+            },
+          ]}/>
+
+          {/* TODO: Verify this is the actual secure way to hide admin controls */}
+          { ( role === 2 ) ? (
+            <DynamicButton buttons={[
+              {
+                type: 1, // internal
+                shape: 0, // full
+                buttonConfig: {
+                  text: "Inventory Requests",
+                  icon: "bell",
+                  internalLink: `../admin/inventory_requests`,
+                  backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
+                }
+              },
+            ]}/>
+          ) : null
+          }
+          </>
+        )}
       </View>
+    </View>
   )
 };
 
