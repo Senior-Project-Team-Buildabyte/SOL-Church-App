@@ -1,15 +1,15 @@
 import { Stack } from "expo-router";
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
 import { View } from "react-native";
-import AuthHeaderBar from "@/components/universal/auth-header";
+import BackHeaderBar from "@/components/universal/header-back-button";
 
-export default function RootLayout() {
+export default function HomeLayout() {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <View style={{ flex: 1 }}>
         <Stack.Screen options={{ headerShown: false }} />
         <Stack screenOptions={{ 
-          header: () => <AuthHeaderBar/>,
+          header: () => <BackHeaderBar/>,
           headerShown: true }} />
       </View>
     </SafeAreaProvider>

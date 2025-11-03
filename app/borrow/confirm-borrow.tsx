@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, FlatList, Button, StyleSheet } from "rea
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { supabase } from "../../lib/supabase";
 import { requestService } from '../../services/request.service';
-import AuthHeaderBar from '../../components/universal/auth-header';
+import BackHeaderBar from '../../components/universal/header-back-button';
 
 type DBItem = {
     inventory_item_id: number;
@@ -114,7 +114,7 @@ const ConfirmBorrow = () => {
 
     return (
         <View style={styles.container}>
-            <AuthHeaderBar />
+            <BackHeaderBar />
             <Text style={styles.header}>Confirm Borrow</Text>
             {error ? <Text style={styles.error}>{error}</Text> : null}
 
