@@ -17,6 +17,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useState } from "react";
 import { useAuth } from "@/components/universal/useAuth";
 import { authService } from "@/services/auth.service";
+import { useAuthContext } from "@/context/authContext";
 
 type SettingItem = {
   id: string;
@@ -163,7 +164,7 @@ const SettingRow = ({ label, desc, icon, onPress }: SettingItem) => (
 
 
 export default function SettingsScreen() {
-  const { session, userstate, loading } = useAuth();
+  const { session, userstate, loading } = useAuthContext();
   const [confirmSignOutVisible, setConfirmSignOutVisible] = useState(false);
   const [signOutVisible, setSignOutVisible] = useState(false);
   const [loginVisible, setLoginVisible] = useState(false);
