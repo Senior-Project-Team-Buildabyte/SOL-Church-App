@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { Alert, Pressable } from "react-native";
-import Login from "../app/[auth]/login";
+import Login from "../../app/[auth]/login";
 
 // Local mocks 
 jest.mock("expo-router", () => {
