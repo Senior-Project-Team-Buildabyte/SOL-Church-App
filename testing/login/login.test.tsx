@@ -18,7 +18,7 @@ jest.mock("@/services/auth.service", () => ({
   },
 }));
 
-jest.mock("../lib/supabase", () => ({
+jest.mock("../../lib/supabase", () => ({
   supabase: {
     auth: {
       startAutoRefresh: jest.fn(),
