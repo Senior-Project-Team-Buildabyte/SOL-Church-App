@@ -9,7 +9,7 @@ type DBItem = {
     inventory_item_id: number;
     item_name: string;
     item_image_id: number | null;
-    quantity_available: number;
+    quanityAvailable: number;
 };
 
 const ConfirmBorrow = () => {
@@ -44,7 +44,7 @@ const ConfirmBorrow = () => {
                 setLoading(true);
                 const { data, error } = await supabase
                     .from("inventory_items")
-                    .select("inventory_item_id, item_name, item_image_id, quantity_available")
+                    .select("inventory_item_id, item_name, item_image_id, quanityAvailable")
                     .in("inventory_item_id", ids)
                     .returns<DBItem[]>();
 
@@ -129,7 +129,7 @@ const ConfirmBorrow = () => {
                 renderItem={({ item }) => (
                     <View style={styles.itemRow}>
                         <Text style={styles.itemName}>{item.item_name}</Text>
-                        <Text style={styles.itemQty}>Available: {item.quantity_available}</Text>
+                        <Text style={styles.itemQty}>Available: {item.quanityAvailable}</Text>
                     </View>
                 )}
                 ListEmptyComponent={() => (

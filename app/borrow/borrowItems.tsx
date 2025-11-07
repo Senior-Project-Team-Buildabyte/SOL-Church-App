@@ -37,7 +37,7 @@ type DBInventoryItem = {
   items_images: { image_link: string } | null; // alias for FK join result
   // availability
   is_available: boolean;
-  quantity_available: number | null;
+  quanityAvailable: number | null;
 };
 
 /** =========================
@@ -108,24 +108,24 @@ const BorrowTakeItems = () => {
         item_image_id,
         item_category_id,
         is_available,
-        quantity_available,
+        quanityAvailable,
         item_category:item_category_id(item_category_id,item_category_name),
         items_images:inventory_items_item_image_id_fkey(image_link)
       `
       )
       .eq("is_available", true) // only items marked available
-      .gt("quantity_available", 0) // and with stock
+      .gt("quanityAvailable", 0) // and with stock
       .not("item_name", "is", null);
 
     if (error) throw error;
 
-    const formatted: Item[] = (data as DBInventoryItem[]).map((row) => ({
+    const formatted: Item[] = (data as unknown as DBInventoryItem[]).map((row) => ({
       id: String(row.inventory_item_id),
       name: row.item_name,
       imageUrl: row.items_images?.image_link ?? null,
       category: row.item_category?.item_category_name ?? "Other",
       categoryId: row.item_category_id ? String(row.item_category_id) : "other",
-      isAvailable: row.is_available && (row.quantity_available ?? 0) > 0,
+      isAvailable: row.is_available && (row.quanityAvailable ?? 0) > 0,
       // you can replace this with a real created_date if you later expose it
       addedDate: new Date().toLocaleDateString("en-US", {
         year: "numeric",
