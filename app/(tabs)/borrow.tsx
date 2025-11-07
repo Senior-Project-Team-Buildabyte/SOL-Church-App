@@ -80,7 +80,7 @@ const BorrowPage = () => {
                 buttonConfig: {
                   text: "Manage Items (Admin)",
                   icon: "cog",
-                  internalLink: `../borrow/admin-borrow`,
+                  internalLink: `../admin/admin-borrow`,
                   backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
                 }
               },
