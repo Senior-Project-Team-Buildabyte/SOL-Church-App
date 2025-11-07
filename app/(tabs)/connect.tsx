@@ -35,7 +35,7 @@ const bigBoxItems = [
   { image: images.membershipIcon, url: 'https://solsacramento.churchcenter.com/people/forms/581714' },
   { image: images.baptismIcon, url: 'https://solsacramento.churchcenter.com/people/forms/460975' },
   { image: images.serveIcon, url: 'https://solsacramento.churchcenter.com/people/forms/708470' },
-  { image: images.childIcon, url: 'https://solsacramento.churchcenter.com/people/forms/589043' },
+  { image: images.childIcon, url: 'https://solsacramento.churchcenter.com/people/forms/462592' },
 ];
 
 // Small icons & links

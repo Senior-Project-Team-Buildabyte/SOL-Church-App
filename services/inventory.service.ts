@@ -1,3 +1,4 @@
+// services/inventory.service.ts
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../src/types/database.types';
 
@@ -17,6 +18,12 @@ type ItemQuantityUpdate = {
   quantity: number;
 };
 
+// ---------- NEW: Borrow/Return (via loans) ----------
+export type BorrowItem = Item & {
+  loan_id: number;
+  my_borrowed_quantity: number;
+};
+
 export const inventoryService = {
   // Get a single item by ID
   getItemById: async (id: number): Promise<Item> => {
@@ -25,11 +32,11 @@ export const inventoryService = {
       .select('*')
       .eq('id', id)
       .single();
-    
+
     if (error || !data) {
       throw new Error(error?.message || `Item with ID ${id} not found`);
     }
-    
+
     return data as Item;
   },
 
@@ -42,6 +49,7 @@ export const inventoryService = {
     let query = supabase.from('inventory_items').select('*');
 
     if (filters.availableOnly) {
+      // NOTE: adjust this column name to your schema if needed
       query = query.gt('quantity_available', 0);
     }
 
@@ -50,11 +58,12 @@ export const inventoryService = {
     }
 
     if (filters.categoryId) {
+      // NOTE: adjust this column name to your schema if needed
       query = query.eq('category_id', filters.categoryId);
     }
 
     const { data, error } = await query.order('item_name', { ascending: true });
-    
+
     if (error) throw error;
     return data || [];
   },
@@ -66,9 +75,9 @@ export const inventoryService = {
       .select('*')
       .eq('id', id)
       .single();
-    
+
     if (error) throw error;
-    return data;
+    return data as Item;
   },
 
   // Create new item
@@ -78,7 +87,7 @@ export const inventoryService = {
       .insert(item as any) // Type assertion to bypass type checking
       .select()
       .single();
-    
+
     if (error || !data) {
       throw new Error(error?.message || 'Failed to create item');
     }
@@ -91,14 +100,14 @@ export const inventoryService = {
       ...updates,
       updated_at: new Date().toISOString()
     };
-    
+
     const { data, error } = await (supabase as any)
       .from('inventory_items')
       .update(updateData)
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error || !data) {
       throw new Error(error?.message || 'Failed to update item');
     }
@@ -111,36 +120,34 @@ export const inventoryService = {
       .from('inventory_items')
       .delete()
       .eq('id', id);
-    
+
     if (error) throw error;
   },
 
-  // Checkout items (decrease quantity)
+  // Checkout items (decrease quantity) - existing RPC path
   checkoutItems: async (items: ItemQuantityUpdate[]): Promise<Item[]> => {
     return await Promise.all(
       items.map(async ({ id, quantity }) => {
-        // Use a stored procedure for atomic updates
         const { data: updatedItem, error } = await (supabase.rpc as any)('decrease_item_quantity', {
           item_id: id,
           amount: quantity
         });
-        
+
         if (error) throw error;
         return updatedItem as Item;
       })
     );
   },
 
-  // Return items (increase quantity)
+  // Return items (increase quantity) - existing RPC path
   returnItems: async (items: ItemQuantityUpdate[]): Promise<Item[]> => {
     return await Promise.all(
       items.map(async ({ id, quantity }) => {
-        // Use a stored procedure for atomic updates
         const { data: updatedItem, error } = await (supabase.rpc as any)('increase_item_quantity', {
           item_id: id,
           amount: quantity
         });
-        
+
         if (error) throw error;
         return updatedItem as Item;
       })
@@ -153,8 +160,55 @@ export const inventoryService = {
       .from('item_category')
       .select('*')
       .order('item_category_name', { ascending: true });
-    
+
     if (error) throw error;
     return data || [];
-  }
+  },
+
+  // ---------- NEW: Loans-backed return flow ----------
+
+  /**
+   * Load the signed-in user's active loans, joined with inventory_items for display.
+   * Requires RLS: SELECT on loans where auth.uid() = user_id.
+   */
+  getMyBorrowedItems: async (): Promise<BorrowItem[]> => {
+    const { data, error } = await (supabase.from as any)('loans')
+      .select(`
+        id,
+        item_id,
+        quantity,
+        checked_out_at,
+        inventory_items:item_id (
+          inventory_item_id,
+          item_name,
+          item_description,
+          item_location,
+          quanityTotal,
+          quanityAvailable
+        )
+      `)
+      .is('returned_at', null);
+
+    if (error) throw error;
+
+    return (data ?? []).map((row: any) => ({
+      ...row.inventory_items,
+      loan_id: row.id,
+      my_borrowed_quantity: row.quantity,
+    }));
+  },
+
+  /**
+   * Full returns: set returned_at on the given loan IDs.
+   * Requires RLS: UPDATE on loans where auth.uid() = user_id.
+   */
+  returnLoans: async (loanIds: number[]): Promise<void> => {
+    if (!loanIds?.length) return;
+    const { error } = await (supabase.from as any)('loans')
+      .update({ returned_at: new Date().toISOString() })
+      .in('id', loanIds);
+
+    if (error) throw error;
+  },
 };
+

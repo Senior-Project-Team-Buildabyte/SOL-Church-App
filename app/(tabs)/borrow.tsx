@@ -56,9 +56,9 @@ const BorrowPage = () => {
                     type: 1, // internal
                     shape: 0, // full
                     buttonConfig: {
-                        text: "QR Code Scanner",
-                        icon: "camera",
-                        internalLink: `../borrow/qr-scanner`,
+                        text: "Borrow Items",
+                        icon: "shopping-cart",
+                        internalLink: `../borrow/borrowItems`,
                         backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
                     }
                 },
@@ -78,23 +78,18 @@ const BorrowPage = () => {
           },
         ]}/>
 
-
-        {/* TODO: Verify this is the actual secure way to hide admin controls */}
-        { ( role === 2 ) ? (
-          <DynamicButton buttons={[
-            {
-              type: 1, // internal
-              shape: 0, // full
-              buttonConfig: {
-                text: "Inventory Requests",
-                icon: "bell",
-                internalLink: `../admin/inventory_requests`,
-                backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
-              }
-            },
-          ]}/>
-        ) : null
-        }
+        <DynamicButton buttons={[
+          {
+            type: 1, // internal
+            shape: 0, // full
+            buttonConfig: {
+              text: "QR Code Scanner",
+              icon: "camera",
+              internalLink: `../borrow/qr-scanner`,
+              backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
+            }
+          },
+        ]}/>      
       </View>
   )
 };
