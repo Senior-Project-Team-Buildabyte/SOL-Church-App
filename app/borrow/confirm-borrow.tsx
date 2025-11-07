@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator, FlatList, Button, StyleSheet } from "react-native";
+import { View, Text, ActivityIndicator, FlatList, Button, StyleSheet, Modal, Pressable } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { supabase } from "../../lib/supabase";
 import { requestService } from '../../services/request.service';
@@ -9,15 +9,16 @@ type DBItem = {
     inventory_item_id: number;
     item_name: string;
     item_image_id: number | null;
-    quanityAvailable: number;
+    quantity_available: number;
 };
 
 const ConfirmBorrow = () => {
-        const { selectedIds } = useLocalSearchParams();
+    const { selectedIds } = useLocalSearchParams();
     const router = useRouter();
     const [items, setItems] = useState<DBItem[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isModalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         const fetchSelectedItems = async () => {
@@ -43,7 +44,7 @@ const ConfirmBorrow = () => {
                 setLoading(true);
                 const { data, error } = await supabase
                     .from("inventory_items")
-                    .select("inventory_item_id, item_name, item_image_id, quanityAvailable")
+                    .select("inventory_item_id, item_name, item_image_id, quantity_available")
                     .in("inventory_item_id", ids)
                     .returns<DBItem[]>();
 
@@ -60,41 +61,46 @@ const ConfirmBorrow = () => {
         fetchSelectedItems();
     }, [selectedIds]);
 
-        const [submitting, setSubmitting] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
-        const handleConfirm = async () => {
-            if (!selectedIds) return;
+    const handleConfirm = async () => {
+        if (!selectedIds) return;
 
-            const ids = (selectedIds as string)
-                .split(',')
-                .map(s => Number(s.trim()))
-                .filter(n => !Number.isNaN(n));
+        const ids = (selectedIds as string)
+            .split(',')
+            .map(s => Number(s.trim()))
+            .filter(n => !Number.isNaN(n));
 
-            if (ids.length === 0) return;
+        if (ids.length === 0) return;
 
-            try {
-                setSubmitting(true);
+        try {
+            setSubmitting(true);
 
-                // Get current user id from session
-                const { data: sessionData } = await supabase.auth.getSession();
-                const userId = sessionData?.session?.user?.id;
+            // Get current user id from session
+            const { data: sessionData } = await supabase.auth.getSession();
+            const userId = sessionData?.session?.user?.id;
 
-                if (!userId) {
-                    setError('You must be signed in to request items.');
-                    return;
-                }
-
-                const requestId = await requestService.createInventoryRequest(userId, ids);
-
-                // Navigate to the admin/inventory_requests or show success
-                router.replace('/borrow');
-            } catch (err: any) {
-                console.error('Failed to create inventory request', err);
-                setError(err?.message || 'Failed to submit request');
-            } finally {
-                setSubmitting(false);
+            if (!userId) {
+                setError('You must be signed in to request items.');
+                return;
             }
-        };
+
+            await requestService.createInventoryRequest(userId, ids);
+
+            // Show success modal
+            setModalVisible(true);
+        } catch (err: any) {
+            console.error('Failed to create inventory request', err);
+            setError(err?.message || 'Failed to submit request');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleModalClose = () => {
+        setModalVisible(false);
+        router.back(); // Navigate back one screen
+    };
 
     if (!selectedIds) {
         return (
@@ -114,7 +120,6 @@ const ConfirmBorrow = () => {
 
     return (
         <View style={styles.container}>
-            <BackHeaderBar />
             <Text style={styles.header}>Confirm Borrow</Text>
             {error ? <Text style={styles.error}>{error}</Text> : null}
 
@@ -124,7 +129,7 @@ const ConfirmBorrow = () => {
                 renderItem={({ item }) => (
                     <View style={styles.itemRow}>
                         <Text style={styles.itemName}>{item.item_name}</Text>
-                        <Text style={styles.itemQty}>Available: {item.quanityAvailable}</Text>
+                        <Text style={styles.itemQty}>Available: {item.quantity_available}</Text>
                     </View>
                 )}
                 ListEmptyComponent={() => (
@@ -134,8 +139,28 @@ const ConfirmBorrow = () => {
                 )}
             />
 
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisible}
+                onRequestClose={handleModalClose}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Request Submitted!</Text>
+                        <Text style={styles.modalSubText}>Your request has been sent for approval.</Text>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={handleModalClose}
+                        >
+                            <Text style={styles.textStyle}>Done</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
+
             <View style={styles.actions}>
-                <Button title="Confirm Borrow" onPress={handleConfirm} />
+                <Button title="Confirm Borrow" onPress={handleConfirm} disabled={submitting} />
             </View>
         </View>
     );
@@ -150,6 +175,52 @@ const styles = StyleSheet.create({
     itemQty: { fontSize: 12, color: '#6b7280', marginTop: 4 },
     actions: { marginTop: 16 },
     error: { color: 'red', marginBottom: 8 },
+    // Modal styles
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    modalText: {
+        marginBottom: 8,
+        textAlign: "center",
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    modalSubText: {
+        marginBottom: 15,
+        textAlign: "center",
+    },
+    button: {
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2,
+        minWidth: 100,
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
 });
 
 export default ConfirmBorrow;

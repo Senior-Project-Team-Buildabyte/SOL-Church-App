@@ -1,22 +1,8 @@
 import DynamicButton from "@/components/universal/dynamic-button";
-import { supabase } from "@/lib/supabase";
-import { authService } from "@/services/auth.service";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuthContext } from '@/context/authContext';
 
-
-const getUserRole = async() => {
-  const { data, error } = await supabase
-    .from('user_role')
-    .select('*').eq('user_id', (await authService.getCurrentUser()).data.user?.id || '')
-  if (error) {
-    console.error('Error fetching user role:', error);
-    return null;
-  }
-  return data?.[0]?.role_id || null;
-}
 
 const BorrowPage = () => {
   const { session, userstate, loading, role } = useAuthContext();
@@ -50,6 +36,10 @@ const BorrowPage = () => {
 
       </ImageBackground>
 
+
+      {/* TODO: Wrap these buttons in a ScrollView in case screen
+        size is too small and buttons go off-screen (behavior is weird,
+        need to find out a fix later, won't scroll down all the way) */}
       <View style={styles.buttons}>
         {loading ? (
           <ActivityIndicator color="#bbb" />
@@ -160,6 +150,9 @@ const styles = StyleSheet.create({
     maxHeight: 500,
     width: '90%',
     alignSelf: 'center'
+  },
+  scrollbuttons: {
+    
   }
 });
 
