@@ -40,7 +40,6 @@ export default function ApprovedRequestPage() {
           .select(`
             inventory_item_id,
             requested_qty,
-            quantity,
             inventory_items(item_name, item_image_id, quanityAvailable)
           `)
           .eq('inventory_request_id', requestId);

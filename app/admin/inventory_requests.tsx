@@ -163,13 +163,13 @@ export default function InventoryRequests() {
                       const raw = await requestService.approveInventoryRequestRaw(requestId, approverId as string);
                       if (raw.error) {
                         console.error('RPC error:', raw.error);
-                      Alert.alert('RPC Error', JSON.stringify(raw.error, Object.getOwnPropertyNames(raw.error)));
-                      return;
-                    }
-                    console.log('Raw RPC response:', raw);
-                    setDebug(prev => prev + '\nRPC response: ' + JSON.stringify(raw));
+                        Alert.alert('RPC Error', JSON.stringify(raw.error, Object.getOwnPropertyNames(raw.error)));
+                        return;
+                      }
+                      console.log('Raw RPC response:', raw);
+                      setDebug(prev => prev + '\nRPC response: ' + JSON.stringify(raw));
 
-                    // Raw succeeded; call the normal wrapper which will throw on error
+                      // Raw succeeded; call the normal wrapper which will throw on error
                       await requestService.approveInventoryRequest(requestId, approverId as string);
 
                       // Remove any admin notification that referenced this request so it no longer appears in the inbox
