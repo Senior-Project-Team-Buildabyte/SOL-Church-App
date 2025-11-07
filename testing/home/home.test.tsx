@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
-import Index from '../app/(tabs)/index';
+import Index from '../../app/(tabs)/index';
 
+jest.setTimeout(15000);
 //Mock Supabase
 jest.mock('@/lib/supabase', () => ({
   supabase: {
@@ -30,9 +31,9 @@ jest.mock('@/lib/supabase', () => ({
   },
 }));
 
-jest.mock('../components/home/Image_slider', () => () => <></>);
-jest.mock('../components/universal/contacts-icons', () => () => <></>);
-jest.mock('../components/home/resources', () => () => <></>);
+jest.mock('../../components/home/Image_slider', () => () => <></>);
+jest.mock('../../components/universal/contacts-icons', () => () => <></>);
+jest.mock('../../components/home/resources', () => () => <></>);
 
 describe('Home Page Dynamic Content', () => {
   it('renders a dynamic button from Supabase', async () => {

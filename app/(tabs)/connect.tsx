@@ -1,137 +1,360 @@
-import React from 'react';
-import { View, Image, TouchableOpacity, Linking, StyleSheet, ScrollView, Text } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  ImageBackground,
+  Linking,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from "react-native";
+import { supabase } from "@/lib/supabase";
 
-const openLink = (url) => {
-  Linking.openURL(url).catch((err) => console.error("Failed to open URL", err));
+const TYPE_CONNECT_BIG = 11;
+const TYPE_CONNECT_SMALL = 12;
+
+type ButtonConfig = {
+  button_config_id: number;
+  text: string | null;
+  sub_text: string | null;
+  text_color: string | null;
+  background_image_id: number | null;
+  background_color: string | null;
+  background_gradient: string | null;
+  link: string | null;
+  internal_link: boolean | null;
+  internal_page_id: number | null;
+  icon: string | number | null;
+  icon_color: string | null;
 };
 
-const images = {
-  giveIcon: require('../../assets/images/giveicon.png'),
-  aboutIcon: require('../../assets/images/aboutsolicon.png'),
-  conncectIcon: require('../../assets/images/connectcardicon.png'),
-  groupsIcon: require('../../assets/images/groupsicon.png'),
-  meetPastorIcon: require('../../assets/images/conwpastoricon.png'),
-  prayerReqIcon: require('../../assets/images/prayericon.png'),
-  membershipIcon: require('../../assets/images/membershipicon.png'),
-  baptismIcon: require('../../assets/images/baptismicon.png'),
-  serveIcon: require('../../assets/images/serveicon.png'),
-  childIcon: require('../../assets/images/childdedicon.png'),
-  phoneIcon: require('../../assets/images/callicon.png'),
-  fbIcon: require('../../assets/images/fbicon.png'),
-  emailIcon: require('../../assets/images/emailicon.png'),
-  instaIcon: require('../../assets/images/instaicon.png'),
-  ytIcon: require('../../assets/images/yticon.png'),
-  webIcon: require('../../assets/images/webicon.png'),
+type ButtonSetup = {
+  button_id: number;
+  button_name: string | null;
+  type_id: number;
+  shape_id: number | null;
+  page_id: number;
+  button_config: ButtonConfig | null;
+  icon_url?: string | null;
+  bg_url?: string | null;
 };
 
-// Big box icons & links
-const bigBoxItems = [
-  { image: images.giveIcon, url: 'https://www.solsacramento.com/give' },
-  { image: images.aboutIcon, url: 'https://www.solsacramento.com/about?embedded=true' },
-  { image: images.conncectIcon, url: 'https://solsacramento.churchcenter.com/people/forms/718725' },
-  { image: images.groupsIcon, url: 'https://yoursite.com/groups' },
-  { image: images.meetPastorIcon, url: 'https://calendly.com/office-fb6/45min' },
-  { image: images.prayerReqIcon, url: 'https://solsacramento.churchcenter.com/people/forms/612308' },
-  { image: images.membershipIcon, url: 'https://solsacramento.churchcenter.com/people/forms/581714' },
-  { image: images.baptismIcon, url: 'https://solsacramento.churchcenter.com/people/forms/460975' },
-  { image: images.serveIcon, url: 'https://solsacramento.churchcenter.com/people/forms/708470' },
-  { image: images.childIcon, url: 'https://solsacramento.churchcenter.com/people/forms/589043' },
-];
+type ImageRow = { image_id: number; image_link: string };
 
-// Small icons & links
-const smallBoxItems = [
-  { image: images.phoneIcon, url: 'tel:9167597474' },
-  { image: images.emailIcon, url: 'mailto:office@solsacramento.com' },
-  { image: images.webIcon, url: 'https://www.solsacramento.com' },
-  { image: images.instaIcon, url: 'https://www.instagram.com/sol_sacramento?igsh=MzRlODBiNWFlZA==' },
-  { image: images.ytIcon, url: 'https://youtube.com/@springoflifechurchsol?si=QsA38AcGYxntUyas' },
-  { image: images.fbIcon, url: 'https://m.facebook.com/churchSOL/?rf=178230975527106&wtsid=rdr_0zsPJaQGmTwscIlP7r' },
-];
+const openURL = (url: string) =>
+  Linking.openURL(url).catch((e) => console.error("Failed to open URL", e));
 
-export default function App() {
+export default function Connect() {
+  const [loading, setLoading] = useState(true);
+  const [buttons, setButtons] = useState<ButtonSetup[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const { width: screenW } = useWindowDimensions();
+
+  // layout sizes derived from screen width
+  const layout = useMemo(() => {
+    const containerW = Math.min(screenW * 0.9, 800);
+    const bigGap = 1;                  // space between big tiles
+    const bigSide = Math.round((containerW - bigGap) / 2); // 2 columns, 1 gap
+    const bigRadius = 30;
+    const iconBigSide = Math.round(bigSide * 0.66);
+
+    const smallStripW = containerW;
+    const smallItem = 60;               // outer touch size
+    const smallIcon = 50;               // icon size
+
+    return {
+      containerW,
+      bigGap,
+      bigSide,
+      bigRadius,
+      iconBigSide,
+      smallStripW,
+      smallItem,
+      smallIcon,
+    };
+  }, [screenW]);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data: page, error: pageErr } = await supabase
+        .from("page")
+        .select("page_id")
+        .eq("page_name", "connect")
+        .single();
+      if (pageErr) throw pageErr;
+
+      const { data: setups, error: bsErr } = await supabase
+        .from("button_setup")
+        .select(`
+          button_id,
+          button_name,
+          type_id,
+          shape_id,
+          page_id,
+          button_config:button_config_id (
+            button_config_id,
+            text,
+            sub_text,
+            text_color,
+            background_image_id,
+            background_color,
+            background_gradient,
+            link,
+            internal_link,
+            internal_page_id,
+            icon,
+            icon_color
+          )
+        `)
+        .eq("page_id", page.page_id)
+        .order("button_id", { ascending: true })
+        .range(0, 199);
+      if (bsErr) throw bsErr;
+
+      const typed = (setups ?? []) as unknown as ButtonSetup[];
+
+      const imageIds = new Set<number>();
+      for (const s of typed) {
+        const c = s.button_config;
+        if (!c) continue;
+        if (typeof c.background_image_id === "number") imageIds.add(c.background_image_id);
+        if (typeof c.icon === "number") imageIds.add(c.icon);
+        if (typeof c.icon === "string" && /^\d+$/.test(c.icon.trim())) {
+          imageIds.add(parseInt(c.icon.trim(), 10));
+        }
+      }
+
+      let imagesById = new Map<number, string>();
+      if (imageIds.size) {
+        const { data: imgs, error: imgErr } = await supabase
+          .from("images")
+          .select("image_id, image_link")
+          .in("image_id", Array.from(imageIds));
+        if (imgErr) throw imgErr;
+        imagesById = new Map((imgs as ImageRow[]).map((r) => [r.image_id, r.image_link]));
+      }
+
+      const hydrated = typed.map((s) => {
+        const c = s.button_config;
+        let iconUrl: string | null = null;
+
+        if (c?.icon != null) {
+          if (typeof c.icon === "number") iconUrl = imagesById.get(c.icon) ?? null;
+          else if (typeof c.icon === "string") {
+            const t = c.icon.trim();
+            if (/^\d+$/.test(t)) iconUrl = imagesById.get(parseInt(t, 10)) ?? null;
+            else if (t.startsWith("http")) iconUrl = t;
+          }
+        }
+
+        const bgUrl =
+          c?.background_image_id != null
+            ? imagesById.get(c.background_image_id) ?? null
+            : null;
+
+        return { ...s, icon_url: iconUrl, bg_url: bgUrl };
+      });
+
+      setButtons(hydrated);
+    } catch (e: any) {
+      console.error(e);
+      setError(e?.message ?? "Unknown error");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const hasConnectTypes = useMemo(
+    () => buttons.some((b) => b.type_id === TYPE_CONNECT_BIG || b.type_id === TYPE_CONNECT_SMALL),
+    [buttons]
+  );
+
+  const big = useMemo(
+    () => buttons.filter((b) => (hasConnectTypes ? b.type_id === TYPE_CONNECT_BIG : b.type_id === 1)),
+    [buttons, hasConnectTypes]
+  );
+  const small = useMemo(
+    () => buttons.filter((b) => (hasConnectTypes ? b.type_id === TYPE_CONNECT_SMALL : b.type_id === 2)),
+    [buttons, hasConnectTypes]
+  );
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: "center" }]}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={{ color: "red" }}>{error}</Text>
+      </ScrollView>
+    );
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { width: layout.containerW }]}>
         <Text style={styles.title}>Get Involved</Text>
         <Text style={styles.subtitle}>Steps to become closer to SOL</Text>
       </View>
 
-      {/* Big Boxes Grid */}
-      <View style={styles.bigBoxGrid}>
-        {bigBoxItems.map((item, index) => (
-          <TouchableOpacity key={index} onPress={() => openLink(item.url)} style={styles.bigBox}>
-            <Image source={item.image} style={styles.image} />
-          </TouchableOpacity>
+      <View style={[styles.bigGrid, { width: layout.containerW, rowGap: layout.bigGap }]}>
+        {big.map((btn) => (
+          <BigTile key={btn.button_id} btn={btn} side={layout.bigSide} radius={layout.bigRadius} iconSide={layout.iconBigSide} />
         ))}
       </View>
 
-      {/* Small Boxes Row */}
-      <View style={styles.smallBoxRow}>
-        {smallBoxItems.map((item, index) => (
-          <TouchableOpacity key={index} onPress={() => openLink(item.url)} style={styles.smallBox}>
-            <Image source={item.image} style={styles.image} />
-          </TouchableOpacity>
+      <View style={[styles.smallStrip, { width: layout.smallStripW }]}>
+        {small.map((btn) => (
+          <SmallStripItem key={btn.button_id} btn={btn} itemSide={layout.smallItem} iconSide={layout.smallIcon} />
         ))}
       </View>
     </ScrollView>
   );
 }
 
+function BigTile({
+  btn,
+  side,
+  radius,
+  iconSide,
+}: {
+  btn: ButtonSetup;
+  side: number;
+  radius: number;
+  iconSide: number;
+}) {
+  const c = btn.button_config;
+  if (!c) return null;
+
+  const press = () => {
+    if (c.link) return openURL(c.link);
+    if (c.internal_link && c.internal_page_id) console.log("Navigate to internal:", c.internal_page_id);
+  };
+
+  const frame = { width: side, height: side, borderRadius: radius } as const;
+
+  if (btn.bg_url && !btn.icon_url) {
+    return (
+      <TouchableOpacity onPress={press} activeOpacity={0.85} style={[styles.bigTile, frame]}>
+        <ImageBackground source={{ uri: btn.bg_url }} style={styles.fill} imageStyle={{ borderRadius: radius }} />
+      </TouchableOpacity>
+    );
+  }
+
+  const content = btn.icon_url ? (
+    <Image source={{ uri: btn.icon_url }} style={{ width: iconSide, height: iconSide, alignSelf: "center" }} resizeMode="contain" />
+  ) : (
+    <View style={[styles.fill, { backgroundColor: c.background_color ?? "#EEE" }]} />
+  );
+
+  return (
+    <TouchableOpacity onPress={press} activeOpacity={0.85} style={[styles.bigTile, frame]}>
+      {btn.bg_url ? (
+        <ImageBackground source={{ uri: btn.bg_url }} style={styles.fill} imageStyle={{ borderRadius: radius }}>
+          {content}
+        </ImageBackground>
+      ) : (
+        content
+      )}
+    </TouchableOpacity>
+  );
+}
+
+function SmallStripItem({
+  btn,
+  itemSide,
+  iconSide,
+}: {
+  btn: ButtonSetup;
+  itemSide: number;
+  iconSide: number;
+}) {
+  const c = btn.button_config;
+  if (!c) return null;
+
+  const press = () => {
+    if (c.link) return openURL(c.link);
+    if (c.internal_link && c.internal_page_id) console.log("Navigate to internal:", c.internal_page_id);
+  };
+
+  const frame = { width: itemSide, height: itemSide, borderRadius: itemSide / 2 } as const;
+
+  if (btn.bg_url && !btn.icon_url) {
+    return (
+      <TouchableOpacity onPress={press} activeOpacity={0.85} style={[styles.smallDot, frame]}>
+        <ImageBackground source={{ uri: btn.bg_url }} style={styles.fill} imageStyle={{ borderRadius: frame.borderRadius }} />
+      </TouchableOpacity>
+    );
+  }
+
+  return (
+    <TouchableOpacity onPress={press} activeOpacity={0.85} style={[styles.smallDot, frame]}>
+      {btn.icon_url ? (
+        <Image source={{ uri: btn.icon_url }} style={{ width: iconSide, height: iconSide }} resizeMode="contain" />
+      ) : (
+        <View style={{ width: iconSide, height: iconSide, backgroundColor: c.background_color ?? "#EEE" }} />
+      )}
+    </TouchableOpacity>
+  );
+}
+
+const BLUE = "#2E6FF2";
+
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    paddingVertical: 10,
-    backgroundColor: '#ffffff',
+    alignItems: "center",
+    paddingVertical: 8,
+    backgroundColor: "#fff",
   },
   header: {
-    width: '90%',
-    marginBottom: 10,
-    alignItems: 'flex-start',
+    marginTop: 8,
+    marginBottom: 12,
   },
   title: {
-    fontSize: 26,
-    fontWeight: '900',
-    color: '#007AFF',
-    marginTop: 20,      
-    marginBottom: 6,
+    fontSize: 32,
+    fontWeight: "900",
+    color: BLUE,
   },
-  
   subtitle: {
     fontSize: 16,
-    color: '#007AFF',
-    marginBottom: 14,
+    color: BLUE,
+    marginTop: 4,
   },
-  bigBoxGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    width: '90%',
+  bigGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginTop: 12,
+    marginBottom: 28,
   },
-  bigBox: {
-    width: '48%',
-    aspectRatio: 1,
-    marginBottom: 10,
-    borderRadius: 8,
-    overflow: 'hidden',
+  bigTile: {
+    overflow: "hidden",
+    backgroundColor: "transparent",
   },
-  smallBoxRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '90%',
-    marginTop: 20,
-    marginBottom: 100, //added extra margin to accomidate for eventual navbar 
+  smallStrip: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 8,
+    marginBottom: 100,
   },
-  
-  smallBox: {
-    width: '14%',
-    aspectRatio: 1,
-    borderRadius: 6,
-    overflow: 'hidden',
+  smallDot: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "transparent",
+    overflow: "hidden",
   },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
+  fill: { width: "100%", height: "100%" },
 });

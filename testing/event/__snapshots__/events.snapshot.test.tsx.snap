@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SingleEventPage – snapshot matches snapshot for a typical event 1`] = `
+<RCTScrollView
+  contentContainerStyle={
+    {
+      "backgroundColor": "white",
+      "paddingBottom": 40,
+    }
+  }
+>
+  <View>
+    <Image
+      style={
+        {
+          "borderBottomLeftRadius": 12,
+          "borderBottomRightRadius": 12,
+          "height": 200,
+          "resizeMode": "cover",
+          "width": "100%",
+        }
+      }
+    />
+    <View
+      style={
+        {
+          "padding": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#000",
+            "fontSize": 24,
+            "fontWeight": "bold",
+            "marginBottom": 4,
+          }
+        }
+      />
+      <Text
+        style={
+          {
+            "color": "#999",
+            "fontSize": 14,
+            "marginBottom": 20,
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-around",
+            "marginVertical": 20,
+          }
+        }
+      >
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#333",
+                "fontSize": 14,
+                "marginTop": 6,
+              }
+            }
+          >
+            Share
+          </Text>
+        </View>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={false}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#333",
+                "fontSize": 14,
+                "marginTop": 6,
+              }
+            }
+          >
+            Add to calendar
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

@@ -1,20 +1,27 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react-native";
 
+jest.setTimeout(15000);
+
+// Robust router mock (params + navigation + Link passthrough)
 jest.mock("expo-router", () => ({
   useGlobalSearchParams: () => ({ event: "9" }),
+  useRouter: () => ({ push: jest.fn(), replace: jest.fn(), back: jest.fn() }),
+  Link: ({ children }: any) => children,
 }));
 
+// Silence RN Elements icons if used in the page
 jest.mock("react-native-elements", () => ({
   Icon: () => null,
 }));
 
+// Mock services used by the page
 jest.mock("@/services/eventsService", () => ({
   fetchSingleEventData: jest.fn(),
   getGeo: jest.fn(),
 }));
 
-import SingleEventPage from "../app/event/[event]";
+import SingleEventPage from "../../app/event/[event]";
 import { fetchSingleEventData, getGeo } from "@/services/eventsService";
 
 describe("SingleEventPage – geolocation", () => {

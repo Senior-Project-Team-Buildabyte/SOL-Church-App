@@ -4,7 +4,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { Linking, TouchableOpacity } from "react-native";
 
 // path is from /testing → /app
-import ConnectPage from "../app/(tabs)/connect";
+import ConnectPage from "../../app/(tabs)/connect";
 
 describe("Connect page", () => {
   const openURLSpy = jest
