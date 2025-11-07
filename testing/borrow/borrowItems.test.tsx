@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 // Mock the supabase module so it doesn't initialize the real client
-jest.mock("../lib/supabase", () => ({
+jest.mock("../../lib/supabase", () => ({
   supabase: { from: jest.fn() },
 }));
 jest.mock("expo-router", () => ({
@@ -11,8 +11,8 @@ jest.mock("expo-router", () => ({
 }));
 
 // Import after mocks so the component and symbol use the mocked module
-import BorrowTakeItems from "../app/borrow/borrowItems";
-import { supabase } from "../lib/supabase";
+import BorrowTakeItems from "../../app/borrow/borrowItems";
+import { supabase } from "../../lib/supabase";
 
 describe("BorrowTakeItems", () => {
   it("shows loading indicator initially", () => {
