@@ -34,7 +34,7 @@ export default function ApprovedRequestPage() {
         if (reqErr) throw reqErr;
         setRequest(reqData);
 
-        // ⬇️ Pull both requested_qty and quantity; use whichever exists (fallback 1)
+        // Pull both requested_qty and quantity; use whichever exists (fallback 1)
         const { data: itData, error: itErr } = await supabase
           .from('inventory_request_items')
           .select(`
@@ -93,7 +93,7 @@ export default function ApprovedRequestPage() {
           user_id: borrowerId,
           quantity: item.quantity ?? 1,
           checked_out_at: new Date().toISOString(),
-          // returned_at stays NULL (means "still out")
+          returned_at: null
         };
 
         // If your unique index is (request_id, item_id) [even with partial WHERE returned_at IS NULL],

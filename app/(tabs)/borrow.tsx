@@ -8,76 +8,6 @@ const BorrowPage = () => {
   const { session, userstate, loading, role } = useAuthContext();
 
   return (
-<<<<<<< HEAD
-  
-  <View style={styles.container}>
-    <ImageBackground
-    source={require('@/assets/images/bg-mission.jpg')}
-    style={styles.frontimage}
-    resizeMode="cover">
-
-      <View style={styles.headingWrapper}>
-        <LinearGradient
-          style={[ styles.pageHeading ]}
-          colors={["rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]}
-          {...{
-          start: { x: 0, y: 0.5 },
-          end: { x: 1, y: 0.5 },    
-          }}
-        >
-          <ImageBackground
-          source={require('@/assets/images/favicon-drop.png')}
-          style={ [{height: '100%'}, {aspectRatio: 1},] }
-          resizeMode="cover">
-          </ImageBackground>
-
-          <Text style={styles.headingText}>SOL Inventory</Text>
-
-        </LinearGradient>
-      </View>
-
-    </ImageBackground>
-
-            <DynamicButton buttons={[
-                {
-                    type: 1, // internal
-                    shape: 0, // full
-                    buttonConfig: {
-                        text: "Borrow Items",
-                        icon: "shopping-cart",
-                        internalLink: `../borrow/borrowItems`,
-                        backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
-                    }
-                },
-            ]}/>
-
-
-        <DynamicButton buttons={[
-          {
-            type: 1, // internal
-            shape: 0, // full
-            buttonConfig: {
-              text: "Return Items",
-              icon: "undo",
-              internalLink: `../borrow/returnItems`,
-              backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
-            }
-          },
-        ]}/>
-
-        <DynamicButton buttons={[
-          {
-            type: 1, // internal
-            shape: 0, // full
-            buttonConfig: {
-              text: "QR Code Scanner",
-              icon: "camera",
-              internalLink: `../borrow/qr-scanner`,
-              backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
-            }
-          },
-        ]}/>      
-=======
     <View style={styles.container}>
       <ImageBackground
       source={require('@/assets/images/bg-mission.jpg')}
@@ -126,9 +56,6 @@ const BorrowPage = () => {
                 backgroundGradient: ["0", "rgba(60,129,246,1)", "rgba(149, 185, 247, 1)"]
               }
             },
-          ]}/>
-
-          <DynamicButton buttons={[
             {
               type: 1, // internal
               shape: 0, // full
@@ -169,7 +96,6 @@ const BorrowPage = () => {
           }
           </>
         )}
->>>>>>> 38d8c128c3e9a582edb5889be2ca63c1c574aaae
       </View>
     </View>
   )

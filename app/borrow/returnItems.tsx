@@ -86,9 +86,10 @@ export default function ReturnItems() {
   };
 
   const filteredItems = items.filter(item =>
-    item.item_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.item_description && item.item_description.toLowerCase().includes(searchQuery.toLowerCase()))
+    (item.item_name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (item.item_description || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
+
 
   // Max is simply what this user borrowed for that loan
   const getMaxReturnable = (item: BorrowItem) => item.my_borrowed_quantity || 0;
