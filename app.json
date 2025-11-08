@@ -21,7 +21,12 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.SolChurchApp",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+        "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD59rgZirD4WxFgiOaDtaNUp20VZk0ffmc"
+        }
+      }
     },
     "web": {
       "bundler": "metro",
@@ -40,7 +45,14 @@
         }
       ],
       "expo-secure-store",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-maps",
+        {
+          "requestLocationPermission": true,
+          "locationPermission": "Allow SOL Church App to use your location"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
