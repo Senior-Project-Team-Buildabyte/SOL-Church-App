@@ -1,10 +1,10 @@
 import { router } from 'expo-router';
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 
-export default function AuthHeaderBar() {
+export default function BackHeaderBar() {
   const handlePress = () => {
     console.log('Image clicked!');
   };

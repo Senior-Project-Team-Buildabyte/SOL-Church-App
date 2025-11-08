@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { Alert, Pressable } from "react-native";
-import Login from "../app/[auth]/login";
+import Login from "../../app/[auth]/login";
 
 // Local mocks 
 jest.mock("expo-router", () => {
@@ -18,7 +18,7 @@ jest.mock("@/services/auth.service", () => ({
   },
 }));
 
-jest.mock("../lib/supabase", () => ({
+jest.mock("../../lib/supabase", () => ({
   supabase: {
     auth: {
       startAutoRefresh: jest.fn(),

@@ -1,27 +1,14 @@
 import DynamicButton from "@/components/universal/dynamic-button";
-import { supabase } from "@/lib/supabase";
-import { authService } from "@/services/auth.service";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuthContext } from '@/context/authContext';
 
-
-const getUserRole = async() => {
-  const { data, error } = await supabase
-    .from('user_role')
-    .select('*').eq('user_id', (await authService.getCurrentUser()).data.user?.id || '')
-  if (error) {
-    console.error('Error fetching user role:', error);
-    return null;
-  }
-  return data?.[0]?.role_id || null;
-}
 
 const BorrowPage = () => {
   const { session, userstate, loading, role } = useAuthContext();
 
   return (
+<<<<<<< HEAD
   
   <View style={styles.container}>
     <ImageBackground
@@ -90,7 +77,101 @@ const BorrowPage = () => {
             }
           },
         ]}/>      
+=======
+    <View style={styles.container}>
+      <ImageBackground
+      source={require('@/assets/images/bg-mission.jpg')}
+      style={styles.frontimage}
+      resizeMode="cover">
+
+        <View style={styles.headingWrapper}>
+          <LinearGradient
+            style={[ styles.pageHeading ]}
+            colors={["rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]}
+            {...{
+            start: { x: 0, y: 0.5 },
+            end: { x: 1, y: 0.5 },    
+            }}
+          >
+            <ImageBackground
+            source={require('@/assets/images/favicon-drop.png')}
+            style={ [{height: '100%'}, {aspectRatio: 1},] }
+            resizeMode="cover"
+            />
+
+            <Text style={styles.headingText}>SOL Inventory</Text>
+
+          </LinearGradient>
+        </View>
+
+      </ImageBackground>
+
+
+      {/* TODO: Wrap these buttons in a ScrollView in case screen
+        size is too small and buttons go off-screen (behavior is weird,
+        need to find out a fix later, won't scroll down all the way) */}
+      <View style={styles.buttons}>
+        {loading ? (
+          <ActivityIndicator color="#bbb" />
+        ) : (
+          <>
+          <DynamicButton buttons={[
+            {
+              type: 1, // internal
+              shape: 0, // full
+              buttonConfig: {
+                text: "Borrow an Item",
+                icon: "shopping-basket",
+                internalLink: `../borrow/borrowItems`,
+                backgroundGradient: ["0", "rgba(60,129,246,1)", "rgba(149, 185, 247, 1)"]
+              }
+            },
+          ]}/>
+
+          <DynamicButton buttons={[
+            {
+              type: 1, // internal
+              shape: 0, // full
+              buttonConfig: {
+                text: "Return Items",
+                icon: "undo",
+                internalLink: `../borrow/returnItems`,
+                backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
+              }
+            },
+          ]}/>
+
+          {/* TODO: Verify this is the actual secure way to hide admin controls */}
+          { ( role === 2 ) ? (
+            <DynamicButton buttons={[
+              {
+                type: 1, // internal
+                shape: 1, // square
+                buttonConfig: {
+                  text: "Manage Items (Admin)",
+                  icon: "cog",
+                  internalLink: `../admin/admin-borrow`,
+                  backgroundGradient: ["0", "rgba(149, 185, 247, 1)", "rgba(60,129,246,1)"]
+                }
+              },
+              {
+                type: 1, // internal
+                shape: 1, // square
+                buttonConfig: {
+                  text: "Inventory Requests",
+                  icon: "bell",
+                  internalLink: `../admin/inventory_requests`,
+                  backgroundGradient: ["0", "rgba(60,129,246,1)", "rgba(149, 185, 247, 1)"]
+                }
+              },
+            ]}/>
+          ) : null
+          }
+          </>
+        )}
+>>>>>>> 38d8c128c3e9a582edb5889be2ca63c1c574aaae
       </View>
+    </View>
   )
 };
 
@@ -140,6 +221,9 @@ const styles = StyleSheet.create({
     maxHeight: 500,
     width: '90%',
     alignSelf: 'center'
+  },
+  scrollbuttons: {
+    
   }
 });
 

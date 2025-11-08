@@ -14,7 +14,7 @@ jest.mock("@/services/eventsService", () => ({
   getGeo: jest.fn(),
 }));
 
-import SingleEventPage from "../app/event/[event]";
+import SingleEventPage from "../../app/event/[event]";
 import { fetchSingleEventData, getGeo } from "@/services/eventsService";
 
 describe("SingleEventPage Component", () => {
