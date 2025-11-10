@@ -56,9 +56,6 @@ const BorrowPage = () => {
                 backgroundGradient: ["0", "rgba(60,129,246,1)", "rgba(149, 185, 247, 1)"]
               }
             },
-          ]}/>
-
-          <DynamicButton buttons={[
             {
               type: 1, // internal
               shape: 0, // full

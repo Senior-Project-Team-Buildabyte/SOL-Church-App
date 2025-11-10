@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { supabase } from '../../lib/supabase';
 import requestService from '@/services/request.service';
+import { inventoryService } from '../../services/inventory.service';
 
 export default function InventoryRequests() {
   const params = useLocalSearchParams();
@@ -170,8 +171,32 @@ export default function InventoryRequests() {
                     setDebug(prev => prev + '\nRPC response: ' + JSON.stringify(raw));
 
                     // Raw succeeded; call the normal wrapper which will throw on error
-                      await requestService.approveInventoryRequest(requestId, approverId as string);
+                    await requestService.approveInventoryRequest(requestId, approverId as string);
 
+                    // Fetch all items linked to this request
+                    const { data: items, error: itemsError } = await supabase
+                      .from('inventory_request_items')
+                      .select('inventory_item_id')
+                      .eq('inventory_request_id', requestId);
+
+                    if (itemsError) {
+                      console.error('Error fetching inventory_request_items:', itemsError);
+                      throw itemsError;
+                    }
+
+                    if (!items || items.length === 0) {
+                      console.warn('No items found for request:', requestId);
+                      return;
+                    }
+
+                    // Create a loan for each approved item (under the requesting user)
+                    for (const item of items) {
+                      try {
+                        await inventoryService.approveAndCreateLoan(requestId, item.inventory_item_id);
+                      } catch (err) {
+                        console.error('Failed to create loan for item:', item.inventory_item_id, err);
+                      }
+                    }
                       // Remove any admin notification that referenced this request so it no longer appears in the inbox
                       try {
                         // Delete only the original admin notification for this request (title 'New Inventory Request') and return deleted rows
@@ -192,15 +217,12 @@ export default function InventoryRequests() {
                         console.warn('Exception deleting notification for request', requestId, delEx);
                       }
 
-                      Alert.alert('Success', 'Request approved');
-
-                      // After approving, navigate back to the notifications inbox so admin sees it removed
-                      try {
-                        router.replace('/settings/notification-inbox');
-                        return;
-                      } catch (navErr) {
-                        console.warn('Failed to navigate to inbox after approve', navErr);
-                      }
+                      Alert.alert('Success', 'Request approved', [
+                        {
+                          text: 'OK',
+                          onPress: () => router.back(),
+                        },
+                      ]);
 
                       await fetchRequestDetails();
                     } catch (err: any) {
@@ -257,13 +279,12 @@ export default function InventoryRequests() {
                         console.warn('Exception deleting notification for denied request', requestId, delEx);
                       }
 
-                      Alert.alert('Denied', 'Request has been denied');
-                      try {
-                        router.replace('/settings/notification-inbox');
-                        return;
-                      } catch (navErr) {
-                        console.warn('Failed to navigate to inbox after deny', navErr);
-                      }
+                      Alert.alert('Denied', 'Request has been denied', [
+                        {
+                          text: 'OK',
+                          onPress: () => router.back(),
+                        },
+                      ]);
 
                       await fetchRequestDetails();
                     } catch (err: any) {
