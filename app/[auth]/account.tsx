@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useAuth } from "@/components/universal/useAuth";
 import { authService } from "@/services/auth.service";
 import { useAuthContext } from "@/context/authContext";
+import { updateUserIDForToken } from "@/services/notifications";
 
 type SettingItem = {
   id: string;
@@ -175,8 +176,11 @@ export default function SettingsScreen() {
     try {
       await authService.signOut();
       Alert.alert('Success', 'Signed out successfully.');
+      updateUserIDForToken(null);
+
     } catch (err) {
       if (err instanceof Error) {
+        console.log(err.message)
         Alert.alert('Error', err.message);
       } else {
         Alert.alert('Error', 'An unknown error occurred during sign up.');

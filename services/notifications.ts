@@ -4,7 +4,10 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import { supabase } from '@/lib/supabase';
+import * as Application from "expo-application";
+import { useAuth } from '@/components/universal/useAuth';
 
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
 
 // Foreground behavior: show alert, play sound, set badge
 Notifications.setNotificationHandler({
@@ -35,11 +38,13 @@ export function subscribeNotifications(params: {
 
   const receivedSub = Notifications.addNotificationReceivedListener((n) => {
     // fires when a notification arrives while app is in foreground
+    console.log("Notification foreground: ", n)
     onReceive?.(n);
   });
 
   const responseSub = Notifications.addNotificationResponseReceivedListener((resp) => {
     // fires when user taps a notification (from background or quit)
+    console.log("Notification background: ", resp)
     onRespond?.(resp);
   });
 
@@ -64,7 +69,7 @@ export async function registerForPushAsync() {
   if (!Device.isDevice) return null;
 
   // Android: create a channel BEFORE requesting permission (A13+)
-if (Platform.OS === "android") {
+  if (Platform.OS === "android") {
     await Notifications.setNotificationChannelAsync("default", {
       name: "Default",
       importance: Notifications.AndroidImportance.MAX,
@@ -109,4 +114,71 @@ export async function savePushTokenToDB(token: string, platform: "ios" | "androi
     console.log("Error: ", err.error)
     throw new Error(err.error || `HTTP ${resp.status}`);
   }
+}
+
+
+
+export async function updateUserIDForToken(userID: string | null) {
+
+  const token = await registerForPushAsync();
+  console.log(userID, token)
+  //console.log("Role: ", role);
+  if (!token) return;
+  // Example deviceId (Android: ANDROID_ID; iOS: vendorId fallback; else random)
+  const deviceId =
+    Platform.OS === "android"
+      ? Application.getAndroidId() ?? "unknown-android"
+      : Application.getIosIdForVendorAsync
+        ? (await Application.getIosIdForVendorAsync()) ?? "unknown-ios"
+        : "unknown";
+  //console.log("Layout deviceID: ", deviceId, userID)
+  await savePushTokenToDB(token, Platform.OS === "ios" ? "ios" : "android", deviceId, supabaseAnonKey, userID);
+}
+
+export async function getUserNotification(userID: string | undefined, isAdmin: boolean) {
+  if (userID && isAdmin) {
+    const orFilter = [
+      `notificationlink->>user_id.eq.${userID}`,
+      "notificationgroupid.eq.1",
+      "notificationlink->>user_id.is.null",
+    ].join(",");
+    const { data, error } = await supabase
+      .from('notification')
+      .select('*')
+      .or(orFilter)
+      .order('notificationid', { ascending: false })
+      .limit(100);
+    //console.log("NOTIFICATIONS admin user: ", data?.length, data);
+    return data;
+  }
+  else if (userID && !isAdmin) {
+    const orFilter = [
+      `notificationlink->>user_id.eq.${userID}`,
+      "and(notificationgroupid.is.null",
+      "notificationlink->>user_id.is.null)",
+    ].join(",");
+    const { data, error } = await supabase
+      .from('notification')
+      .select('*')
+      .or(orFilter)
+      .order('notificationid', { ascending: false })
+      .limit(100);
+    //console.log("NOTIFICATIONS user : ", data?.length, data);
+    return data;
+  }
+  else if (!userID && !isAdmin) {
+    const orFilter = [
+      "notificationgroupid.is.null",
+      "notificationlink->>user_id.is.null",
+    ].join(",");
+    const { data, error } = await supabase
+      .from('notification')
+      .select('*')
+      .or(orFilter)
+      .order('notificationid', { ascending: false })
+      .limit(100);
+    //console.log("NOTIFICATIONS: ", data?.length);
+    return data;
+  }
+
 }
