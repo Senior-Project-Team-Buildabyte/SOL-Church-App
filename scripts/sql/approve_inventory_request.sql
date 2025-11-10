@@ -3,8 +3,6 @@
   - Marks an inventory_request as approved (is_approved = true)
   - Decrements inventory_items.quanityAvailable by 1 for each inventory_request_items row
   - Inserts a notification referencing the inventory_request for the requesting user
-  Notes: deploy this SQL to your Supabase project's SQL editor. The function is SECURITY DEFINER
-  so it can perform multi-table updates; you may need to GRANT EXECUTE to the anon role.
 */
 CREATE OR REPLACE FUNCTION public.approve_inventory_request(
   p_request_id bigint,

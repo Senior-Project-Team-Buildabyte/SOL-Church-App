@@ -99,7 +99,7 @@ const ConfirmBorrow = () => {
 
     const handleModalClose = () => {
         setModalVisible(false);
-        router.back(); // Navigate back one screen
+        router.dismissTo("/(tabs)/borrow"); // Navigate back one screen
     };
 
     if (!selectedIds) {
