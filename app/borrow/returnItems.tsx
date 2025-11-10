@@ -105,11 +105,7 @@ export default function ReturnItems() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Link href="/(tabs)/borrow" style={styles.backButton}>
-          <Text style={styles.backButtonText}>← Back</Text>
-        </Link>
         <Text style={styles.title}>Return Items</Text>
-        <View style={{ width: 60 }} />
       </View>
 
       <TextInput
