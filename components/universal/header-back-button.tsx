@@ -5,13 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
 
 export default function BackHeaderBar() {
-  const handlePress = () => {
-    console.log('Image clicked!');
-  };
-  const handleLoginPress = () => {
-    console.log('Login Image clicked!');
-    router.navigate("../../[auth]/account")
-  };
 
   return (
     <>
