@@ -36,11 +36,7 @@ const BorrowPage = () => {
 
       </ImageBackground>
 
-
-      {/* TODO: Wrap these buttons in a ScrollView in case screen
-        size is too small and buttons go off-screen (behavior is weird,
-        need to find out a fix later, won't scroll down all the way) */}
-      <View style={styles.buttons}>
+      <ScrollView contentContainerStyle={styles.container}>
         {loading ? (
           <ActivityIndicator color="#bbb" />
         ) : (
@@ -68,7 +64,6 @@ const BorrowPage = () => {
             },
           ]}/>
 
-          {/* TODO: Verify this is the actual secure way to hide admin controls */}
           { ( role === 2 ) ? (
             <DynamicButton buttons={[
               {
@@ -96,7 +91,7 @@ const BorrowPage = () => {
           }
           </>
         )}
-      </View>
+      </ScrollView>
     </View>
   )
 };
