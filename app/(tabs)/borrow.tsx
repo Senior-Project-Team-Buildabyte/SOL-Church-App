@@ -8,7 +8,7 @@ const BorrowPage = () => {
   const { session, userstate, loading, role } = useAuthContext();
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={{paddingBottom: 40}}>
       <ImageBackground
       source={require('@/assets/images/bg-mission.jpg')}
       style={styles.frontimage}
@@ -36,7 +36,7 @@ const BorrowPage = () => {
 
       </ImageBackground>
 
-      <ScrollView contentContainerStyle={styles.container}>
+      <View>
         {loading ? (
           <ActivityIndicator color="#bbb" />
         ) : (
@@ -91,8 +91,8 @@ const BorrowPage = () => {
           }
           </>
         )}
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   )
 };
 
@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     width: '100%',
-    height: '100%',
   },
   frontimage: {
     width: '100%',
