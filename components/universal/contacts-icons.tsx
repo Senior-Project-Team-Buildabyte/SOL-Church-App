@@ -49,6 +49,7 @@ const ContactsIcons = () => {
       justifyContent: "center"
      }}>
       <FontAwesome.Button 
+        testID="contact-phone"
             name="phone" 
             backgroundColor="transparent"
             color="#3b5998" 
@@ -58,6 +59,7 @@ const ContactsIcons = () => {
             
         />
         <FontAwesome.Button 
+        testID="contact-instagram"
             name="instagram" 
             backgroundColor="transparent"
             color="#3b5998" 
@@ -66,6 +68,7 @@ const ContactsIcons = () => {
             iconStyle={{ marginRight: 0, fontSize: 50}} 
         />
         <FontAwesome5.Button 
+        testID="contact-facebook"
             name="facebook" 
             backgroundColor="transparent"
             color="#3b5998" 
@@ -74,6 +77,7 @@ const ContactsIcons = () => {
             iconStyle={{ marginRight: 0, fontSize: 50}} 
         />
         <FontAwesome.Button 
+        testID="contact-youtube"
             name="youtube-play" 
             backgroundColor="transparent"
             color="#3b5998" 
@@ -82,6 +86,7 @@ const ContactsIcons = () => {
             iconStyle={{ marginRight: 0, fontSize: 50}} 
         />
         <MaterialCommunityIcons.Button 
+        testID="contact-web"
             name="web"     
             backgroundColor="transparent"
             color="#3b5998" 

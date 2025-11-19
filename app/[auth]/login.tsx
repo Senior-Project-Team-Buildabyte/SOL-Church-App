@@ -14,6 +14,7 @@ import {
   AppState,
 } from 'react-native';
 import { authService } from '@/services/auth.service';
+import { updateUserIDForToken } from '@/services/notifications';
 
 
 AppState.addEventListener('change', (state) => {
@@ -36,11 +37,13 @@ const Login = () => {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      await authService.signInWithEmail(email, password);
+      const {user } = await authService.signInWithEmail(email, password);
       Alert.alert('Success', 'Logged in successfully.');
       router.dismissTo('/');
+      updateUserIDForToken(user.id);
     } catch (err) {
       if (err instanceof Error) {
+        console.log(err.message)
         Alert.alert('Error', err.message);
       } else {
         Alert.alert('Error', 'An unknown error occurred during sign up.');

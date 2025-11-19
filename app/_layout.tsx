@@ -5,7 +5,7 @@ import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-c
 import { Alert, Platform, View } from "react-native";
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/components/universal/useAuth";
-import { getRouteFromNotificationData, registerForPushAsync, savePushTokenToDB, subscribeNotifications } from "@/services/notifications";
+import { getRouteFromNotificationData, registerForPushAsync, savePushTokenToDB, subscribeNotifications, updateUserIDForToken } from "@/services/notifications";
 import * as Notifications from 'expo-notifications';
 import { AuthContext } from '@/context/authContext';
 
@@ -39,19 +39,7 @@ export default function RootLayout() {
   // }, []);
    useEffect(() => {
     (async () => {
-      const token = await registerForPushAsync();
-      const userID = userstate?.identities![0].user_id ?? null;
-      //console.log("Role: ", role);
-      if (!token) return;
-      // Example deviceId (Android: ANDROID_ID; iOS: vendorId fallback; else random)
-      const deviceId =
-        Platform.OS === "android"
-          ? Application.getAndroidId() ?? "unknown-android"
-          : Application.getIosIdForVendorAsync
-          ? (await Application.getIosIdForVendorAsync()) ?? "unknown-ios"
-          : "unknown";
-      //console.log("Layout deviceID: ", deviceId)
-      await savePushTokenToDB(token, Platform.OS === "ios" ? "ios" : "android", deviceId, supabaseAnonKey, userID);
+      updateUserIDForToken(userstate?.id ?? null);
     })();
     const unsubscribe = subscribeNotifications({
       onReceive: (n) => {

@@ -3,6 +3,7 @@ import { View, Text, FlatList, StyleSheet, Pressable, ActivityIndicator } from "
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { supabase } from "../../lib/supabase";
 import { useRouter } from "expo-router";
+import { getUserNotification } from "@/services/notifications";
 
 type NotificationItem = {
   id: string;
@@ -33,6 +34,7 @@ const NotificationsInbox = () => {
       // Determine whether current user is an admin so we can hide admin-only notifications
       const { data: sessionData } = await supabase.auth.getSession();
       const userId = sessionData?.session?.user?.id;
+       
 
       // Admin check: if the user has a user_role row with role_id == 2, treat as admin
       let isAdmin = false;
@@ -54,12 +56,14 @@ const NotificationsInbox = () => {
         }
       }
 
+      getUserNotification(userId, isAdmin);
+
       const { data, error } = await supabase
         .from('notification')
         .select('*')
         .order('notificationid', { ascending: false })
+        
         .limit(100);
-
       if (error) {
         console.error('Failed to load notifications', error);
         return;
@@ -134,6 +138,7 @@ const NotificationsInbox = () => {
         const rid = String(link.inventory_request_id);
         // if notification carries a user_id, navigate the requester to the approved-request page
         if (link.user_id) {
+          console.log("router")
           router.push({ pathname: '/borrow/approved-request', params: { requestId: rid } } as any);
           return;
         }
