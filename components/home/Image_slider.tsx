@@ -8,82 +8,60 @@ import {
   Dimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Linking,
 } from "react-native";
-import { router } from "expo-router";
-import * as Linking from "expo-linking";
-
+import { useRouter } from "expo-router";
 import { fetchSliderImages, SliderImage } from "../../services/imageSlider";
 
 const { width } = Dimensions.get("window");
 
 const ImageSlider: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [images, setImages] = useState<SliderImage[]>([]);
-  const scrollViewRef = useRef<ScrollView | null>(null);
+  const scrollRef = useRef<ScrollView | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const loadImages = async () => {
-      try {
-        const sliderImages = await fetchSliderImages();
-        setImages(sliderImages);
-      } catch (error) {
-        console.error("Error fetching image:", error);
-      }
+    const load = async () => {
+      const sliderImages = await fetchSliderImages();
+      setImages(sliderImages);
     };
-
-    loadImages();
+    load();
   }, []);
 
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>): void => {
-    const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(contentOffsetX / width);
-    setActiveIndex(index);
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const x = e.nativeEvent.contentOffset.x;
+    setActiveIndex(Math.round(x / width));
   };
 
-  const scrollToImage = (index: number): void => {
-    scrollViewRef.current?.scrollTo({
-      x: index * width,
-      y: 0,
-      animated: true,
-    });
+  const scrollToIndex = (index: number) => {
+    scrollRef.current?.scrollTo({ x: index * width, animated: true });
   };
 
-  //New: Slide click handler
-  const handleSlidePress = (slide: SliderImage) => {
-    if (slide.internalRoute) {
-      router.push(slide.internalRoute);
+  const handlePress = (img: SliderImage) => {
+    if (img.internalRoute) {
+      router.push(img.internalRoute as any); // safe push
       return;
     }
-
-    if (slide.externalUrl) {
-      Linking.openURL(slide.externalUrl);
-      return;
+    if (img.externalUrl) {
+      Linking.openURL(img.externalUrl);
     }
-
-    console.warn("No internalRoute or externalUrl for slide:", slide);
   };
 
   return (
     <View style={styles.container}>
       <ScrollView
-        ref={scrollViewRef}
-        testID="slider-scrollview"
+        ref={scrollRef}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={16}
-        style={styles.scrollView}
       >
-        {images.map((image, index) => (
-          <TouchableOpacity
-            key={`slider-${image.id}-${index}`}
-            activeOpacity={0.9}
-            onPress={() => handleSlidePress(image)}
-          >
+        {images.map((img, index) => (
+          <TouchableOpacity key={index} onPress={() => handlePress(img)}>
             <Image
-              testID="slider-image"
-              source={image.image}
+              source={img.image}
               style={styles.image}
               resizeMode="cover"
             />
@@ -91,17 +69,15 @@ const ImageSlider: React.FC = () => {
         ))}
       </ScrollView>
 
-      {/* Pagination Dots */}
-      <View style={styles.toggleContainer}>
+      <View style={styles.dotRow}>
         {images.map((_, index) => (
           <TouchableOpacity
-            key={`dot-${index}`}
-            testID="slider-dot"
+            key={index}
             style={[
-              styles.toggleItem,
-              index === activeIndex && styles.activeToggleItem,
+              styles.dot,
+              index === activeIndex && styles.dotActive,
             ]}
-            onPress={() => scrollToImage(index)}
+            onPress={() => scrollToIndex(index)}
           />
         ))}
       </View>
@@ -114,31 +90,25 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 20,
   },
-  scrollView: {
-    width: "100%",
-    height: 200,
-  },
   image: {
     width,
     height: 200,
   },
-  toggleContainer: {
+  dotRow: {
     position: "absolute",
-    bottom: 10,
-    left: 0,
-    right: 0,
-    justifyContent: "center",
-    alignItems: "center",
+    bottom: 12,
+    width: "100%",
     flexDirection: "row",
+    justifyContent: "center",
   },
-  toggleItem: {
+  dot: {
     width: 10,
     height: 10,
+    backgroundColor: "#ccc",
     borderRadius: 5,
-    backgroundColor: "#e0e0e0",
-    marginHorizontal: 5,
+    marginHorizontal: 4,
   },
-  activeToggleItem: {
+  dotActive: {
     backgroundColor: "#3498db",
   },
 });
