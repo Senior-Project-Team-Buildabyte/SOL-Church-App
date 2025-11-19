@@ -9,6 +9,9 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from "react-native";
+import { router } from "expo-router";
+import * as Linking from "expo-linking";
+
 import { fetchSliderImages, SliderImage } from "../../services/imageSlider";
 
 const { width } = Dimensions.get("window");
@@ -16,7 +19,7 @@ const { width } = Dimensions.get("window");
 const ImageSlider: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [images, setImages] = useState<SliderImage[]>([]);
-  const ScrollViewRef = useRef<ScrollView | null>(null);
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -27,6 +30,7 @@ const ImageSlider: React.FC = () => {
         console.error("Error fetching image:", error);
       }
     };
+
     loadImages();
   }, []);
 
@@ -37,15 +41,32 @@ const ImageSlider: React.FC = () => {
   };
 
   const scrollToImage = (index: number): void => {
-    if (ScrollViewRef.current && typeof ScrollViewRef.current.scrollTo === "function") {
-      ScrollViewRef.current.scrollTo({ x: index * width, y: 0, animated: true });
+    scrollViewRef.current?.scrollTo({
+      x: index * width,
+      y: 0,
+      animated: true,
+    });
+  };
+
+  //New: Slide click handler
+  const handleSlidePress = (slide: SliderImage) => {
+    if (slide.internalRoute) {
+      router.push(slide.internalRoute);
+      return;
     }
+
+    if (slide.externalUrl) {
+      Linking.openURL(slide.externalUrl);
+      return;
+    }
+
+    console.warn("No internalRoute or externalUrl for slide:", slide);
   };
 
   return (
     <View style={styles.container}>
       <ScrollView
-        ref={ScrollViewRef}
+        ref={scrollViewRef}
         testID="slider-scrollview"
         horizontal
         pagingEnabled
@@ -55,16 +76,22 @@ const ImageSlider: React.FC = () => {
         style={styles.scrollView}
       >
         {images.map((image, index) => (
-          <Image
+          <TouchableOpacity
             key={`slider-${image.id}-${index}`}
-            testID="slider-image"
-            source={image.image}
-            style={styles.image}
-            resizeMode="cover"
-          />
+            activeOpacity={0.9}
+            onPress={() => handleSlidePress(image)}
+          >
+            <Image
+              testID="slider-image"
+              source={image.image}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          </TouchableOpacity>
         ))}
       </ScrollView>
 
+      {/* Pagination Dots */}
       <View style={styles.toggleContainer}>
         {images.map((_, index) => (
           <TouchableOpacity
