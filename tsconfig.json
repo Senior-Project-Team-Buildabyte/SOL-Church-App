@@ -6,7 +6,7 @@
     "lib": ["es6", "dom"],
     "jsx": "react-native",
     "strict": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,

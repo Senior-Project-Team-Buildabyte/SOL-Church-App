@@ -18,41 +18,11 @@ export default function MediaPage() {
 
   useEffect(() => {
     const load = async () => {
-      console.log("DEBUG: Fetching media links...");
-
       try {
         const result = await mediaService.getMediaButtons();
-
-        console.log(
-          "DEBUG: Raw media_links from Supabase:",
-          JSON.stringify(result, null, 2)
-        );
-
-        if (!result) {
-          console.warn("DEBUG WARNING: Supabase returned null!");
-          setButtons([]);
-          return;
-        }
-
-        if (Array.isArray(result) && result.length === 0) {
-          console.warn("DEBUG WARNING: media_links table is EMPTY.");
-        }
-
-        // Validate each row
-        result.forEach((item, index) => {
-          console.log(`DEBUG: Row ${index}`, item);
-
-          if (!item.title)
-            console.warn(`Row ${index} MISSING 'title' column`);
-          if (item.type === undefined)
-            console.warn(`Row ${index} MISSING 'type' column`);
-          if (item.shape === undefined)
-            console.warn(`Row ${index} MISSING 'shape' column`);
-        });
-
-        setButtons(result);
+        setButtons(result || []);
       } catch (err) {
-        console.error("DEBUG ERROR loading media page:", err);
+        console.error("Error loading media page:", err);
       } finally {
         setLoading(false);
       }
@@ -70,7 +40,6 @@ export default function MediaPage() {
     );
   }
 
-  // If no buttons received
   if (buttons.length === 0) {
     return (
       <View style={{ padding: 20 }}>
@@ -84,21 +53,11 @@ export default function MediaPage() {
     );
   }
 
-  // Map DB rows → DynamicButton config
-  const mappedButtons = buttons.map((item, index) => {
+  const mappedButtons = buttons.map((item) => {
     const bgImage =
       (item.background_key && localImages[item.background_key]) ||
       item.background_url ||
       null;
-
-    console.log(`DEBUG: Final mapped button ${index}:`, {
-      text: item.title,
-      internalLink: item.internal_link,
-      externalLink: item.link,
-      backgroundImage: bgImage,
-      type: item.type,
-      shape: item.shape,
-    });
 
     return {
       type: item.type,
@@ -113,8 +72,6 @@ export default function MediaPage() {
       },
     };
   });
-
-  console.log("DEBUG: Final button payload given to DynamicButton:", mappedButtons);
 
   return <DynamicButton buttons={mappedButtons} />;
 }
