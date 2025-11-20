@@ -2,50 +2,47 @@ import { supabase } from "@/lib/supabase";
 
 export interface SliderImage {
   id: number;
-  image: { uri: string } | any;
-  title?: string;
-  description?: string;
+  image: any;
+  internalRoute?: string | null;
+  externalUrl?: string | null;
+  title?: string | null;
+  description?: string | null;
 }
-
-// Dummy fallback in case Supabase fails
-const dummySliderImages: SliderImage[] = [
-  {
-    id: 1,
-    image: require("../assets/images/stockphoto.jpg"),
-    title: "Image 1",
-    description: "Fallback image 1",
-  },
-  {
-    id: 2,
-    image: require("../assets/images/testbackground.jpg"),
-    title: "Image 2",
-    description: "Fallback image 2",
-  },
-];
 
 export const fetchSliderImages = async (): Promise<SliderImage[]> => {
   try {
-    //fetch slider images 
     const { data, error } = await supabase
       .from("slider_image")
-      .select(`*, images:image_id (image_link)`);
+      .select(`
+        slider_image_id,
+        image_id,
+        internal_route,
+        external_url,
+        title,
+        description,
+        images:image_id (
+          image_link
+        )
+      `)
+      .order("slider_image_id");
 
-    if (error) throw error;
+    if (error) {
+      console.error("Slider fetch error:", error);
+      return [];
+    }
 
-    if (!data || data.length === 0) return dummySliderImages;
-
-    const sliderImages: SliderImage[] = data.map((row: any) => ({
-      id: row.id,
+    return data.map((row: any) => ({
+      id: row.slider_image_id,
       image: row.images?.image_link
         ? { uri: row.images.image_link }
         : require("../assets/images/stockphoto.jpg"),
+      internalRoute: row.internal_route,
+      externalUrl: row.external_url,
       title: row.title,
       description: row.description,
     }));
-
-    return sliderImages;
-  } catch (error) {
-    console.error("Failed to fetch slider images:", error);
-    return dummySliderImages;
+  } catch (err) {
+    console.error("Failed to fetch slider images:", err);
+    return [];
   }
 };
