@@ -109,6 +109,8 @@ export async function savePushTokenToDB(token: string, platform: "ios" | "androi
     body: JSON.stringify({ token, platform, deviceId, userID }),
   });
 
+  console.log("Save push token response status: ", resp);
+
   if (!resp.ok) {
     const err = await resp.json().catch(() => ({}));
     console.log("Error: ", err.error)

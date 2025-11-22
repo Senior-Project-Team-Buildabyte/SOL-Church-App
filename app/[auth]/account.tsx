@@ -44,8 +44,8 @@ const handleShare = () => {
 
 // Data
 const sections: SettingSection[] = [
-  {
-    title: "This device",
+    {
+    title: "Personal",
     data: [
       {
         id: "1",
@@ -56,57 +56,10 @@ const sections: SettingSection[] = [
       },
       {
         id: "2",
-        label: "Notes",
-        desc: "Access your notes",
-        icon: "notes",
-        onPress: () => router.push("../[auth]/take-notes"),
-      },
-      {
-        id: "3",
-        label: "Downloads",
-        desc: "Access your downloads",
-        icon: "download",
-        onPress: () => router.push("../settings/downloads"),
-      },
-    ],
-  },
-  {
-    title: "App settings",
-    data: [
-      {
-        id: "4",
         label: "Notifications",
         desc: "Manage notification preferences",
         icon: "edit-notifications",
         onPress: () => router.push("../settings/notification-settings"),
-      },
-      {
-        id: "5",
-        label: "Terms of use",
-        desc: "Read our terms of use",
-        icon: "library-books",
-        onPress: () => router.push("../settings/terms-of-use"),
-      },
-      {
-        id: "6",
-        label: "Privacy policy",
-        desc: "Read our privacy policy",
-        icon: "lock",
-        onPress: () => router.push("../settings/privacy-policy"),
-      },
-      {
-        id: "7",
-        label: "Copyright",
-        desc: "Copyright information",
-        icon: "copyright",
-        onPress: () => router.push("../settings/copyright"),
-      },
-      {
-        id: "8",
-        label: "About",
-        desc: "App version",
-        icon: "info-outline",
-        onPress: () => {},
       },
     ],
   },
@@ -114,24 +67,31 @@ const sections: SettingSection[] = [
     title: "More",
     data: [
       {
-        id: "9",
-        label: "Share SOL Church app",
-        desc: "Get a link to share the app",
-        icon: "share",
-        onPress: handleShare,
-      },
-      {
-        id: "10",
+        id: "3",
         label: "Feedback",
         desc: "Provide feedback on the app",
         icon: "comment",
         onPress: () => {},
       },
       {
-        id: "11",
+        id: "4",
+        label: "Share SOL Church app",
+        desc: "Get a link to share the app",
+        icon: "share",
+        onPress: handleShare,
+      },
+      {
+        id: "5",
         label: "Help",
         desc: "Get technical support",
         icon: "help",
+        onPress: () => {},
+      },
+      {
+        id: "6",
+        label: "About",
+        desc: "App version",
+        icon: "info-outline",
         onPress: () => {},
       },
     ],
