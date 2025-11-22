@@ -14,7 +14,8 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 // TO DO: Uncomment Before Publishing 
-// import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+//import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { AppleMaps, GoogleMaps } from 'expo-maps';
 
 
 type Region = {
@@ -30,6 +31,7 @@ const SingleEventPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedEvent, setselectedEvent] = useState<EventData | null>(null);
   const [region, setRegion] = useState<{ latitude:number; longitude:number } | null>(null);
+  var markers:any[] = [];
 
   useEffect(() => {
     const getEventData = async () => {
@@ -123,6 +125,42 @@ const SingleEventPage = () => {
               <View style={{ flex: 1, backgroundColor: 'rgba(255,255,0,0.2)' }}>
 
                   {/* // TO DO: Uncomment Before Publishing  */}
+                  {Platform.OS === "android" ? 
+                  <GoogleMaps.View style={styles.map} cameraPosition={{
+                    coordinates:
+                    {
+                      latitude: region?.latitude ?? 38.674048048803,
+                      longitude: region?.longitude ?? -121.220940919702,
+                    },
+                    zoom: 15
+                  }}
+                  markers={[
+                      {
+                        coordinates: {
+                          latitude: region?.latitude ?? 38.674048048803,
+                          longitude: region?.longitude ?? -121.220940919702,
+                        },
+                      },
+                    ]}/>
+                  :
+                  <AppleMaps.View style={styles.map} 
+                  cameraPosition={{
+                    coordinates:
+                    {
+                      latitude: region?.latitude ?? 38.674048048803,
+                      longitude: region?.longitude ?? -121.220940919702,
+                    },
+                    zoom: 15
+                  }}
+                    markers={[
+                      {
+                        coordinates: {
+                          latitude: region?.latitude ?? 38.674048048803,
+                          longitude: region?.longitude ?? -121.220940919702,
+                        },
+                      },
+                    ]} />
+                }
                   {/* <MapView style={styles.map} 
                   provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
                   mapType="standard"
@@ -134,7 +172,6 @@ const SingleEventPage = () => {
                       longitudeDelta: 0.05,
                     }}
                   >
-                      
                       <Marker coordinate={{ latitude: region?.latitude ?? 38.674048048803,
                       longitude: region?.longitude ?? -121.220940919702}}/>
                     </MapView> */}
