@@ -82,7 +82,7 @@ const BorrowPage = () => {
                 buttonConfig: {
                   text: "Inventory Requests",
                   icon: "bell",
-                  internalLink: `../admin/inventory_requests`,
+                  internalLink: `../admin/inventory-requests-view`,
                   backgroundGradient: ["0", "rgba(60,129,246,1)", "rgba(149, 185, 247, 1)"]
                 }
               },

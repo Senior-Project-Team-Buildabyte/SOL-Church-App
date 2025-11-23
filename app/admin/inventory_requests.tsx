@@ -10,7 +10,20 @@ import { inventoryService } from '../../services/inventory.service';
 export default function InventoryRequests() {
   const params = useLocalSearchParams();
   const requestIdParam = (params as any)?.requestId;
-  const requestId = requestIdParam ? Number(requestIdParam) : null;
+  const itemIdParam = (params as any)?.itemId;
+
+  const requestId = requestIdParam ? parseInt(requestIdParam, 10) : undefined;
+  const itemId = itemIdParam ? parseInt(itemIdParam, 10) : undefined;
+
+  // Validate parsed numbers
+  if (requestIdParam && (isNaN(requestId!) || requestId === undefined)) {
+    console.error("Invalid requestId:", requestIdParam);
+  }
+
+  if (itemIdParam && (isNaN(itemId!) || itemId === undefined)) {
+    console.error("Invalid itemId:", itemIdParam);
+  }
+
   const [loading, setLoading] = React.useState(true);
   const [processing, setProcessing] = React.useState(false);
   const [items, setItems] = React.useState<Array<{ inventory_item_id: number; item_name: string; quanityAvailable: number }>>([]);
@@ -40,23 +53,29 @@ export default function InventoryRequests() {
   }, []);
 
   const fetchRequestDetails = async () => {
-    if (!requestId) {
-      console.log('No requestId provided');
-      setDebug(prev => prev + '\nNo requestId in params');
+    // Only proceed if requestId is a valid number
+    if (requestId === undefined || isNaN(requestId)) {
+      console.error('Invalid requestId:', requestId);
       setLoading(false);
       return;
     }
-    console.log('Fetching details for request:', requestId);
+
+    setLoading(true);
+
     try {
-      setLoading(true);
-      const { data, error } = await supabase
+      let query = supabase
         .from('inventory_request_items')
         .select('inventory_item_id, inventory_items(item_name, quanityAvailable)')
         .eq('inventory_request_id', requestId);
 
+      // Apply itemId filter only if provided and valid
+      if (itemId !== undefined && !isNaN(itemId)) {
+        query = query.eq('inventory_item_id', itemId);
+      }
+
+      const { data, error } = await query;
+
       if (error) throw error;
-      console.log('Fetched request items:', data);
-      setDebug(prev => prev + '\nFetched items: ' + JSON.stringify(data));
 
       const mapped = (data || []).map((row: any) => ({
         inventory_item_id: row.inventory_item_id,
@@ -72,6 +91,7 @@ export default function InventoryRequests() {
       setLoading(false);
     }
   };
+
 
   React.useEffect(() => {
     fetchRequestDetails();
