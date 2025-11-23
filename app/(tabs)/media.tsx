@@ -1,57 +1,77 @@
-import { EventData, fetchEventData } from "@/services/eventsService";
-import DynamicButton from "../../components/universal/dynamic-button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, View, Text } from "react-native";
+import DynamicButton from "@/components/universal/dynamic-button";
+import { mediaService } from "@/services/media.service";
+import type { MediaLink } from "@/types/database.types";
+import type { RelativePathString } from "expo-router";
 
-const images = {
-    evening_service: require("../../assets/images/bg-about-sol.jpg"),
-    sol_tv: require("../../assets/images/bg-mission.jpg"),
-    morning_service: require("../../assets/images/bg-sol-ru.jpg"),
+// Local images map
+const localImages: Record<string, any> = {
+  evening_service: require("../../assets/images/bg-about-sol.jpg"),
+  sol_tv: require("../../assets/images/bg-mission.jpg"),
+  morning_service: require("../../assets/images/bg-sol-ru.jpg"),
 };
 
-const MediaPage = () => {
-  const [data, setData] = useState<EventData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+export default function MediaPage() {
+  const [buttons, setButtons] = useState<MediaLink[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  return (  
-        <DynamicButton buttons={[
-            {
-                type: 0, // external
-                shape: 0, // full
-                buttonConfig: {
-                    text: "Evening Service",
-                    link: "https://www.youtube.com/live/WAkwMg375ig?si=w-9a2XTOoCpN6tAX",
-                    backgroundImage: images.evening_service
-                 }
-            },
-            {
-                type: 0, // external
-                shape: 0, // full
-                buttonConfig: {
-                    text: "SOL TV",
-                    link: "https://youtube.com/@soltv3023?si=aeGhE6sob2WDm8kp",
-                    backgroundImage: images.sol_tv
-                 }
-            },
-            {
-                type: 0, // external
-                shape: 0, // full
-                buttonConfig: {
-                    text: "Morning Service",
-                    link: "https://www.google.com/", // currently redirects to private video
-                    backgroundImage: images.morning_service
-                 }
-            },
-            {
-                type: 1, // external
-                shape: 0, // full
-                buttonConfig: {
-                    text: "Lyrics",
-                    internalLink: `../media/lyrics`,
-                    backgroundImage: "https://media.istockphoto.com/id/665336594/vector/blurred-summer-background-beach-with-sparkles-and-bokeh-vector-background-for-your-creativity.jpg?s=612x612&w=0&k=20&c=V7XOossa2nByJENpYqB-OpCONFOJS2oWI7j2Hkc8JIE="
-                 }
-            }
-        ]}></DynamicButton>
-      );
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const result = await mediaService.getMediaButtons();
+        setButtons(result || []);
+      } catch (err) {
+        console.error("Error loading media page:", err);
+      } finally {
+        setLoading(false);
+      }
     };
-    
-export default MediaPage;
+
+    load();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+        <Text>Loading media...</Text>
+      </View>
+    );
+  }
+
+  if (buttons.length === 0) {
+    return (
+      <View style={{ padding: 20 }}>
+        <Text style={{ fontSize: 20, textAlign: "center", marginTop: 40 }}>
+          ⚠ No media buttons found.
+        </Text>
+        <Text style={{ marginTop: 10, textAlign: "center" }}>
+          Check if the media_links table has data.
+        </Text>
+      </View>
+    );
+  }
+
+  const mappedButtons = buttons.map((item) => {
+    const bgImage =
+      (item.background_key && localImages[item.background_key]) ||
+      item.background_url ||
+      null;
+
+    return {
+      type: item.type,
+      shape: item.shape,
+      buttonConfig: {
+        text: item.title,
+        link: item.link || undefined,
+        internalLink: item.internal_link
+          ? (item.internal_link as RelativePathString)
+          : undefined,
+        backgroundImage: bgImage,
+      },
+    };
+  });
+
+  return <DynamicButton buttons={mappedButtons} />;
+}
