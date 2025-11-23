@@ -362,61 +362,7 @@ describe('ApprovedRequestPage', () => {
 
 // BorrowTakeItems
 describe('BorrowTakeItems', () => {
-  it('shows loading spinner then renders items and filters by search', async () => {
-    mockFrom.mockImplementation((table: string) => {
-      if (table === 'item_category') {
-        return createSupabaseBuilder([
-          { item_category_id: 1, item_category_name: 'Books' },
-          { item_category_id: 2, item_category_name: 'Audio' },
-        ]);
-      }
-
-      if (table === 'inventory_items') {
-        return createSupabaseBuilder([
-          {
-            inventory_item_id: 1,
-            item_name: 'Bible',
-            item_image_id: null,
-            item_category_id: 1,
-            item_category: {
-              item_category_id: 1,
-              item_category_name: 'Books',
-            },
-            quanityAvailable: 3,
-          },
-          {
-            inventory_item_id: 2,
-            item_name: 'Microphone',
-            item_image_id: null,
-            item_category_id: 2,
-            item_category: {
-              item_category_id: 2,
-              item_category_name: 'Audio',
-            },
-            quanityAvailable: 1,
-          },
-        ]);
-      }
-
-      throw new Error(`Unexpected table ${table}`);
-    });
-
-    const { findByText, findByPlaceholderText, queryByText } = render(
-      <BorrowTakeItems />,
-    );
-
-    await findByText('Bible');
-    await findByText('Microphone');
-
-    const input = await findByPlaceholderText('Search items...');
-    fireEvent.changeText(input, 'micro');
-
-    await waitFor(() => {
-      expect(queryByText('Bible')).toBeNull();
-      expect(queryByText('Microphone')).toBeTruthy();
-    });
-  });
-
+  // Only keep the navigation behavior here (render/filter covered in borrowItems.test.tsx)
   it('navigates to confirm-borrow with selected item ids', async () => {
     mockFrom.mockImplementation((table: string) => {
       if (table === 'item_category') {
