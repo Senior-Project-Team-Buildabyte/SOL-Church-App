@@ -5,7 +5,18 @@ export type Json =
   | null
   | { [key: string]: Json | undefined }
   | Json[]
-
+  
+export type MediaLink = {
+  id: number;
+  title: string;
+  link: string | null;
+  internal_link: string | null;
+  background_url: string | null;
+  background_key: string | null;
+  type: number;
+  shape: number;
+  created_at: string;
+};
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
@@ -552,6 +563,7 @@ export type Database = {
         }
         Relationships: []
       }
+      
       slider_image: {
         Row: {
           description: string | null
@@ -634,6 +646,29 @@ export type Database = {
           },
         ]
       }
+      media_links: {
+        Row: MediaLink;
+          Insert: {
+            title: string;
+            link?: string | null;
+            internal_link?: string | null;
+            background_url?: string | null;
+            background_key?: string | null;
+            type: number;
+            shape: number;
+          };
+          Update: {
+            id?: number;
+            title?: string;
+            link?: string | null;
+            internal_link?: string | null;
+            background_url?: string | null;
+            background_key?: string | null;
+            type?: number;
+            shape?: number;
+            created_at?: string;
+          };
+      },
     }
     Views: {
       [_ in never]: never
