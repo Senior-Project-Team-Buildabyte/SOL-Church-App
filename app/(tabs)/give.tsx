@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-const GIVING_URL = 'https://www.solsacramento.com/give';
+const GIVING_URL = 'https://www.solsacramento.com/give?embedded=true';
 
 const DonatePage = () => {
   return (
