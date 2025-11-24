@@ -1,6 +1,5 @@
 import { EventData, fetchEventData } from '@/services/eventsService';
 import { useRouter } from 'expo-router';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Linking, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -62,7 +61,7 @@ const EventsPage = () => {
               <Text style={styles.eventTitle}>{event.title}</Text>
               {event.group ? <Text style={styles.eventGroup}>{event.group}</Text> : null}
               {event.guestSpeaker ? <Text style={styles.eventGroup}>{event.guestSpeaker}</Text> : null}
-              <Text style={styles.eventDate}>{moment(event.date).format('ll') + (event.time ? ' \u00B7 ' + event.time : '')}</Text>
+              <Text style={styles.eventDate}>{event.date + (event.time ? ' \u00B7 ' + event.time : '')}</Text>
             </View>
           </TouchableOpacity>
         ))}
