@@ -1,22 +1,38 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-import { Linking } from "react-native";
-import { useRouter } from "expo-router";
+import { render, waitFor } from "@testing-library/react-native";
 import MediaPage from "../../app/(tabs)/media";
+import { mediaService } from "@/services/media.service";
+import { Linking, View, Text } from "react-native";
+import { useRouter } from "expo-router";
 
+// Mock router
 jest.mock("expo-router", () => ({
   useRouter: jest.fn(),
 }));
 
-describe("MediaPage", () => {
-  const openURLSpy = jest
-    .spyOn(Linking, "openURL")
-    .mockImplementation(async () => undefined);
+// SAFE mock for DynamicButton — no JSX, no out-of-scope variables
+jest.mock("@/components/universal/dynamic-button", () => {
+  const React = require("react");
+  const { View, Text } = require("react-native");
+  return function MockDynamicButton(props: any) {
+    return React.createElement(
+      View,
+      { testID: "dynamic-button" },
+      props.buttons.map((_: any, index: number) =>
+        React.createElement(View, { key: index, testID: "media-button" })
+      )
+    );
+  };
+});
 
-  const canOpenURLSpy = jest
-    .spyOn(Linking, "canOpenURL")
-    .mockImplementation(async () => true);
+// Mock Linking
+jest.spyOn(Linking, "openURL").mockImplementation(async () => undefined);
+jest.spyOn(Linking, "canOpenURL").mockImplementation(async () => true);
 
+// Mock media service
+jest.mock("@/services/media.service");
+
+describe("MediaPage basic tests", () => {
   const mockPush = jest.fn();
 
   beforeEach(() => {
@@ -24,33 +40,49 @@ describe("MediaPage", () => {
     (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
   });
 
-  it("renders 4 tappable buttons", () => {
-    const { UNSAFE_getAllByType } = render(<MediaPage />);
-    const buttons = UNSAFE_getAllByType(require("react-native").Pressable);
-    expect(buttons.length).toBe(4);
+  it("shows loading indicator first", () => {
+    (mediaService.getMediaButtons as jest.Mock).mockResolvedValue([]);
+
+    const { getByText } = render(<MediaPage />);
+    expect(getByText("Loading media...")).toBeTruthy();
   });
 
-  it("pressing external buttons opens the correct URLs", async () => {
-    const { UNSAFE_getAllByType } = render(<MediaPage />);
-    const pressables = UNSAFE_getAllByType(require("react-native").Pressable);
+  it("shows empty state when no buttons exist", async () => {
+    (mediaService.getMediaButtons as jest.Mock).mockResolvedValue([]);
 
-    const expectedExternalUrls = [
-      "https://www.youtube.com/live/WAkwMg375ig?si=w-9a2XTOoCpN6tAX",
-      "https://youtube.com/@soltv3023?si=aeGhE6sob2WDm8kp",
-      "https://www.google.com/",
-    ];
-
-    for (let i = 0; i < 3; i++) {
-      await fireEvent.press(pressables[i]);
-      expect(canOpenURLSpy).toHaveBeenNthCalledWith(i + 1, expectedExternalUrls[i]);
-      expect(openURLSpy).toHaveBeenNthCalledWith(i + 1, expectedExternalUrls[i]);
-    }
+    const { findByText } = render(<MediaPage />);
+    expect(await findByText("⚠ No media buttons found.")).toBeTruthy();
   });
 
-  it("pressing internal button navigates correctly", async () => {
-    const { UNSAFE_getAllByType } = render(<MediaPage />);
-    const pressables = UNSAFE_getAllByType(require("react-native").Pressable);
-    await fireEvent.press(pressables[3]);
-    expect(mockPush).toHaveBeenCalledWith("../media/lyrics");
+  it("renders DynamicButton when data exists", async () => {
+    (mediaService.getMediaButtons as jest.Mock).mockResolvedValue([
+      {
+        id: 1,
+        title: "Youtube Stream",
+        link: "https://youtube.com",
+        internal_link: null,
+        background_url: null,
+        background_key: "evening_service",
+        type: 0,
+        shape: 0,
+        created_at: "2025-01-01",
+      },
+    ]);
+
+    const { findByTestId, findAllByTestId } = render(<MediaPage />);
+
+    expect(await findByTestId("dynamic-button")).toBeTruthy();
+
+    const btns = await findAllByTestId("media-button");
+    expect(btns.length).toBe(1);
+  });
+
+  it("handles service errors safely", async () => {
+    (mediaService.getMediaButtons as jest.Mock).mockRejectedValue(
+      new Error("fail")
+    );
+
+    const { findByText } = render(<MediaPage />);
+    expect(await findByText("⚠ No media buttons found.")).toBeTruthy();
   });
 });
