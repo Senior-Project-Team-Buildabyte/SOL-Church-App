@@ -3,11 +3,13 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function BackHeaderBar() {
 
   return (
     <>
+    <SafeAreaView edges={['top']} style={{ backgroundColor: 'white' }}>
       <View style={styles.header}>
         {/* Left: Logo and Text */}
 
@@ -34,6 +36,7 @@ export default function BackHeaderBar() {
         
 
       </View> */}
+      </SafeAreaView>
     </>
   );
 }
