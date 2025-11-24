@@ -1,0 +1,143 @@
+# Testing Workflow for Media Page
+
+appId: com.anonymous.SolChurchApp
+---
+
+- launchApp
+- assertVisible: 'SOL Church'
+# 1. Navigate to the Login Page
+- waitForAnimationToEnd
+- tapOn: #Account Button
+    point: 95%,5%
+- waitForAnimationToEnd
+- assertVisible: 'Log in or sign up'
+
+# 2. Navigate to the Email Login Page
+- tapOn: 'Log in or sign up'
+- waitForAnimationToEnd
+- assertVisible: 'Email login'
+
+#3. Navigate to the Forgot Password Page
+- tapOn: 'Forgot your password?'
+- waitForAnimationToEnd
+- assertVisible: 'Reset Password'
+
+#4. Ensure button is disabled without captcha
+- tapOn: 'Send Reset Link'
+- assertVisible: 'Reset Password'  # Still on the same page
+
+#5. Navigate back to sign in page
+- tapOn: 'Sign in'
+- waitForAnimationToEnd
+- assertVisible: 'Email login'
+
+#6. Navigate to Create Account Page
+- tapOn: 'Create account'
+- waitForAnimationToEnd
+- assertVisible: 'Create account'
+
+#7. Ensure button is disabled without captcha
+- tapOn: 'Sign up'
+- assertVisible: 'Create account'  # Still on the same page
+
+#8. Navigate back to sign in page
+- tapOn: 'Sign in'
+- waitForAnimationToEnd
+- assertVisible: 'Email login'
+
+
+#9. Login with valid credentials
+- tapOn: 'email@address.com'
+- inputText: 'dkeener202@gmail.com'
+- tapOn: 'Password'
+- inputText: 'Password1'
+- tapOn: 'Log in'
+- waitForAnimationToEnd
+- tapOn: #OK Button
+    point: 82%, 57%
+- waitForAnimationToEnd
+- assertVisible: 'SOL Church' # Back on main page
+- assertVisible: 'Borrow' # New borrow tap visible for logged in user
+
+#10. Open account page again
+- tapOn: #Account Button
+    point: 95%,5%
+# - waitForAnimationToEnd
+- assertVisible: 'Sign Out' # On account page
+
+#11. Navigate to user notifications inbox
+- tapOn: 'Inbox'
+# - waitForAnimationToEnd
+- assertVisible: 'Inventory Request Approved' # Sample notification title
+
+#12. Test notification details view
+- tapOn: 'Inventory Request Approved'
+# - waitForAnimationToEnd
+- assertVisible: 'Status: Approved' # Sample notification detail
+
+#13. Navigate back to account page
+- tapOn: #Back Button
+    point: 5%,5%
+# - waitForAnimationToEnd
+- assertVisible: 'Inventory Request Approved' # Back on inbox page
+- tapOn: #Back Button
+    point: 5%,5%
+# - waitForAnimationToEnd
+- assertVisible: 'Sign Out' # Back on account page
+
+#14. Navigate to notifications settings page
+- tapOn: 'Manage notification preferences'
+# - waitForAnimationToEnd
+- assertVisible: "Women's Ministry" # Sample notification setting
+
+#15. Test toggling on notifications and changing notification settings
+- tapOn: # Turn on notifications toggle
+    point: 88%,12%
+# - waitForAnimationToEnd
+- tapOn: #Turn on Youth and Teens notifications toggle
+    point: 88%,26%
+- tapOn:
+    point: 88%,40%
+
+#16. Navigate back to account page
+- tapOn: #Back Button
+    point: 5%,5%
+# - waitForAnimationToEnd
+- assertVisible: 'Sign Out' # Back on account page
+
+#17. Test Feedback Modal
+- swipe: # Swipe down to reveal all buttons
+    start: 50%,90%
+    end: 50%,10%
+- tapOn: 'Feedback'
+- assertVisible: 'Share Your Feedback'
+- back
+
+#18. Test Help modal
+- tapOn: 'Help'
+- assertVisible: 'Need A Hand?'
+- back
+
+#19. Test About modal
+- tapOn: 'About'
+- assertVisible: 'Version 1'
+- back
+
+#20. Test Share button
+- tapOn: 'Share SOL Church App'
+- back
+
+#21. Sign out
+- swipe: #Swipe up to reveal sign out button
+    start: 50%,10%
+    end: 50%,90%
+- tapOn: 'Sign Out'
+- waitForAnimationToEnd
+- assertVisible: 'Are you sure you want to sign out?'
+- tapOn: 'Sign Out'
+- waitForAnimationToEnd
+- tapOn: #OK Button
+    point: 82%, 57%
+- waitForAnimationToEnd
+- assertVisible: 'SOL Church' # Back on main page logged out
+- assertNotVisible: 'Borrow' # Borrow tab not visible for logged out user
