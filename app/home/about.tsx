@@ -2,15 +2,15 @@ import React from 'react';
 import { StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-const GIVING_URL = 'https://www.solsacramento.com/give?embedded=true';
+const ABOUT_URL = 'https://www.solsacramento.com/about?embedded=true';
 
-const DonatePage = () => {
+const AboutScreen = () => {
   return (
     // SafeAreaView ensures content doesn't overlap with notches/status bar on mobile
     <SafeAreaView style={styles.container}>
       <WebView
         // The core prop: specify the URI you want to load
-        source={{ uri: GIVING_URL }}
+        source={{ uri: ABOUT_URL }}
         
         // Optional: Show an activity indicator while the page is loading
         startInLoadingState={true}
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DonatePage;
+export default AboutScreen;
