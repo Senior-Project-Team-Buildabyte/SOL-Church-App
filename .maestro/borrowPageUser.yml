@@ -1,0 +1,65 @@
+# Testing Workflow for Borrow Page (User View)
+# Note: Need to be logged in as non-admin user
+
+appId: com.anonymous.SolChurchApp
+---
+- launchApp
+
+# 1. Navigate to the Borrow Page
+- waitForAnimationToEnd
+- tapOn: 'Borrow'
+
+# 2. Assert buttons and top icon are visible on the page
+- waitForAnimationToEnd
+- assertNotVisible: 'Connect Card'
+- assertVisible: 'SOL Inventory'
+- assertVisible: 'Borrow an Item'
+- assertVisible: 'Return Items'
+- takeScreenshot: BorrowPageUserView
+
+# 3. Borrow an Item navigation
+- tapOn: 'Borrow an Item'
+- waitForAnimationToEnd
+- assertNotVisible: 'Return Items'
+- assertVisible: 'Available Items'
+- assertVisible: 'All Items'
+- assertVisible: 'Cables'
+- assertVisible: 'Electronics'
+- assertVisible: 'Sony A7R V'
+- assertVisible: 'Borrow Items'
+- takeScreenshot: BorrowPageItemsUserView
+
+# 4. Checking out Item flow
+- tapOn: 'Sony A7R V'
+- tapOn: 'Borrow Items (1)'
+- takeScreenshot: SelectedItem
+- waitForAnimationToEnd
+- assertVisible: 'Confirm Borrow'
+- assertVisible: 'Sony A7R V'
+- assertVisible: 'CONFIRM BORROW'
+
+# 5. Back on Borrow Page and Moving to Return Items Page
+- back
+- back
+- waitForAnimationToEnd
+- assertVisible: 'SOL Inventory'
+- assertVisible: 'Borrow an Item'
+- assertVisible: 'Return Items'
+- takeScreenshot: BorrowPageUserView
+- tapOn: 'Return Items'
+- waitForAnimationToEnd
+- assertNotVisible: 'Borrow an Item'
+- assertVisible: 'Return Items'
+- assertVisible: 'Search items...'
+- assertVisible: 'Qty:'
+- assertVisible: 'MAX'
+- assertVisible: 'Peak Design Travel Tripod'
+- assertVisible: 'Carbon Fiber'
+- assertVisible: 'Borrowed by you: 1'
+- assertVisible: 'Return Selected Items'
+- takeScreenshot: ReturnItemsPageUserView
+- tapOn: 'MAX'
+- takeScreenshot: ReturningItems
+- tapOn: 'Return Selected Items'
+- waitForAnimationToEnd
+- back
