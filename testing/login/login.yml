@@ -1,0 +1,180 @@
+# Testing Workflow for Media Page
+
+appId: com.anonymous.SolChurchApp
+---
+
+- launchApp
+- assertVisible: 'SOL Church'
+# 1. Navigate to the Login Page
+- waitForAnimationToEnd
+- tapOn: #Account Button
+    point: 95%,5%
+- assertVisible: 'Log in or sign up'
+- takeScreenshot:
+    path: 1-AccountSignedOut
+
+# 2. Navigate to the Email Login Page
+- tapOn: 'Log in or sign up'
+- assertVisible: 'Email login'
+- takeScreenshot:
+    path: 2-EmailLogin
+
+#3. Navigate to the Forgot Password Page
+- tapOn: 'Forgot your password?'
+- assertVisible: 'Reset Password'
+- takeScreenshot:
+    path: 3-ForgotPassword
+
+#4. Ensure button is disabled without captcha
+- tapOn: 'Send Reset Link'
+- assertVisible: 'Reset Password'  # Still on the same page
+
+#5. Navigate back to sign in page
+- tapOn: 'Sign in'
+- assertVisible: 'Email login'
+
+#6. Navigate to Create Account Page
+- tapOn: 'Create account'
+- assertVisible: 'Create account'
+- takeScreenshot:
+    path: 4-CreateAccount
+
+#7. Ensure button is disabled without captcha
+- tapOn: 'Sign up'
+- assertVisible: 'Create account'  # Still on the same page
+
+#8. Navigate back to sign in page
+- tapOn: 'Sign in'
+- assertVisible: 'Email login'
+
+#9. Test login with invalid credentials
+- tapOn: 'email@address.com'
+- inputText: 'invalid@example.com'
+- tapOn: 'Password'
+- inputText: 'WrongPassword'
+- tapOn: 'Log in'
+- waitForAnimationToEnd
+- takeScreenshot:
+    path: 5-InvalidLogin
+- tapOn: #OK Button
+    point: 82%, 57%
+- assertVisible: 'Email login'  # Still on login page
+- tapOn: #Back Button
+    point: 5%,5%
+- tapOn: 'Log in or sign up'
+- assertVisible: 'Email login'
+
+#10. Login with valid credentials
+- tapOn: 'email@address.com'
+- inputText: 'dkeener202@gmail.com'
+- tapOn: 'Password'
+- inputText: 'Password1'
+- tapOn: 'Log in'
+- waitForAnimationToEnd
+- takeScreenshot:
+    path: 6-ValidLogin
+- tapOn: #OK Button
+    point: 82%, 57%
+- assertVisible: 'SOL Church' # Back on main page
+- assertVisible: 'Borrow' # New borrow tap visible for logged in user
+# - takeScreenshot:
+#     path: 7-HomeWithBorrow
+
+#11. Open account page again
+- tapOn: #Account Button
+    point: 95%,5%
+- assertVisible: 'Sign Out' # On account page
+# - takeScreenshot:
+#     path: 8-AccountSignedIn
+
+#12. Navigate to user notifications inbox
+- tapOn: 'Inbox'
+- assertVisible: 'Inventory Request Approved' # Sample notification title
+- takeScreenshot:
+    path: 9-Inbox
+
+#13. Test notification details view
+- tapOn: 'Inventory Request Approved'
+- assertVisible: 'Status: Approved' # Sample notification detail
+- takeScreenshot:
+    path: 10-NotificationDetail
+
+#14. Navigate back to account page
+- tapOn: #Back Button
+    point: 5%,5%
+- assertVisible: 'Inventory Request Approved' # Back on inbox page
+- tapOn: #Back Button
+    point: 5%,5%
+- assertVisible: 'Sign Out' # Back on account page
+
+#15. Navigate to notifications settings page
+- tapOn: 'Manage notification preferences'
+# - waitForAnimationToEnd
+- assertVisible: "Women's Ministry" # Sample notification setting
+
+#16. Test toggling on notifications and changing notification settings
+- tapOn: # Turn on notifications toggle
+    point: 88%,12%
+# - waitForAnimationToEnd
+- tapOn: #Turn on Youth and Teens notifications toggle
+    point: 88%,25%
+- tapOn:
+    point: 88%,38%
+- takeScreenshot:
+    path: 11-NotificationSettings
+
+#17. Navigate back to account page
+- tapOn: #Back Button
+    point: 5%,5%
+# - waitForAnimationToEnd
+- assertVisible: 'Sign Out' # Back on account page
+
+#18. Test Feedback Modal
+- swipe: # Swipe down to reveal all buttons
+    start: 50%,90%
+    end: 50%,10%
+- tapOn: 'Feedback'
+- assertVisible: 'Share Your Feedback'
+- takeScreenshot:
+    path: 12-FeedbackModal
+- back
+
+#19. Test Help modal
+- tapOn: 'Help'
+- assertVisible: 'Need A Hand?'
+# - takeScreenshot:
+#     path: 13-HelpModal
+- back
+
+#20. Test About modal
+- tapOn: 'About'
+- assertVisible: 'Version 1'
+# - takeScreenshot:
+#     path: 14-AboutModal
+- back
+
+#21. Test Share button
+- tapOn: 'Share SOL Church App'
+- waitForAnimationToEnd
+# - takeScreenshot:
+#     path: 15-ShareSheet
+- back
+
+#22. Sign out
+- swipe: #Swipe up to reveal sign out button
+    start: 50%,10%
+    end: 50%,90%
+- tapOn: 'Sign Out'
+- waitForAnimationToEnd
+- assertVisible: 'Are you sure you want to sign out?'
+- takeScreenshot:
+    path: 16-SignOutModal
+- tapOn: 'Sign Out'
+- waitForAnimationToEnd
+- takeScreenshot:
+    path: 17-ValidSignOut
+- tapOn: #OK Button
+    point: 82%, 57%
+- waitForAnimationToEnd
+- assertVisible: 'SOL Church' # Back on main page logged out
+- assertNotVisible: 'Borrow' # Borrow tab not visible for logged out user

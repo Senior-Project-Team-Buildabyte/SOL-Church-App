@@ -87,7 +87,7 @@ const ForgotPassword = () => {
 
         <View style={styles.headerRow}>
           <Text style={styles.title}>Reset Password</Text>
-          <Pressable onPress={() => router.replace('../[auth]/login')}>
+          <Pressable onPress={() => router.back()}>
             {({ pressed }) => (
               <Text
                 style={[styles.linkText, pressed && styles.linkTextPressed]}
