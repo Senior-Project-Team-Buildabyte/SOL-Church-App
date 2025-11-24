@@ -1,0 +1,109 @@
+appId: com.anonymous.SolChurchApp
+---
+- launchApp
+- assertVisible: 'SOL Church'
+- takeScreenshot:
+    path: LandingScreen
+- waitForAnimationToEnd:
+    timeout: 2000   # wait up to 2 seconds
+- swipe: #Swipe Image Slider on home page  
+    start: 90%, 30% # From (90% of width, 50% of height)
+    end: 10%, 30% # To (10% of width, 50% of height)
+- tapOn: #Click on first dynamic button
+    point: 50%,30% 
+- takeScreenshot:
+    path: FeaturedEvent
+- back 
+- tapOn: #Click on first dynamic button
+    point: 50%,50%  
+- back
+- tapOn: #Click on second dynamic button
+    point: 50%,60%
+- takeScreenshot:
+    path: SecondDynamicButon 
+- back
+- tapOn: #Click on third dynamic button
+    point: 50%,70%  
+- back
+- swipe:  #Swipe down to reveal more buttons
+    start: 50%, 90%
+    end: 50%, 10% 
+- takeScreenshot:
+    path: LandingScreen2
+- tapOn: #Click on fourth dynamic button
+    point: 50%,20%  
+- back
+
+
+#5 social buttons
+- tapOn: #phone button
+    point: 20%,30%  
+- back
+- takeScreenshot:
+    path: Phone
+- back
+- tapOn: #instagram
+    point: 35%,30%  
+- back
+- tapOn: #facebook
+    point: 50%,30%  
+- back
+- tapOn: #youtube
+    point: 65%,30%  
+- back
+- tapOn: #website
+    point: 80%,30%  
+- back
+
+
+#- tapOn: #SOL Bible Academy
+    #point: 25%,45%  
+#- back - enable these when SOL Bible and About SOL are working
+#- tapOn: #About Sol
+    #point: 75%,45%  
+#- back - enable these when SOL Bible and About SOL are working
+- tapOn: #SOL Mission
+    point: 25%,65%  
+- back 
+- tapOn: #SOLru
+    point: 75%,65%  
+- back
+
+
+- tapOn: #Forms
+    point: 25%,80%  
+- tapOn: #Connect Form
+    point: 50%,15%  
+- back
+- takeScreenshot:
+    path: Forms
+- tapOn: #Meet With Pastor
+    point: 50%,20% 
+- takeScreenshot:
+    path: ExampleForm
+- back
+- tapOn: #Prayer Request
+    point: 50%,25%  
+- back
+#- tapOn: #Membership Class  - Enable when membership class works
+    #point: 50%,30%  
+#- back
+- tapOn: #Baptism Class
+    point: 50%,40% 
+- back 
+- tapOn: #Serve
+    point: 50%,45%  
+- back
+- tapOn: #Child Dedication
+    point: 50%,55%  
+- back
+- tapOn: #Leave Membership
+    point: 50%,60%  
+- back
+- back
+
+- tapOn: #Calendar
+    point: 75%,80% 
+- takeScreenshot:
+    path: Calendar
+- back
