@@ -24,7 +24,7 @@ export function useAuth() {
             // } else { 
                 setSession(newSession)
             }
-            console.log(_event, newSession)
+            // console.log(_event, newSession)
 
             if (_event === 'INITIAL_SESSION') {
                 // handle initial session

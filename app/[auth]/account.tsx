@@ -10,12 +10,12 @@ import {
   Modal,
   ActivityIndicator,
   Alert,
+  Linking,
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useState } from "react";
-import { useAuth } from "@/components/universal/useAuth";
 import { authService } from "@/services/auth.service";
 import { useAuthContext } from "@/context/authContext";
 import { updateUserIDForToken } from "@/services/notifications";
@@ -42,102 +42,10 @@ const handleShare = () => {
   }
 };
 
-// Data
-const sections: SettingSection[] = [
-  {
-    title: "This device",
-    data: [
-      {
-        id: "1",
-        label: "Inbox",
-        desc: "Access your notifications",
-        icon: "notifications",
-        onPress: () => router.push("../settings/notification-inbox"),
-      },
-      {
-        id: "2",
-        label: "Notes",
-        desc: "Access your notes",
-        icon: "notes",
-        onPress: () => router.push("../[auth]/take-notes"),
-      },
-      {
-        id: "3",
-        label: "Downloads",
-        desc: "Access your downloads",
-        icon: "download",
-        onPress: () => router.push("../settings/downloads"),
-      },
-    ],
-  },
-  {
-    title: "App settings",
-    data: [
-      {
-        id: "4",
-        label: "Notifications",
-        desc: "Manage notification preferences",
-        icon: "edit-notifications",
-        onPress: () => router.push("../settings/notification-settings"),
-      },
-      {
-        id: "5",
-        label: "Terms of use",
-        desc: "Read our terms of use",
-        icon: "library-books",
-        onPress: () => router.push("../settings/terms-of-use"),
-      },
-      {
-        id: "6",
-        label: "Privacy policy",
-        desc: "Read our privacy policy",
-        icon: "lock",
-        onPress: () => router.push("../settings/privacy-policy"),
-      },
-      {
-        id: "7",
-        label: "Copyright",
-        desc: "Copyright information",
-        icon: "copyright",
-        onPress: () => router.push("../settings/copyright"),
-      },
-      {
-        id: "8",
-        label: "About",
-        desc: "App version",
-        icon: "info-outline",
-        onPress: () => {},
-      },
-    ],
-  },
-  {
-    title: "More",
-    data: [
-      {
-        id: "9",
-        label: "Share SOL Church app",
-        desc: "Get a link to share the app",
-        icon: "share",
-        onPress: handleShare,
-      },
-      {
-        id: "10",
-        label: "Feedback",
-        desc: "Provide feedback on the app",
-        icon: "comment",
-        onPress: () => {},
-      },
-      {
-        id: "11",
-        label: "Help",
-        desc: "Get technical support",
-        icon: "help",
-        onPress: () => {},
-      },
-    ],
-  },
-];
+const CHURCH_PHONE = "9167597374";
+const CHURCH_EMAIL = "office@solsacramento.com";
 
+// Data
 // Row component
 const SettingRow = ({ label, desc, icon, onPress }: SettingItem) => (
   <Pressable
@@ -170,6 +78,72 @@ export default function SettingsScreen() {
   const [signOutVisible, setSignOutVisible] = useState(false);
   const [loginVisible, setLoginVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [aboutVisible, setAboutVisible] = useState(false);
+  const [feedbackVisible, setFeedbackVisible] = useState(false);
+  const [helpVisible, setHelpVisible] = useState(false);
+
+  const handlePhonePress = () => {
+    Linking.openURL(`tel:${CHURCH_PHONE}`);
+  };
+
+  const handleEmailPress = () => {
+    Linking.openURL(`mailto:${CHURCH_EMAIL}`);
+  };
+
+  const sections: SettingSection[] = [
+    {
+      title: "Personal",
+      data: [
+        {
+          id: "1",
+          label: "Inbox",
+          desc: "Access your notifications",
+          icon: "notifications",
+          onPress: () => router.push("../settings/notification-inbox"),
+        },
+        {
+          id: "2",
+          label: "Notifications",
+          desc: "Manage notification preferences",
+          icon: "edit-notifications",
+          onPress: () => router.push("../settings/notification-settings"),
+        },
+      ],
+    },
+    {
+      title: "More",
+      data: [
+        {
+          id: "3",
+          label: "Feedback",
+          desc: "Provide feedback on the app",
+          icon: "comment",
+          onPress: () => setFeedbackVisible(true),
+        },
+        {
+          id: "4",
+          label: "Share SOL Church app",
+          desc: "Get a link to share the app",
+          icon: "share",
+          onPress: handleShare,
+        },
+        {
+          id: "5",
+          label: "Help",
+          desc: "Get technical support",
+          icon: "help",
+          onPress: () => setHelpVisible(true),
+        },
+        {
+          id: "6",
+          label: "About",
+          desc: "App version",
+          icon: "info-outline",
+          onPress: () => setAboutVisible(true),
+        },
+      ],
+    },
+  ];
 
   const handleSignOut = async () => {
     setLoading(true);
@@ -196,7 +170,7 @@ export default function SettingsScreen() {
 
 
         {/* TODO: remove these when done; Navigation Links for testing*/} 
-        <View style={styles.navLinks}>
+        {/* <View style={styles.navLinks}>
             
           <Pressable onPress={() => router.push('../[auth]/login')}>
             <Text style={styles.linkText}>Log in</Text>
@@ -211,7 +185,7 @@ export default function SettingsScreen() {
             <Text style={styles.linkText}>Update password</Text>
           </Pressable>
 
-        </View>
+        </View> */}
 
 
         <Modal
@@ -231,7 +205,7 @@ export default function SettingsScreen() {
 
                 <Pressable
                   style={({ pressed }) => [
-                    styles.button,,
+                    styles.button,
                     pressed && styles.buttonPressed,
                   ]}
                   onPress={() => setConfirmSignOutVisible(false)}
@@ -253,6 +227,151 @@ export default function SettingsScreen() {
                   ) : (
                     <Text style={[styles.actionBtnTxt,  {color: '#eee'}]}>Sign Out</Text>
                   )}
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={aboutVisible}
+          onRequestClose={() => {
+            setAboutVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalBox}>
+              <Pressable
+                accessibilityLabel="Close about modal"
+                onPress={() => setAboutVisible(false)}
+                style={({ pressed }) => [
+                  styles.closeButton,
+                  pressed && styles.closeButtonPressed,
+                ]}
+              >
+                <MaterialIcons name="close" size={22} color="#555" />
+              </Pressable>
+              <Text style={styles.modalTitle}>SOL Church App</Text>
+              <Text style={styles.modalContentText}>Version 1</Text>
+              <View style={[styles.buttonRow, { justifyContent: "center" }]}>
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.button,
+                    pressed && styles.buttonPressed,
+                  ]}
+                  onPress={() => setAboutVisible(false)}
+                >
+                  <Text style={styles.actionBtnTxt}>Close</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={feedbackVisible}
+          onRequestClose={() => {
+            setFeedbackVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalBox}>
+              <Pressable
+                accessibilityLabel="Close feedback modal"
+                onPress={() => setFeedbackVisible(false)}
+                style={({ pressed }) => [
+                  styles.closeButton,
+                  pressed && styles.closeButtonPressed,
+                ]}
+              >
+                <MaterialIcons name="close" size={22} color="#555" />
+              </Pressable>
+              <Text style={styles.modalTitle}>Share Your Feedback</Text>
+              <Text style={styles.modalContentText}>
+                Reach out to the SOL Church team by phone or email and let us know how we're doing.
+              </Text>
+              <View style={styles.buttonRow}>
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.contactButton,
+                    pressed && styles.contactButtonPressed,
+                  ]}
+                  onPress={() => {
+                    setFeedbackVisible(false);
+                    handlePhonePress();
+                  }}
+                >
+                  <Text style={styles.contactBtnTxt}>Call</Text>
+                </Pressable>
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.contactButton,
+                    pressed && styles.contactButtonPressed,
+                  ]}
+                  onPress={() => {
+                    setFeedbackVisible(false);
+                    handleEmailPress();
+                  }}
+                >
+                  <Text style={styles.contactBtnTxt}>Email</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={helpVisible}
+          onRequestClose={() => {
+            setHelpVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalBox}>
+              <Pressable
+                accessibilityLabel="Close help modal"
+                onPress={() => setHelpVisible(false)}
+                style={({ pressed }) => [
+                  styles.closeButton,
+                  pressed && styles.closeButtonPressed,
+                ]}
+              >
+                <MaterialIcons name="close" size={22} color="#555" />
+              </Pressable>
+              <Text style={styles.modalTitle}>Need A Hand?</Text>
+              <Text style={styles.modalContentText}>
+                Contact our office for support with the SOL Church app. We're happy to help.
+              </Text>
+              <View style={styles.buttonRow}>
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.contactButton,
+                    pressed && styles.contactButtonPressed,
+                  ]}
+                  onPress={() => {
+                    setHelpVisible(false);
+                    handlePhonePress();
+                  }}
+                >
+                  <Text style={styles.contactBtnTxt}>Call</Text>
+                </Pressable>
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.contactButton,
+                    pressed && styles.contactButtonPressed,
+                  ]}
+                  onPress={() => {
+                    setHelpVisible(false);
+                    handleEmailPress();
+                  }}
+                >
+                  <Text style={styles.contactBtnTxt}>Email</Text>
                 </Pressable>
               </View>
             </View>
@@ -335,7 +454,7 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    width: "100%",
+    width: "90%",
     padding: 5,
   },
   // Row
@@ -383,6 +502,16 @@ const styles = StyleSheet.create({
     maxHeight: 500,
   },
   modalTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+  modalContentText: { fontSize: 16, color: "#555", marginBottom: 20 },
+  closeButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    padding: 6,
+    borderRadius: 20,
+    zIndex: 1,
+  },
+  closeButtonPressed: { backgroundColor: "rgba(0,0,0,0.08)" },
 
   // Login button
   loginButton: {
@@ -409,6 +538,18 @@ const styles = StyleSheet.create({
   },
   buttonPressed: { backgroundColor: "#999" },
   actionBtnTxt: { color: "#333", fontSize: 18 },
+  contactButton: {
+    flex: 1,
+    backgroundColor: "#bbb",
+    borderRadius: 7,
+    marginHorizontal: 5,
+    minHeight: 45,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+  contactButtonPressed: { backgroundColor: "#999" },
+  contactBtnTxt: { color: "#333", fontSize: 16, textAlign: "center" },
   // Testing nav links
   linkText: { fontSize: 15, color: "rgba(183, 113, 240, 1)", },
   navLinks: {
