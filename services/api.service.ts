@@ -16,12 +16,12 @@ export function toEvent(raw: any): EventData {
     group: raw.group ?? null,
     guestSpeaker: raw.guest_speaker ?? null,
     link: raw.link ?? null,
-    date: raw.date ? new Date(raw.date) : null,
+    date: raw.date ? new Date(raw.date).toLocaleString() : null,
     time: raw.time ?? null,
     image: raw.image_id ?? null,
     description: raw.description ?? "",
     location: raw.location ?? "",
     day: raw.date ? new Date(raw.date).getUTCDate().toString() : "",
-    month: raw.date ? new Date(raw.date).toLocaleString('en-US', { month: 'short' }) : "",
+    month: raw.date ? new Date(raw.date).toLocaleString('en-US', { month: 'short' }) : ""
   }
 }
