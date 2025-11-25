@@ -1,0 +1,30 @@
+appId: com.anonymous.SolChurchApp
+name: Validate Give Page
+---
+- launchApp
+- waitForAnimationToEnd
+
+- takeScreenshot: "appLaunched"
+
+- tapOn: "Give"
+- assertVisible: "Give Online"
+- assertVisible: "General Donation"
+- tapOn: "GENERAL DONATION"
+- assertVisible: "NEW BUILDING"
+- tapOn: "NEW BUILDING"
+- assertVisible: "#6.94 (NEW BUILDING)"
+- tapOn: "#6.94 (NEW BUILDING)"
+- takeScreenshot: "GivePage"
+- scroll
+- assertVisible: "Ways to give"
+- assertVisible: "CASH OR CHECK"
+- assertVisible: "MAKE CHECKS PAYABLE TO"
+- assertVisible: "SPRING OF LIFE CHURCH"
+- assertVisible: "OUR CONTACTS"
+- takeScreenshot: "MoreGivePage"
+- scroll
+- assertVisible: "(916) 759-7374"
+- tapOn: "(916) 759-7374"
+- assertVisible: "office@solsacramento.com"
+- tapOn: "office@solsacramento.com"
+- takeScreenshot: "BottomOfGivePage"
