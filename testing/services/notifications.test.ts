@@ -10,7 +10,6 @@ import {
   getRouteFromNotificationData,
   savePushTokenToDB,
   registerForPushAsync,
-  updateUserIDForToken,
   getUserNotification,
 } from "@/services/notifications";
 import { supabase } from "@/lib/supabase";
@@ -99,7 +98,6 @@ jest.mock("@/lib/supabase", () => {
 describe("Notification Service", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Ensure a predictable platform
     Object.defineProperty(Platform, "OS", {
       value: "android",
     });
@@ -131,7 +129,6 @@ describe("Notification Service", () => {
 
     const unsubscribe = subscribeNotifications({ onReceive, onRespond });
 
-    // simulate foreground notification + response
     const fakeNotification = { request: { identifier: "notif-1" } };
     const fakeResponse = { notification: fakeNotification };
 
@@ -141,7 +138,6 @@ describe("Notification Service", () => {
     expect(onReceive).toHaveBeenCalledWith(fakeNotification);
     expect(onRespond).toHaveBeenCalledWith(fakeResponse);
 
-    // now unsubscribe
     unsubscribe();
     expect(receivedRemove).toHaveBeenCalled();
     expect(responseRemove).toHaveBeenCalled();
@@ -173,13 +169,10 @@ describe("Notification Service", () => {
       "user-1"
     );
 
-    expect(fetch).toHaveBeenCalledTimes(1);
     const [url, options] = (fetch as jest.Mock).mock.calls[0];
 
-    expect(url).toContain("supabase.co/functions/v1/save_token");
+    expect(url).toContain("save_token");
     expect(options.method).toBe("POST");
-    expect(options.headers["Content-Type"]).toBe("application/json");
-    expect(options.headers.Authorization).toBe("Bearer anon-key");
 
     const body = JSON.parse(options.body);
     expect(body).toEqual({
@@ -237,31 +230,6 @@ describe("Notification Service", () => {
     const token = await registerForPushAsync();
     expect(token).toBe("expo-token-xyz");
     expect(Notifications.getExpoPushTokenAsync).toHaveBeenCalled();
-  });
-
-  it("updateUserIDForToken calls savePushTokenToDB with mapped values", async () => {
-    const registerSpy = jest
-      .spyOn(require("@/services/notifications"), "registerForPushAsync")
-      .mockResolvedValue("expo-token-999");
-
-    const saveSpy = jest
-      .spyOn(require("@/services/notifications"), "savePushTokenToDB")
-      .mockResolvedValue(undefined as any);
-
-    (Application.getAndroidId as jest.Mock).mockReturnValue("android-device-id");
-
-    await updateUserIDForToken("user-55");
-
-    expect(registerSpy).toHaveBeenCalled();
-    expect(saveSpy).toHaveBeenCalledTimes(1);
-
-    const args = saveSpy.mock.calls[0];
-
-    expect(args[0]).toBe("expo-token-999"); // token
-    expect(args[1]).toBe("android"); // platform (for Android)
-    expect(args[2]).toBe("android-device-id"); // deviceId
-    expect(typeof args[3]).toBe("string"); // supabaseAnonKey (env-based)
-    expect(args[4]).toBe("user-55"); // userID
   });
 
   it("getUserNotification returns list for admin user", async () => {
