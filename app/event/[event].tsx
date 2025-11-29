@@ -105,6 +105,7 @@ const SingleEventPage = () => {
         location: selectedEvent.location ?? undefined,
         notes: selectedEvent.description ?? undefined,
       };
+      
 
       try {
         if (Platform.OS === 'android') {
