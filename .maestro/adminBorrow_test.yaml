@@ -1,0 +1,159 @@
+appId: com.anonymous.SolChurchApp
+---
+- tapOn:
+    text: "Borrow"
+- waitForAnimationToEnd
+
+- assertVisible:
+    text: "Manage Items (Admin)"
+- tapOn:
+    text: "Manage Items (Admin)"
+- waitForAnimationToEnd
+- assertVisible:
+    text: "Search items..."
+- assertVisible:
+    text: "Show unavailable"
+- assertVisible:
+    text: "Available"
+- assertVisible:
+    text: "Hidden"
+
+- takeScreenshot: BorrowAdminPageOverview
+- waitForAnimationToEnd
+
+- tapOn:
+    text: Search items...
+- waitForAnimationToEnd
+
+- inputText: "Sony"
+- waitForAnimationToEnd
+
+- assertVisible:
+    text: "Sony A7R V"
+- assertVisible:
+    text: "Sony Camera Bodies • Qty: 0"
+    index: 2
+- takeScreenshot: BorrowAdminFilteredView
+- waitForAnimationToEnd
+- tapOn:
+    point: 80%,46%
+- waitForAnimationToEnd
+
+- assertVisible: Hidden
+
+- takeScreenshot: BorrowAdminItemHidden
+- waitForAnimationToEnd
+- tapOn:
+    point: 80%,46%
+- waitForAnimationToEnd
+
+- assertVisible:
+    text: "Available"
+- takeScreenshot: BorrowAdminItemVisible
+- waitForAnimationToEnd
+
+- tapOn: Sony
+- pressKey:
+    key: backspace
+- pressKey:
+    key: backspace
+- pressKey:
+    key: backspace
+- pressKey:
+    key: backspace
+- waitForAnimationToEnd
+- tapOn:
+    point: 85%,18%
+
+- waitForAnimationToEnd
+
+- assertNotVisible:
+    text: "Hidden"
+- takeScreenshot: BorrowAdminHideUnavailable
+- waitForAnimationToEnd
+
+- tapOn:
+    point: 85%,18%
+- waitForAnimationToEnd
+
+- assertVisible:
+    text: "Hidden"
+- takeScreenshot: BorrowAdminShowUnavailable
+- waitForAnimationToEnd
+
+- tapOn: 
+- waitForAnimationToEnd
+
+- assertVisible:
+    text: "Manage Items (Admin)"
+- assertVisible: , Borrow an Item
+
+- takeScreenshot: Back
+- waitForAnimationToEnd
+- tapOn: Borrow an Item
+- waitForAnimationToEnd
+
+- assertVisible: All Items
+- tapOn: Cables
+- waitForAnimationToEnd
+
+- assertVisible: No items found
+- tapOn: All Items
+- waitForAnimationToEnd
+- assertVisible: Sony A7R V
+
+- takeScreenshot: ALL ITEMS TAB
+- waitForAnimationToEnd
+
+- tapOn: 
+- waitForAnimationToEnd
+- assertVisible: Return Items
+- tapOn: Return Items
+- waitForAnimationToEnd
+
+- assertVisible: Sony FX6
+- tapOn: MAX
+- waitForAnimationToEnd
+- tapOn: Return Selected Items
+
+- waitForAnimationToEnd
+- assertVisible: No borrowed items
+
+- takeScreenshot: No borrowed items
+
+- tapOn: 
+- waitForAnimationToEnd
+- tapOn: Borrow an Item
+- tapOn:
+    point: 84%,72%
+- waitForAnimationToEnd
+- tapOn: →
+- assertVisible: Sony FX6
+- tapOn:
+    text: CONFIRM BORROW
+    index: 1
+- waitForAnimationToEnd
+- assertVisible: Request Submitted!
+- takeScreenshot: Request Submitted!
+
+- tapOn: Done
+- tapOn:
+    point: 90%,6%
+- waitForAnimationToEnd
+- tapOn: , Inbox, Access your notifications, 
+- waitForAnimationToEnd
+- tapOn: New Inventory Request
+- waitForAnimationToEnd
+- assertVisible: Approve
+- takeScreenshot: Request Approval
+- waitForAnimationToEnd
+
+- tapOn: Approve
+- assertVisible: Success
+- waitForAnimationToEnd
+- tapOn: OK
+- waitForAnimationToEnd
+- tapOn: 
+- waitForAnimationToEnd
+- tapOn: 
+- assertVisible: Return Items

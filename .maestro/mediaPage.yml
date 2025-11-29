@@ -1,0 +1,56 @@
+# Testing Workflow for Media Page
+
+appId: com.anonymous.SolChurchApp
+---
+- launchApp
+
+# 1. Navigate to the Media Page
+- waitForAnimationToEnd
+- tapOn: 'Media'
+
+# 2. Assert buttons are visible on the page
+- waitForAnimationToEnd
+- assertNotVisible: 'Connect Card'
+- assertVisible: 'Evening Service'
+- assertVisible: 'SOL TV'
+- assertVisible: 'Morning Service'
+- assertVisible: 'Lyrics'
+- takeScreenshot: MediaPage
+
+# 3. Verify the 'Evening Service' button navigates correctly (YouTube Link)
+- waitForAnimationToEnd
+- tapOn: 'Evening Service'
+- launchApp
+- waitForAnimationToEnd
+- tapOn: 'Media'
+
+# 4. Verify 'SOL TV' button navigates correctly (YouTube Link)
+- waitForAnimationToEnd
+- tapOn: 'SOL TV'
+- launchApp
+- waitForAnimationToEnd
+- tapOn: 'Media'
+
+# 5. Verify 'Morning Service' button navigates correctly (YouTube Link)
+- waitForAnimationToEnd
+- tapOn: 'Morning Service'
+- launchApp
+- waitForAnimationToEnd
+- tapOn: 'Media'
+
+# 6. Verify 'Lyrics' button navigates correctly (internal link)
+- waitForAnimationToEnd
+- tapOn: 'Lyrics'
+- waitForAnimationToEnd
+- assertNotVisible: 'Morning Service'
+- assertVisible: 'Worship Lyrics'
+- takeScreenshot: LyricsPage
+- back
+
+# 7. Verify back functionality works to get back to Media Page
+- waitForAnimationToEnd
+- assertVisible: 'Evening Service'
+- assertVisible: 'SOL TV'
+- assertVisible: 'Morning Service'
+- assertVisible: 'Lyrics'
+- takeScreenshot: MediaPageBack
