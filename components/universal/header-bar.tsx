@@ -23,14 +23,7 @@ export default function HeaderBar() {
       </View>
 
       {/* Right: Icons */}
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity onPress={handlePress}>
-          <Image
-            source={require('../../assets/images/search-button.png')}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
-          
+      <View style={styles.buttonsContainer}> 
         <TouchableOpacity onPress={handleLoginPress}>
           <Image
             source={require('../../assets/images/login-button.png')}
