@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import * as Calendar from 'expo-calendar';
 import moment from 'moment';
-
 import {
   View,
   Text,
@@ -134,14 +133,14 @@ const SingleEventPage = () => {
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{selectedEvent?.title}</Text>
         {selectedEvent?.group && <Text style={styles.subtitle}>{selectedEvent?.group}</Text>}
-        <Text style={styles.date}>{selectedEvent?.date != undefined && selectedEvent?.date != null ? moment(selectedEvent?.date).format("ll") : ''}</Text>
+        <Text style={styles.date}>{selectedEvent?.date}</Text>
 
         <View style={styles.actionRow}>
           <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
-            <Icon name="share" type="feather" size={24} color="#000" /> 
+            <Icon name="share" type="feather" size={24} color="#000" />
             <Text style={styles.actionLabel}>Share</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton} onPress={handleAddToCalendar}>
+          <TouchableOpacity style={styles.actionButton}>
             <Icon name="calendar-plus-o" type="font-awesome" size={24} color="#000" />
             <Text style={styles.actionLabel}>Add to calendar</Text>
           </TouchableOpacity>
@@ -196,6 +195,21 @@ const SingleEventPage = () => {
                       },
                     ]} />
                 }
+                  {/* <MapView style={styles.map} 
+                  provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
+                  mapType="standard"
+                  initialRegion={
+                    {
+                      latitude: region?.latitude ?? 38.674048048803,
+                      longitude: region?.longitude ?? -121.220940919702,
+                      latitudeDelta:0.05,
+                      longitudeDelta: 0.05,
+                    }}
+                  >
+                      <Marker coordinate={{ latitude: region?.latitude ?? 38.674048048803,
+                      longitude: region?.longitude ?? -121.220940919702}}/>
+                    </MapView> */}
+                  
               
               </View>
 

@@ -1,0 +1,209 @@
+appId: com.anonymous.SolChurchApp
+name: Validate Events List and All Event Details (iOS)
+---
+- launchApp
+- waitForAnimationToEnd
+
+- takeScreenshot: "01_app_launched"
+
+- tapOn:
+   point: 45%,93% 
+
+- assertVisible:
+    text: "SERVICES"
+- takeScreenshot: "02_events_list_loaded"
+      # Tap the first visible event
+- tapOn:
+    point: 45%, 35%
+
+      # Screenshot of event page
+- takeScreenshot: "event_1_opened"
+
+      # Validate new page truly opened
+      # Checks generic details that always exist on event details page
+- assertVisible: ".*Good Friday.*"
+- assertVisible: ".*Apr 17, 2025.*"
+- assertVisible: ".*Share.*"
+- assertVisible: ".*Add to calendar.*"
+- assertVisible: ".*Location.*"
+- assertVisible: Map pin Legal Tracking 3D mode
+
+      # Screenshot after validation
+- takeScreenshot: "event_1_validated"
+
+- tapOn:
+    point: 23%,51%
+- assertVisible:
+    id: shareSheet.activity.contentView
+
+- tapOn:
+    point: 40%,54%
+
+- tapOn:
+    point: "50%,99%"
+
+- assertVisible:
+    id: "IOSChromeViewController<0x10582ae00>.IOSFloatingControlsViewController<0x106871c00>"
+
+- launchApp
+- waitForAnimationToEnd
+
+      # Return to list
+- tapOn:
+   point: 45%,93% 
+
+      # Confirm list visible again
+- assertVisible: "SERVICES"
+
+- tapOn:
+    point: 45%, 50%
+
+      # Screenshot of event page
+- takeScreenshot: "event_2_opened"
+
+      # Validate new page truly opened
+      # Checks generic details that always exist on event details page
+- assertVisible: ".*Worship House.*"
+- assertVisible: ".*Share.*"
+- assertVisible: ".*Add to calendar.*"
+
+      # Screenshot after validation
+- takeScreenshot: "event_2_validated"
+
+      # Return to list
+- tapOn:
+    point: 9%,10%
+
+      # Confirm list visible again
+- assertVisible: "SERVICES"
+
+- tapOn:
+    point: 45%, 60%
+
+      # Screenshot of event page
+- takeScreenshot: "event_3_opened"
+
+      # Validate new page truly opened
+      # Checks generic details that always exist on event details page
+- assertVisible: ".*Alkatraz & Ocean Sunset.*"
+- assertVisible: ".*Share.*"
+- assertVisible: ".*Add to calendar.*"
+
+      # Screenshot after validation
+- takeScreenshot: "event_3_validated"
+
+      # Return to list
+- tapOn:
+    point: 9%,10%
+
+      # Confirm list visible again
+- assertVisible: "SERVICES"
+
+- tapOn:
+    point: 45%, 73%
+
+      # Screenshot of event page
+- takeScreenshot: "event_4_opened"
+
+      # Validate new page truly opened
+      # Checks generic details that always exist on event details page
+- assertVisible: ".*Church Picnic.*"
+- assertVisible: ".*Share.*"
+- assertVisible: ".*Add to calendar.*"
+
+      # Screenshot after validation
+- takeScreenshot: "event_4_validated"
+
+      # Return to list
+- tapOn:
+    point: 9%,10%
+
+      # Confirm list visible again
+- assertVisible: "SERVICES"
+
+- tapOn:
+    point: 45%, 85%
+
+      # Screenshot of event page
+- takeScreenshot: "event_5_opened"
+
+      # Validate new page truly opened
+      # Checks generic details that always exist on event details page
+- assertVisible: ".*Share.*"
+- assertVisible: ".*Add to calendar.*"
+
+      # Screenshot after validation
+- takeScreenshot: "event_5_validated"
+
+      # Return to list
+- tapOn:
+    point: 9%,10%
+
+      # Confirm list visible again
+- assertVisible: "SERVICES"
+
+- scroll
+
+- tapOn:
+    point: 45%, 60%
+
+      # Screenshot of event page
+- takeScreenshot: "event_6_opened"
+
+      # Validate new page truly opened
+      # Checks generic details that always exist on event details page
+- assertVisible: ".*Share.*"
+- assertVisible: ".*Add to calendar.*"
+
+      # Screenshot after validation
+- takeScreenshot: "event_6_validated"
+
+      # Return to list
+- tapOn:
+    point: 9%,10%
+
+      # Confirm list visible again
+- assertVisible: "SERVICES"
+
+- tapOn:
+    point: 45%, 73%
+
+      # Screenshot of event page
+- takeScreenshot: "event_7_opened"
+
+      # Validate new page truly opened
+      # Checks generic details that always exist on event details page
+- assertVisible: ".*Rise & Shine.*"
+- assertVisible: ".*Share.*"
+- assertVisible: ".*Add to calendar.*"
+
+      # Screenshot after validation
+- takeScreenshot: "event_7_validated"
+
+      # Return to list
+- tapOn:
+    point: 9%,10%
+
+      # Confirm list visible again
+- assertVisible: "SERVICES"
+
+- tapOn:
+    point: 45%, 85%
+
+      # Screenshot of event page
+- takeScreenshot: "event_8_opened"
+
+      # Validate new page truly opened
+      # Checks generic details that always exist on event details page
+- assertVisible: ".*Share.*"
+- assertVisible: ".*Add to calendar.*"
+
+      # Screenshot after validation
+- takeScreenshot: "event_8_validated"
+
+      # Return to list
+- tapOn:
+    point: 9%,10%
+
+      # Confirm list visible again
+- assertVisible: "SERVICES"
