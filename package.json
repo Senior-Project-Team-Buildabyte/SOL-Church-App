@@ -53,6 +53,7 @@
     "expo-system-ui": "~5.0.11",
     "expo-web-browser": "~14.2.0",
     "jest-expo": "~53.0.10",
+    "moment": "^2.30.1",
     "native": "^0.2.0",
     "pod-install": "^0.3.4",
     "react": "19.0.0",
