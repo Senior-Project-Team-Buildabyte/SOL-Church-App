@@ -98,10 +98,20 @@ const SingleEventPage = () => {
 
   const handleAddToCalendar = async () => {
     if (selectedEvent) {  
+      const dateString = `${selectedEvent.date} ${selectedEvent.time ?? '00:00:00'}`;
+      const format = 'DD/MM/YYYY HH:mm:ss';
       const eventConfig: AddCalendarEvent.CreateOptions= {
         title: selectedEvent.title,
-        startDate: moment(selectedEvent.date).add(7, "hours").add(selectedEvent.time?.split(':')[0], 'hours')?.local().toISOString(),
-        endDate: moment(selectedEvent.date).add(8, "hours").add(selectedEvent.time?.split(':')[0], 'hours')?.local().toISOString(),
+        startDate: moment(selectedEvent.date)
+	  .add(7, "hours")
+	  .local()
+	  .toISOString(),
+
+        endDate: moment(dateString, format)
+	  .add(8, "hours")
+	  .local()
+	  .toISOString(),
+
         location: selectedEvent.location ?? undefined,
         notes: selectedEvent.description ?? undefined,
       };
