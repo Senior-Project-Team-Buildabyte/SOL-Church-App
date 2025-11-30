@@ -33,6 +33,7 @@
     "expo": "^53.0.23",
     "expo-application": "~6.1.5",
     "expo-blur": "~14.1.5",
+    "expo-calendar": "^15.0.7",
     "expo-camera": "~16.1.11",
     "expo-constants": "~17.1.7",
     "expo-dev-client": "~5.2.4",
