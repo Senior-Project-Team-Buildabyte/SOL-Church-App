@@ -140,7 +140,7 @@ const SingleEventPage = () => {
             <Icon name="share" type="feather" size={24} color="#000" />
             <Text style={styles.actionLabel}>Share</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={handleAddToCalendar}>
             <Icon name="calendar-plus-o" type="font-awesome" size={24} color="#000" />
             <Text style={styles.actionLabel}>Add to calendar</Text>
           </TouchableOpacity>

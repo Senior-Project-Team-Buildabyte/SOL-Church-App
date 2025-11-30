@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HeaderBar() {
   const handlePress = () => {
@@ -12,6 +13,7 @@ export default function HeaderBar() {
   };
 
   return (
+    <SafeAreaView>
     <View style={styles.header}>
       {/* Left: Logo and Text */}
       <View style={styles.logoContainer}>
@@ -32,6 +34,7 @@ export default function HeaderBar() {
         </TouchableOpacity>
       </View>
     </View>
+    </SafeAreaView>
   );
 }
 
