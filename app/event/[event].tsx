@@ -102,7 +102,7 @@ const SingleEventPage = () => {
       const format = 'DD/MM/YYYY HH:mm:ss';
       const eventConfig: AddCalendarEvent.CreateOptions= {
         title: selectedEvent.title,
-        startDate: moment(selectedEvent.date)
+        startDate: moment(dateString, format)
 	  .add(7, "hours")
 	  .local()
 	  .toISOString(),
