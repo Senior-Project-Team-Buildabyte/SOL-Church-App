@@ -1,6 +1,9 @@
 import { EventData, fetchSingleEventData, getGeo } from "@/services/eventsService";
 import { useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import * as Calendar from 'expo-calendar';
+import moment from 'moment';
 import {
   View,
   Text,
@@ -91,6 +94,37 @@ const SingleEventPage = () => {
     if (url) Linking.openURL(url);
   };
 
+
+  const handleAddToCalendar = async () => {
+    if (selectedEvent) {  
+      const eventConfig: AddCalendarEvent.CreateOptions= {
+        title: selectedEvent.title,
+        startDate: moment(selectedEvent.date).add(7, "hours").add(selectedEvent.time?.split(':')[0], 'hours')?.local().toISOString(),
+        endDate: moment(selectedEvent.date).add(8, "hours").add(selectedEvent.time?.split(':')[0], 'hours')?.local().toISOString(),
+        location: selectedEvent.location ?? undefined,
+        notes: selectedEvent.description ?? undefined,
+      };
+      
+
+      try {
+        if (Platform.OS === 'android') {
+          const { status } = await Calendar.requestCalendarPermissionsAsync();
+          if (status !== 'granted') {
+            alert("Calendar permission is required to add events.");
+            return;
+          }
+        }
+        const eventInfo = await AddCalendarEvent.presentEventCreatingDialog(eventConfig);
+        if (eventInfo.action === 'SAVED') {
+          console.log('Event saved with ID:', eventInfo.eventIdentifier);
+        } else if (eventInfo.action === 'CANCELED') {
+          console.log('Event creation canceled.');
+        }
+      } catch (error) {
+        console.error('Error adding event:', error);
+      }
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
