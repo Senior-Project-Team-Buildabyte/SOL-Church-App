@@ -14,7 +14,6 @@ This app is a cross-platform mobile application for Sacramento's [Spring Of Life
 ## Contents
 - [Features](#features)
 - [ERD & Examples](#resources-and-examples)
-- [Timeline](#timeline)
 - [Development](#development-placeholder)
 - [Testing](#testing-placeholder)
 - [Deployment](#deployment-placeholder)
@@ -23,41 +22,144 @@ This app is a cross-platform mobile application for Sacramento's [Spring Of Life
 ### Entity Relationship Diagram (ERD)
 <img src="assets/images/readme-ERD.png" alt="ERD" height="750">
 
-### App Prototype
-<img src="assets/images/readme-homepage-example.png" alt="Homepage" height="650"> &emsp; <img src="assets/images/readme-borrow-example.png" alt="Borrow page" height="650">
+### App Screen Shots
+<table>
+  <tr>
+    <td align="center">
+      <img src="assets/images/readme-homepage.png" alt="Homepage" height="650"><br>
+      <strong>Homepage</strong>
+    </td>
+    <td align="center">
+      <img src="assets/images/readme-borrowpage.png" alt="Borrow Page" height="650"><br>
+      <strong>Borrow Page</strong>
+    </td>
+  </tr>
+</table>
 
-## Timeline
-|Sprint|Date|Deliverables|
-|-:|:-:|-|
-|1|Feb 17 - Mar 2|MVP Defined, user stories and project backlog created|
-|2|Mar 3 - Mar 16|Homepage layout and dynamic events/announcements list created|
-|||Started header and events page|
-|3|Mar 17 - Mar 30|Featured events carousel, carousel animation, and header implemented|
-|||Improved buttons and UI, started connect page|
-|4|Apr 7 - Apr 20|Finish connect page, and update carousel, events and resources|
-|||Implement forms and media pages, finish framework for most basic pages|
-|**Future**|**Estimated date**|**Planned deliverables**|
-|5|Sept|User login/authentication, continue any major UI developments (borrow page, etc.)|
-|6|Sept - Oct|Notification service created, finalize any basic UI changes and general app behavior|
-|||Start any backend development and service implementations|
-|7|Oct - Nov|Finish implementation of any user accessible pages|
-|||Start work on admin access and app control, continue needed backend development|
-|8|Nov|Finish any admin pages and implement app control for admins|
-|||Finish backend service access to update any information within the app|
-|||Finish any needed development work to finalize app for deployment|
 
-## Development (placeholder)
+
+## Development
 ### Dependencies
-(list of dependencies)
+- @babel/core@7.28.5
+- @expo/ngrok@4.1.3
+- @hcaptcha/react-hcaptcha@1.14.0
+- @hcaptcha/react-native-hcaptcha@10
+- @react-native-async-storageasync-storage@2.2.0
+- @react-native-community/cli@20.0.2
+- @react-native/virtualized-lists@0.82.1
+- @supabase/supabase-js@2.81.1
+- @testing-library/jest-native@5.4.3
+- @testing-library/react-native@13.3.3
+- @types/axios@0.9.36
+- @types/jest@29.5.14
+- @types/react-test-renderer@19.1.0
+- @types/react@19.0.14
+- docker@1.0.0
+- eslint-config-expo@9.2.0
+- eslint@9.39.1
+- expo-application@6.1.5
+- expo-blur@14.1.5
+- expo-calendar@15.0.7 extraneous
+- expo-camera@16.1.11
+- expo-constants@17.1.7
+- expo-dev-client@5.2.4
+- expo-device@7.1.4
+- expo-font@13.3.2
+- expo-haptics@14.1.4
+- expo-linear-gradient@14.1.5
+- expo-linking@7.1.7
+- expo-location@18.1.6
+- expo-maps@0.11.0
+- expo-notifications@0.31.4
+- expo-router@5.1.7
+- expo-secure-store@14.2.4
+- expo-splash-screen@0.30.10
+- expo-status-bar@2.2.3
+- expo-symbols@0.4.5
+- expo-system-ui@5.0.11
+- expo-web-browser@14.2.0
+- expo@53.0.23
+- jest-expo@53.0.10
+- jest@29.7.0
+- moment@2.30.1 extraneous
+- native@0.2.0
+- pod-install@0.3.10
+- react-dom@19.0.0 overridden
+- react-native-add-calendar-event@5.0.0 extraneous
+- react-native-asset@2.1.1
+- react-native-elements@3.4.3
+- react-native-gesture-handler@2.24.0
+- react-native-get-random-values@1.11.0
+- react-native-modal@14.0.0-rc.1
+- react-native-reanimated-carousel@4.0.3
+- react-native-reanimated@3.17.5
+- react-native-safe-area-context@5.4.0
+- react-native-screens@4.11.1
+- react-native-url-polyfill@2.0.0
+- react-native-vector-icons@10.3.0
+- react-native-web@0.20.0
+- react-native-webview@13.13.5
+- react-native@0.79.6
+- react-test-renderer@19.0.0
+- react@19.0.0 overridden
+- ts-jest@29.4.5
+- ts-node@10.9.2
+- typescript@5.8.3
 
 ### Setup
-(steps to setup the project and dev environment)
+1. Install Required Global Tools
+	- Use Node.js (LTS recommended)
+	- You will need the Expo CLI (npm install -g expo-cli)
+
+	- Depending on your machine:
+		- For Windows/Linux:
+			- Install Android Studio
+			- Install Android SDK + Platform Tools
+			- Set environment variables:
+				- ANDROID_HOME = C:\Users\YourName\AppData\Local\Android\Sdk
+			Install JDK 17
+		- For macOS:
+			- brew install watchman
+
+2. Clone The Project
+	- git clone git@github.com:Senior-Project-Team-Buildabyte/SOL-Church-App.git
+	cd SOL-Church-App
+
+3. Install Project Dependencies
+	- npm install
+
+	- There are some "extraneous" items, they are in node_modules but not in package.json. If needed run:
+		- npm install expo-calendar moment react-native-add-calendar-event
+
+4. Environement Variables (.env)
+	- Create .env in project root
+	- It should follow this format:
+		- EXPO_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_URL
+		- EXPO_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 
 ### Running
-(steps to run the app)
+1. Running on a Real Device
+	- Download Expo Go:
+		- Either in iOS App Store or Google Play Store
+	- Then:
+		- Run expo start
+		- Scan the QR code
+
+2. Running on Emulator (Android Studio)
+	- Start Metro & Build & Run with Expo - make sure to start emulator first
+		- npx expo run:android
 
 ## Testing (placeholder)
 (testing instructions)
 
 ## Deployment (placeholder)
 (deployment instructions)
+
+## Contributors
+- Dylan Prosser (dprosser@csus.edu)
+- Dylan Keener (dkeener@csus.edu)
+- Iryna Olkhovyk (iolkhovyk@csus.edu)
+- Brian Reyna (brianreyna@csus.edu)
+- Kanageshwaran Dhakshinamoorthy (kdhakshinamoorthy@csus.edu)
+- Tarrin Gackstetter (tgackstetter@csus.edu)
+- Z Wiese (zwiese@csus.edu)
