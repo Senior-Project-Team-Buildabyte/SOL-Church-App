@@ -1,3 +1,4 @@
+import React from 'react'
 import { EventData, fetchSingleEventData, getGeo } from "@/services/eventsService";
 import { useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
