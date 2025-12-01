@@ -159,13 +159,17 @@ This app is a cross-platform mobile application for Sacramento's [Spring Of Life
 	- To generate an upload key (for Windows use WSL2) use the following command:\
 	`sudo keytool -genkey -v -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000`
 	This will prompt you for a password, make sure to save it as you will need it in the next step.
-- Next, ensure that the keystore you created (in this example: `my-upload-key.keystore`) is located inside of the app folder inside of the project’s android directory and that you update gradle.properties with the following:\
-[img 1](placeholder)\
+- Next, ensure that the keystore you created (in this example: `my-upload-key.keystore`) is located inside of the app folder inside of the project’s android directory and that you update gradle.properties with the following:
+<img src="assets/images/readme-gradleprop.png" alt="Changes to add to gradle.properties" height="100">
+
 \* *Replace my-upload-key.keystore, my-key-alias with the arguments you provided above. Replace the ‘\*\*\*\*\*’ with the password you set after generating the upload key.*
-- Finally to finish the setup, you need to add the following to ‘app/build.gradle’ inside ‘signingConfigs {...}’\
-[img2](place2)\
-And ‘buildTypes {...}’\
-[img3](place3)\
+- Finally to finish the setup, you need to add the following to ‘app/build.gradle’ inside ‘signingConfigs {...}’
+<img src="assets/images/readme-gradlebuild1.png" alt="Changes to build.gradle under signingConfigs" height="150">
+
+And ‘buildTypes {...}’
+
+<img src="assets/images/readme-gradlebuild2.png" alt="Changes to build.gradle under buildTypes" height="200">
+
 \* *The line “signingConfig signingConfigs.release” replaces “signingConfig signingConfigs.debug” under ‘release’.*
 
 - Now the steps diverge whether you are using Windows, WSL2, or Linux to generate the build. Both are performed while inside the android directory.
