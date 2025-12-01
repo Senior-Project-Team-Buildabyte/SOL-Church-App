@@ -14,9 +14,9 @@ This app is a cross-platform mobile application for Sacramento's [Spring Of Life
 ## Contents
 - [Features](#features)
 - [ERD & Examples](#resources-and-examples)
-- [Development](#development-placeholder)
-- [Testing](#testing-placeholder)
-- [Deployment](#deployment-placeholder)
+- [Development](#development)
+- [Testing](#testing)
+- [Deployment](#deployment)
 
 ## Resources and Examples
 ### Entity Relationship Diagram (ERD)
