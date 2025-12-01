@@ -222,8 +222,55 @@ maestro test app/testing/home/home.yaml
 ```
 <br>
 
-## Deployment (placeholder)
-(deployment instructions)
+## Deployment
+### For Local Builds
+- For building locally without EAS, first you must ensure you have an android directory generated. Expo-dev-cli is already installed in the system so running `npx expo prebuild` will generate an android directory that will later be used for building the .apk and .aab files to be submitted to the Google Play Store.
+- After making sure the android directory has been generated, in a terminal you need to ensure your package is signed with an upload key. (*This tool is included with OpenJDK 17.*)
+	- To generate an upload key (for Windows use WSL2) use the following command:\
+	`sudo keytool -genkey -v -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000`
+	This will prompt you for a password, make sure to save it as you will need it in the next step.
+- Next, ensure that the keystore you created (in this example: `my-upload-key.keystore`) is located inside of the app folder inside of the project’s android directory and that you update gradle.properties with the following:
+<img src="assets/images/readme-gradleprop.png" alt="Changes to add to gradle.properties" height="100">
+
+\* *Replace my-upload-key.keystore, my-key-alias with the arguments you provided above. Replace the ‘\*\*\*\*\*’ with the password you set after generating the upload key.*
+- Finally to finish the setup, you need to add the following to ‘app/build.gradle’ inside ‘signingConfigs {...}’
+<img src="assets/images/readme-gradlebuild1.png" alt="Changes to build.gradle under signingConfigs" height="150">
+
+And ‘buildTypes {...}’
+
+<img src="assets/images/readme-gradlebuild2.png" alt="Changes to build.gradle under buildTypes" height="200">
+
+\* *The line “signingConfig signingConfigs.release” replaces “signingConfig signingConfigs.debug” under ‘release’.*
+
+- Now the steps diverge whether you are using Windows, WSL2, or Linux to generate the build. Both are performed while inside the android directory.
+
+  - If using WSL2 or Linux, run the following:
+
+    - For Android App Bundles ‘.aab’ (what you typically submit to the Play Store):\
+      `./gradlew bundleRelease`
+
+    - For .apk files (sideloading or testing):\
+      `./gradlew assembleRelease
+      `
+
+  - If using Windows (without WSL2):
+    - For Android App Bundle:\
+    `gradlew bundleRelease`
+
+    - For .apk files:\
+    `gradlew assembleRelease`
+
+- From here you can submit your signed app bundle (.aab) to the Google Play Store following these guidelines\*: <https://github.com/expo/fyi/blob/main/first-android-submission.md>\
+    \*_As full deployment has been requested to be withheld by the client, we assume the client knows or can utilize the guide above to ensure their first submission of the application is successful._
+
+  - If distributing the application through a privately owned website, upload the .apk for download and ensure any users understand how to install 3rd-party .apk’s by enabling the Android Developer options when asked.
+
+    - The .aab file can be located inside the following path ‘android > app > build > outputs > bundle > release’ 
+
+  - For sideloading as will be done for demonstration, download or transfer the generated .apk to the desired device, navigate to it within the files, and install from there (once again making sure to enable the Android Developer mode for 3rd-party .apk’s).
+
+    - The .apk file can be located inside the following path ‘android > app > build > outputs > apk > release’
+
 
 ## Contributors
 - Dylan Prosser (dprosser@csus.edu)
