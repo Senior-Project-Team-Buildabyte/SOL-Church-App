@@ -149,8 +149,78 @@ This app is a cross-platform mobile application for Sacramento's [Spring Of Life
 	- Start Metro & Build & Run with Expo - make sure to start emulator first
 		- npx expo run:android
 
-## Testing (placeholder)
-(testing instructions)
+## Testing
+
+**Jests Unit Tests Commands**
+
+Run All Unit Tests:
+
+```bash
+npx jest
+```
+<br>
+Run Single Test Suite:
+
+```bash
+npx jest path/to/testfile.test.tsx
+```
+<br>
+Example:
+
+```bash
+npx jest app/testing/home/home.test.tsx
+```
+<br>
+
+**Maestro Automated Tests**
+
+Before running Maestro tests, ensure the following:
+
+- Maestro must be installed on your machine (not included in project dependencies)
+	- **Installation steps vary by OS**
+- Java 17 is required as a prerequisite
+   - This can be checked with the command: ```java -version```  
+
+**Install Maestro:**
+
+macOS:
+```bash
+curl -fsSL "https://get.maestro.mobile.dev" | bash
+```
+<br>
+Windows:
+<br>
+Follow the Instructions at https://docs.maestro.dev/getting-started/installing-maestro/windows
+<br>
+<br>
+
+Verify installation:
+
+```bash
+maestro --version
+```
+<br>
+
+**Emulator has to be running before running maestro test**
+
+Run Full Maestro Test Flow:
+
+```bash
+maestro test maestro/flow.yaml
+```
+<br>
+Run Specific Maestro Test File:
+
+```bash
+maestro test path/to/test.yaml
+```
+<br>
+Example:
+
+```bash
+maestro test app/testing/home/home.yaml
+```
+<br>
 
 ## Deployment
 ### For Local Builds
